@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+for device in $(mount | rg '/run/media' | cut -d' ' -f1); do
+  udisksctl unmount -f -b ${device}
+done

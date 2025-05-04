@@ -1,0 +1,83 @@
+#!/usr/bin/env zsh
+
+set -ex
+
+cachedir=${XDG_CACHE_HOME:-"$HOME/.cache"}
+if [[ -d "$cachedir" ]]; then
+  mkdir -p $cachedir/fzf-menu
+  cache=$cachedir/fzf-menu/run_cache
+  historyfile=$cachedir/fzf-menu/history
+else
+  mkdir -p $HOME/.fzf-menu
+  cache=$HOME/.fzf-menu/run_cache
+  historyfile=$HOME/.fzf-menu/history
+fi
+
+[[ -f "$historyfile" ]] || touch $historyfile
+
+# test if we need to update the cache
+paths=(${(@s/:/)PATH})
+zmodload zsh/stat
+update_cache=false
+cache_mtime=-1
+[[ -f ${cache} ]] && cache_mtime=$(zstat +mtime -- ${cache} 2>/dev/null)
+for dir in ${paths}; do
+  if [[ -d ${dir} && -r ${dir} ]]; then # is readable dir
+    dir_mtime=$(zstat +mtime -- ${dir} 2>/dev/null)
+    if (( dir_mtime > cache_mtime )); then
+      update_cache=true
+      break
+    fi
+  fi
+done
+
+# list executable files into the cache (basename only)
+if [[ $update_cache == true || ! -f ${cache} ]]; then
+  fd_args=(--type executable --type symlink --unrestricted --format {/})
+  for dir in ${paths}; do
+    [[ -d ${dir} && -r ${dir} ]] && fd_args+=(--search-path ${dir})
+  done
+  fd ${fd_args} 2>/dev/null | sort -u > ${cache}
+fi
+unset IFS
+
+command=$(awk -v histfile=$historyfile '
+  BEGIN {
+    while ((getline < histfile) > 0) {
+      sub("^[0-9]+\t", "")
+      print
+      x[$0]=1
+    }
+  } !x[$0]++ ' "$cache" | fzf --height=100% +s --reverse --pointer='➤' --prompt='➤ ')
+
+[ ${?} -eq 0 ] || exit
+echo ${command} | awk -v histfile=$historyfile '
+  BEGIN {
+    FS=OFS="\t"
+    while ((getline < histfile) > 0) {
+      count=$1
+      sub("^[0-9]+\t", "")
+      fname=$0
+      history[fname]=count
+    }
+    close(histfile)
+  }
+
+  {
+    history[$0]++
+    print
+  }
+
+  END {
+    if (!NR) exit
+    for (f in history)
+      print history[f],f | "sort -t '\t' -k1rn >" histfile
+  }
+'
+
+case $XDG_CURRENT_DESKTOP in
+  sway) swaymsg exec ${command} ;;
+  niri) niri msg action spawn -- ${command} ;;
+  *) notify-send -u critical "Cannot spawn process" "Not a known session type: $XDG_CURRENT_DESKTOP"
+esac
+

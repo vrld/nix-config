@@ -1,0 +1,44 @@
+#!/usr/bin/env zsh
+
+function items() {
+  fd gpg$ ~/.password-store \
+    | sed -E 's|^.*/.password-store/(.*)\.gpg$|\1|' \
+    | sort
+}
+
+function menu() {
+  fzf --height=100% --pointer='➤' --prompt='➤ ' --reverse
+}
+
+
+while true; do
+  item=$(items | menu)
+  [ -z "${item}" ] && exit
+
+  item_keys=$(pass-get "${item}" -k)
+  while true; do
+    subitem=$(echo ${item_keys} | menu --header="${item}")
+    case ${subitem} in
+      password)
+        pass -c ${item}
+        ;;
+      *url)
+        xdg-open $(pass-get ${item} ${subitem})
+        ;;
+      *misc)
+        fn=$(mktemp)
+        pass-get ${item} misc > ${fn}
+        (zenity --text-info --filename=${fn}; /bin/rm ${fn}) &
+        ;;
+      *otp*)
+        pass otp -c ${item}
+        ;;
+      "")
+        break
+        ;;
+      *)
+        pass-get ${item} ${subitem} | wl-copy -n
+        ;;
+    esac
+  done
+done

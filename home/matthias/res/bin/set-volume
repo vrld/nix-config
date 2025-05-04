@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+
+set -ex
+
+WOBSOCK=$XDG_RUNTIME_DIR/wob.sock
+test -p $WOBSOCK || exit 1
+test -n "$1" || exit 1
+test -n "$2" || exit 1
+
+SINK=$1
+ARG=$2
+
+if test $ARG = "toggle"; then
+  wpctl set-mute $SINK $ARG && echo 0 > $WOBSOCK
+  exit
+fi
+
+#pactl set-sink-volume @DEFAULT_SINK@ $1 \
+#  && pactl get-sink-volume @DEFAULT_SINK@ | head -n 1| awk '{print substr($5, 1, length($5)-1)}' > $WOBSOCK
+wpctl set-volume $SINK $ARG \
+  && wpctl get-volume $SINK | cut -d' ' -f2 | tr -d '.' > $WOBSOCK

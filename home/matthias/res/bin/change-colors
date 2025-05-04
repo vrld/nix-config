@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if test $# -lt 1; then
+  if is-in-light-mode; then
+    exec $0 dark
+  else
+    exec $0 light
+  fi
+fi
+
+target=$1
+target_cap=$(echo "${target}" | sed 's:^\(.\):\u\1:g')
+
+dconf write /org/gnome/desktop/interface/color-scheme "'prefer-${target}'"
+dconf write /org/gnome/desktop/interface/gtk-scheme "'Qogir-${target_cap}'"
+# TODO: qt?

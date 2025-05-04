@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+SCREENS=$(niri msg -j outputs | jq -r '.[] | values.name')
+if test -z "${SCREENS}"; then
+  SCREENS=$(swaymsg -t get_outputs | jq -r '.[].name')
+fi
+
+for screen in ${SCREENS}; do
+  TARGET=/tmp/lock-${screen}.png
+  grim -s 0.025 -o ${screen} ${TARGET} && mogrify -fill black -colorize 70% ${TARGET}
+done
+
+swaylock -k -f \
+  -c 000000 -s stretch \
+  $(for screen in ${SCREENS}; do echo "-i ${screen}:/tmp/lock-${screen}.png"; done)

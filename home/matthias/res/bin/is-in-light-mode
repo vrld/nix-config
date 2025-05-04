@@ -1,0 +1,3 @@
+#!/bin/sh
+
+dconf read /org/gnome/desktop/interface/color-scheme | grep -q light

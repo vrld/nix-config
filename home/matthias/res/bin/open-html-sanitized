@@ -1,0 +1,92 @@
+#!/usr/bin/env python
+
+import re
+import os
+import sys
+import time
+import tempfile
+import subprocess as sp
+from bs4 import BeautifulSoup
+
+def main(_, html_path: str):
+    with open(html_path) as fin:
+        html = fin.read()
+
+    html = sanitize(html)
+
+    handle, temp_path = tempfile.mkstemp(text=True)
+    with open(handle, "w") as fh:
+        fh.write(html)
+
+    sp.run(["xdg-open", temp_path])
+    time.sleep(0.5)
+    os.unlink(temp_path)
+
+
+def sanitize(html: str) -> str:
+    soup = BeautifulSoup(html, "html.parser")
+
+    for element in soup.descendants:
+        if element.name == "a":
+            continue
+
+        try:
+            # TODO: javascript to reveal element on click
+            if (url := element.attrs.get("src")) is not None:
+                element.attrs["src"] = url.replace("http", "no-http")
+                element.attrs["onclick"] = f"return show('{url}', 'src')"
+            elif (url := element.attrs.get("srcset")) is not None:
+                element.attrs["srcset"] = url.replace("http", "no-http")
+                element.attrs["onclick"] = f"return show('{url}', 'srcset')"
+            elif (url := element.attrs.get("href")) is not None:
+                element.attrs["href"] = url.replace("http", "no-http")
+                element.attrs["onclick"] = f"return show('{url}', 'href')"
+            elif (url := element.attrs.get("data")) is not None:
+                element.attrs["data"] = url.replace("http", "no-http")
+                element.attrs["onclick"] = f"return show('{url}', 'data')"
+            elif (url := element.attrs.get("style")) is not None:
+                element.attrs["style"] = url.replace("http", "no-http")
+        except AttributeError:
+            pass
+
+    script = soup.new_tag("script")
+    script.attrs["type"] = "text/javascript"
+    script.string = """
+function show(url, attr) {
+  if (confirm(`Replace "${attr}" with "${url}"?`)) {
+    let target = (event || window.event).target;
+    target.setAttribute(attr, url);
+    target.setAttribute('onclick', '');
+  }
+  return false;
+}
+
+function showAllImages() {
+  for (let x of document.getElementsByTagName('img')) {
+    let url = x.getAttribute('src').substr(3);
+    if (confirm(`Show ${url}?`)) {
+      x.setAttribute('src', url);
+    }
+  }
+  (event || window.event).target.setAttribute('style', 'display: none');
+}
+""".strip()
+    try:
+        soup.html.body.append(script)
+    except AttributeError:
+        soup.append(script)
+
+    button = soup.new_tag("button")
+    button.attrs["onclick"] = "showAllImages()"
+    button.attrs["style"] = "display: block; margin: 4pt auto;"
+    button.string = "Show all images"
+    try:
+        soup.html.body.insert(1, button)
+    except AttributeError:
+        soup.insert(1, button)
+
+    return str(soup)
+
+
+if __name__ == "__main__":
+    main(*sys.argv)

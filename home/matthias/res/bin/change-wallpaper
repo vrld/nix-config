@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+test -d ~/Wallpaper || exit 1
+
+wp="$(ls ~/Wallpaper | shuf | head -1)"
+img=${HOME}/Wallpaper/${wp}
+swww img ${img} --transition-step 3 --transition-fps 60

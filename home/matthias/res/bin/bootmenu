@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+
+what=$(fzf --height=100% --layout=reverse <<EOI
+Lock
+Hibernate
+Reboot
+Shutdown
+Logout
+EOI
+)
+
+case "${what}" in
+  Lock)
+    loginctl lock-sessions
+    ;;
+  Hibernate)
+    systemctl hibernate
+    ;;
+  Reboot)
+    systemctl reboot
+    ;;
+  Shutdown)
+    systemctl poweroff
+    ;;
+  Logout)
+    niri msg action quit
+    ;;
+esac
