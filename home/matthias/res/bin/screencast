@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# TODO: package
+
 TMP_MP4_FILE="/tmp/screencast/recording.mp4"
 TMP_PALETTE_FILE="/tmp/screencast/palette.png"
 TMP_FILE_UNOPTIMIZED="/tmp/screencast/recording_unoptimized.gif"

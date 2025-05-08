@@ -16,7 +16,9 @@ in {
     wdisplays
     wl-clipboard
     playerctl
+    brightnessctl
     viewnior
+    numix-cursor-theme
   ];
 
   programs.mpv.enable = true;
@@ -132,6 +134,12 @@ in {
     settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
   };
 
+  home.pointerCursor = {
+    package = pkgs.quintom-cursor-theme;
+    # name = "Quintom_Ink";
+    name = "Quintom_Snow";
+  };
+
   gtk = {
     enable = true;
     theme = {
@@ -147,7 +155,7 @@ in {
   qt = {
     enable = true;
     platformTheme.name = "qt5ct";
-    style = { 
+    style = {
       package = pkgs.qogir-kde;
       name = "QogirDark";  # this is an env var -- how to set this in a script?
     };

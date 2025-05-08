@@ -24,7 +24,7 @@
       enable = true;
       collections = [ "contacts" ];
       readOnly = true;
-      color = "4";
+      color = "light blue";
     };
 
     vdirsyncer = {

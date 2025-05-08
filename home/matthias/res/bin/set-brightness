@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-WOBSOCK=$XDG_RUNTIME_DIR/wob.sock
+WOBSOCK=/run/user/$(id -u)/wob.sock
 [[ -p $WOBSOCK ]] || exit 1
-[[ -n "$1" ]] || exit 1
 
 brightnessctl set $1 | sed -En 's/.*\(([0-9]+)%\).*/\1/p' > $WOBSOCK

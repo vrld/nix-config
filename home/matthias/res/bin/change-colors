@@ -12,5 +12,6 @@ target=$1
 target_cap=$(echo "${target}" | sed 's:^\(.\):\u\1:g')
 
 dconf write /org/gnome/desktop/interface/color-scheme "'prefer-${target}'"
-dconf write /org/gnome/desktop/interface/gtk-scheme "'Qogir-${target_cap}'"
+dconf write /org/gnome/desktop/interface/gtk-theme "'Qogir-${target_cap}'"
+dconf write /org/gnome/desktop/interface/icon-theme "'Qogir-${target_cap}'"
 # TODO: qt?

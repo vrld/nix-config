@@ -25,12 +25,10 @@ in {
     preferXdgDirectories = true;
   };
 
-  home.sessionPath = [
-    "$HOME/.bin:$PATH"
-  ];
+  home.sessionPath = ["$HOME/.bin"];
 
   home.sessionVariables = {
-    PATH = "$HOME/.bin:$PATH";
+    #PATH = "$HOME/.bin:$PATH";
     EDITOR = "nvim";
     TERMINAL_EMULATOR = "ghostty";
     JAVA_OPTS = "-Dawt.useSystemAAFontSettings=on -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";

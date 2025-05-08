@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-
-mkdir -p ~/screenshots
-sleep .2
-grim -g "$(slurp)" - | swappy -f -

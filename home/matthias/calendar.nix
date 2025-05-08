@@ -1,11 +1,11 @@
 { config, pkgs, ... }: let
-  make-calendar-account = { pass-file, user ? config.home.username, calendar, color, primary ? false }: let
+  make-calendar-account = { pass-file, user ? config.home.username, calendar, primary ? false }: let
     build-url = pkgs.writeShellScript "build-url" "echo $(pass-get ${pass-file} url-dav)/calendars/${user}/${calendar}/";
   in {
     inherit primary;
 
     local.type = "filesystem";
-    local.fileExt = ".icf";
+    local.fileExt = ".ics";
 
     remote.type = "caldav";
     vdirsyncer.urlCommand = [ build-url.outPath ];
@@ -15,15 +15,16 @@
     vdirsyncer = {
       enable = true;
       conflictResolution = "remote wins";
+      metadata = [ "color" "displayname" ];
     };
 
     khal = {
       enable = true;
       type = "calendar";
-      color = color;
     };
   };
 in {
+  programs.qcal.enable = true;
   programs.khal = {
     enable = true;
     settings = {
@@ -41,13 +42,11 @@ in {
   accounts.calendar.accounts."personal" = make-calendar-account{
     pass-file = "Cloud/richter.band";
     calendar = "personal";
-    color = "2";
     primary = true;
   };
 
   accounts.calendar.accounts."familienkalender" = make-calendar-account{
     pass-file = "Cloud/richter.band";
     calendar = "familienkalender";
-    color = "1";
   };
 }

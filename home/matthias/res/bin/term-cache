@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+# TODO: package with sqlite
 
 die() {
   echo "$2"
@@ -55,7 +57,7 @@ query() {
 query "CREATE TABLE IF NOT EXISTS cache (str text PRIMARY KEY, count int, last_update text)"
 if test $# -gt 1; then
   shift
-  rest=$(echo -n $@ | sed "s/'/\\\\'/")
+  rest=$(echo -n "$@" | sed "s/'/\\\\'/")
 fi
 
 if test -n "$rest"; then
