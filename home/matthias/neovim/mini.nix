@@ -38,18 +38,14 @@
           draw = {
             animation = function() return 0 end,
           },
-          symbol = '┆',
-          --symbol = '▏',
-          symbol = '▕'
+          --symbol = '┆',
+          --symbol = '▎',
+          symbol = '▏',
+          --symbol = '▕'
         }
         require 'mini.notify'.setup()
 
-        require 'mini.statusline'.setup{
-          content = {
-            -- active = see https://github.com/echasnovski/mini.nvim/blob/main/lua/mini/statusline.lua#L597
-            -- inactive = see https://github.com/echasnovski/mini.nvim/blob/main/lua/mini/statusline.lua#L624
-          },
-        }
+        require 'mini.statusline'.setup()
 
         local hipatterns = require 'mini.hipatterns'
         hipatterns.setup{
@@ -75,11 +71,10 @@
         --       - git switch (pick branch)
         --       - lsp code actions (invoke)
 
-        require 'mini.sessions'.setup{
-          autoread = true,
-        }
+        require 'mini.sessions'.setup()
         -- TODO: map MiniSessions.read()
 
+        require 'mini.starter'.setup()
       end
       '';
     }

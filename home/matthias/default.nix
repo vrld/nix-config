@@ -6,6 +6,7 @@
 in {
   imports = [
     ./email.nix
+    # ./neomutt.nix  # XXX: broken
     ./calendar.nix
     ./contacts.nix
     ./zsh.nix
@@ -168,8 +169,6 @@ in {
     language = de
     ampm = 0
   '';
-
-  programs.feh.enable = true;
 
   programs.ledger = {
     enable = true;

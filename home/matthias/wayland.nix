@@ -16,7 +16,10 @@ in {
     wdisplays
     wl-clipboard
     playerctl
+    viewnior
   ];
+
+  programs.mpv.enable = true;
 
   services.gnome-keyring = {
     enable = true;

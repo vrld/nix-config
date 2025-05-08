@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   ...
@@ -125,6 +126,34 @@ in {
           let g:mkdp_filetypes = ['markdown']
         '';
       }
+    ] ++ lib.optionals config.programs.notmuch.enable [
+
+      # neovimRequireCheck fails while loading `libnotmuch.so`; `ffi.load('notmuch')`
+      # fails with: "... libnotmuch.so: cannot open shared object file: No such file or directory"
+      # => disable the test for the failing module for now
+      {
+        plugin = pkgs.vimUtils.buildVimPlugin (let
+            ref = "main";
+            repo = "yousefakbar/notmuch.nvim";
+          in {
+            pname = "${lib.strings.sanitizeDerivationName repo}";
+            version = ref;
+            src = builtins.fetchGit {
+              inherit ref;
+              rev = "e4b0a6cbbe5e5281f7a6a8fa43c3e776d3eaec64";
+              url = "https://github.com/${repo}.git";
+            };
+            nvimSkipModules = [ "notmuch.cnotmuch" ];
+          });
+        type = "lua";
+        config = /*lua*/"require 'notmuch'.setup()";
+      }
+
+    ];
+
+    extraWrapperArgs = lib.optionals config.programs.notmuch.enable [
+      # TODO: investigate why LD_LIBRARY_PATH is not used in neovim-require-check-hook.sh
+      "--suffix" "LD_LIBRARY_PATH" ":" "${lib.makeLibraryPath [ pkgs.notmuch ]}"
     ];
 
     extraConfig = /*vim*/''
