@@ -1,4 +1,5 @@
 {
+config,
   inputs,
   pkgs,
   outputs,
@@ -34,7 +35,7 @@ in {
 
     initrd.luks.devices = {
       cryptroot = {
-        device = "/dev/disk/by-uuid/80b9dd1b-9366-4638-8ed8-afb7395ada60";
+        device = "/dev/disk/by-uuid/a8a339c2-a012-4743-91c7-e6cd44fe2c5f";
         preLVM = true;
       };
     };
