@@ -49,6 +49,10 @@ in {
 
   services.hardware.bolt.enable = true;
 
+  services.udev.packages = with pkgs; [
+    platformio-core.udev
+  ];
+
   services.udisks2.enable = true;
 
   networking = { hostName = "idaho"; domain = "localdomain"; };
@@ -87,7 +91,7 @@ in {
       isNormalUser = true;
       description = "Matthias";
       initialPassword = "dreamsmakegoodstories";
-      extraGroups = [ "wheel" "docker" "networkmanager" ];
+      extraGroups = [ "wheel" "docker" "networkmanager" "tty" "dialout" ];
       openssh.authorizedKeys.keys = [ ];
     };
     defaultUserShell = pkgs.zsh;
