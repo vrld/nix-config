@@ -39,19 +39,20 @@
               vim.bo[event.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
 
               local opts = { buffer = event.buf, silent = true }
-              vim.keymap.set({'n', 'v'}, '<space>e', '<CMD>Lspsaga diagnostic_jump_next<CR>', opts)
-              vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
-              vim.keymap.set('n', 'gD', '<CMD>Lspsaga goto_type_definition<CR>', opts)
-              vim.keymap.set('n', '<leader>gD', '<CMD>Lspsaga peek_type_definition<CR>', opts)
-              vim.keymap.set('n', 'gd', '<CMD>Lspsaga goto_definition<CR>', opts)
-              vim.keymap.set('n', '<leader>gd', '<CMD>Lspsaga peek_definition<CR>', opts)
-              vim.keymap.set({'n', 'v'}, 'K', '<CMD>Lspsaga hover_doc<CR>', opts)
-              vim.keymap.set('n', 'gr', '<CMD>Lspsaga finder<CR>', opts)
-              vim.keymap.set('n', '<leader>rn', '<CMD>Lspsaga rename<CR>', opts)
-              vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, opts)
-              vim.keymap.set('n', '<leader>chi', '<CMD>Lspsaga incoming_call<CR>', opts)
-              vim.keymap.set('n', '<leader>cha', '<CMD>Lspsaga outgoing_call<CR>', opts)
-              vim.keymap.set({ 'n', 'v' }, '<leader>ca', '<CMD>Lspsaga code_action<CR>', opts)
+              -- NOTE: this overwrites the `l` movement key
+              vim.keymap.set({'n', 'v'}, '<leader>nd',      '<CMD>Lspsaga diagnostic_jump_next<CR>', opts)
+              vim.keymap.set('n',        '<leader>D',       vim.diagnostic.setloclist, opts)
+              vim.keymap.set('n',        '<leader>gt',      '<CMD>Lspsaga goto_type_definition<CR>', opts)
+              vim.keymap.set('n',        '<leader>kt',      '<CMD>Lspsaga peek_type_definition<CR>', opts)
+              vim.keymap.set('n',        '<leader>gd',      '<CMD>Lspsaga goto_definition<CR>', opts)
+              vim.keymap.set('n',        '<leader>kd',      '<CMD>Lspsaga peek_definition<CR>', opts)
+              vim.keymap.set({'n', 'v'}, 'K',               '<CMD>Lspsaga hover_doc<CR>', opts)
+              vim.keymap.set('n',        '<leader>F',       '<CMD>Lspsaga finder<CR>', opts)
+              vim.keymap.set('n',        '<leader>nn',      '<CMD>Lspsaga rename<CR>', opts)
+              vim.keymap.set('n',        '<leader>lf',      function() vim.lsp.buf.format { async = true } end, opts)
+              vim.keymap.set('n',        '<leader>chi',     '<CMD>Lspsaga incoming_call<CR>', opts)
+              vim.keymap.set('n',        '<leader>cha',     '<CMD>Lspsaga outgoing_call<CR>', opts)
+              vim.keymap.set({'n', 'v'}, '<leader><space>', '<CMD>Lspsaga code_action<CR>', opts)
             end
           })
 
@@ -74,7 +75,6 @@
             html = {       -- html (vscode-langservers-extracted)
               capabilities = make_client_capabilities{
                 textDocument = {
-                  -- NOTE: needs a snippet engine -> does not work right now
                   completion = { completionItem = { snippetSupport = true } },
                 },
               }
@@ -129,14 +129,26 @@
           handlers['textDocument/documentSymbol'] = symbols.document_handler
           handlers['workspace/symbol'] = symbols.workspace_handler
 
-          for type, icon in pairs {
-            Error = " ",
-            Warn  = " ",
-            Hint  = " ",
-            Info  = " "
-          } do
-            local hl = "DiagnosticSign" .. type
-            vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+          local signs = {Error = " ", Warn  = " ", Hint  = " ", Info  = " "}
+          if vim.fn.has('nvim-0.11') then
+            vim.diagnostic.config{
+              signs = {
+                text = {
+                  [vim.diagnostic.severity.ERROR] = signs.Error,
+                  [vim.diagnostic.severity.WARN] = signs.Warn,
+                  [vim.diagnostic.severity.HINT] = signs.Hint,
+                  [vim.diagnostic.severity.INFO] = signs.Info,
+                },
+              },
+              virtual_lines = true,
+              virtual_text = false,
+              severity_sort = true,
+            }
+          else
+            for type, icon in pairs(signs) do
+              local hl = "DiagnosticSign" .. type
+              vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+            end
           end
         end
       '';
