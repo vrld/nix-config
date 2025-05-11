@@ -8,6 +8,7 @@
     xdg-desktop-portal-gnome
     niri
     xwayland-satellite
+    nautilus
   ];
 
   # see:
@@ -30,13 +31,13 @@
     ];
   };
 
-  programs.thunar = {
+  # required for file chooser portal
+  programs.nautilus-open-any-terminal = {
     enable = true;
-    plugins = with pkgs.xfce; [
-      thunar-archive-plugin
-      thunar-volman
-    ];
+    terminal = "ghostty";
   };
+  services.gnome.sushi.enable = true;
+
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
 
