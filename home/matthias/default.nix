@@ -48,6 +48,7 @@ in {
     spotify
 
     jujutsu
+    just
     python312Packages.bugwarrior
     timewarrior
   ];
