@@ -101,6 +101,7 @@ in {
   services.mbsync = {
     enable = true;
     postExec = "${notmuch} new";
+    verbose = false;
   };
 
   # TODO: fix "Can't retrieve password from command: exit status 127"

@@ -5,6 +5,8 @@
 
   programs.neovim.extraPackages = with pkgs; [
     tree-sitter
+    go
+    python3
   ];
 
   programs.neovim.plugins = with pkgs.vimPlugins; [

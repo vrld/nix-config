@@ -38,10 +38,15 @@
       };
 
       containers = {
-        youtube = {
-          color = "red";
-          icon = "fruit";
+        EB = {
+          color = "green";
+          icon = "fence";
           id = 1;
+        };
+        Arbeit = {
+          color = "blue";
+          icon = "briefcase";
+          id = 2;
         };
       };
     };
