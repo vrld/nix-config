@@ -18,7 +18,6 @@
   programs.neovim.plugins = with pkgs.vimPlugins; [
 
     nvim-lspconfig
-    popfix
 
     {
       plugin = lspsaga-nvim;  # TODO: check navigator
@@ -110,47 +109,31 @@
       '';
     }
 
-    {
-      plugin = nvim-lsputils;
-      type = "lua";
-      config = /*lua*/ ''
-        do
-          local codeAction = require 'lsputil.codeAction'
-          local locations = require 'lsputil.locations'
-          local symbols = require 'lsputil.symbols'
-
-          local handlers = vim.lsp.handlers
-          handlers['textDocument/codeAction'] = codeAction.code_action_handler
-          handlers['textDocument/references'] = locations.references_handler
-          handlers['textDocument/definition'] = locations.definition_handler
-          handlers['textDocument/declaration'] = locations.declaration_handler
-          handlers['textDocument/typeDefinition'] = locations.typeDefinition_handler
-          handlers['textDocument/implementation'] = locations.implementation_handler
-          handlers['textDocument/documentSymbol'] = symbols.document_handler
-          handlers['workspace/symbol'] = symbols.workspace_handler
-
-          local signs = {Error = " ", Warn  = " ", Hint  = " ", Info  = " "}
-          if vim.fn.has('nvim-0.11') then
-            vim.diagnostic.config{
-              signs = {
-                text = {
-                  [vim.diagnostic.severity.ERROR] = signs.Error,
-                  [vim.diagnostic.severity.WARN] = signs.Warn,
-                  [vim.diagnostic.severity.HINT] = signs.Hint,
-                  [vim.diagnostic.severity.INFO] = signs.Info,
-                },
-              },
-              virtual_text = true,
-              severity_sort = true,
-            }
-          else
-            for type, icon in pairs(signs) do
-              local hl = "DiagnosticSign" .. type
-              vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-            end
-          end
-        end
-      '';
-    }
   ];
+
+
+  programs.neovim.extraLuaConfig = /*lua*/''
+    do
+      local signs = {Error = " ", Warn  = " ", Hint  = " ", Info  = " "}
+      if vim.fn.has('nvim-0.11') then
+        vim.diagnostic.config{
+          signs = {
+            text = {
+              [vim.diagnostic.severity.ERROR] = signs.Error,
+              [vim.diagnostic.severity.WARN] = signs.Warn,
+              [vim.diagnostic.severity.HINT] = signs.Hint,
+              [vim.diagnostic.severity.INFO] = signs.Info,
+            },
+          },
+          virtual_text = true,
+          severity_sort = true,
+        }
+      else
+        for type, icon in pairs(signs) do
+          local hl = "DiagnosticSign" .. type
+          vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+        end
+      end
+    end
+  '';
 }

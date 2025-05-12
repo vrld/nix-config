@@ -118,7 +118,6 @@ in {
       postNew = ''
         COUNT_NEW=$(${notmuch} count tag:new)
         test "$COUNT_NEW" -eq 0 && exit 0
-        test ${baseNameO} 
 
         # auto archive old messages
         notmuch tag +archive -inbox "tag:inbox and not (tag:unread or tag:TODO or tag:flagged) and date:..4w"

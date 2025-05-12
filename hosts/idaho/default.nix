@@ -100,7 +100,7 @@ in {
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.matthias = import ../../home/matthias;
+    users.matthias = import ../../home/matthias.idaho;
     extraSpecialArgs = { inherit inputs outputs color-scheme pkgs-stable; };
   };
 
