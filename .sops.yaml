@@ -6,7 +6,17 @@ keys:
     - &stilgar ageTODO
 
 creation_rules:
-  - path_regex: secrets.yaml$
+  - path_regex: hosts/secrets.yaml$
+    key_groups:
+      - age:
+        - *matthias
+        - *idaho
+  - path_regex: hosts/stilgar/secrets.yaml$
+    key_groups:
+      - age:
+        - *matthias
+        - *stilgar
+  - path_regex: home/matthias.idaho/.*secrets.yaml$
     key_groups:
       - age:
         - *matthias

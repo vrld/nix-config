@@ -5,38 +5,25 @@
   homeDirectory = "/home/matthias";
 in {
   imports = [
+    ../common
     ./email.nix
+    ./neovim-notmuch.nix
     # ./neomutt.nix  # XXX: broken
     ./calendar.nix
     ./contacts.nix
-    ./zsh.nix
-    ./wayland.nix
-    ./niri.nix
-    ./alacritty.nix
-    ./ghostty.nix
+    ./waybar-idaho.nix
     ./firefox.nix
-    ./neovim
     ./sops.nix
   ];
 
   home = {
     inherit homeDirectory;
     username = "matthias";
-    preferXdgDirectories = true;
   };
 
   home.sessionPath = ["$HOME/.bin"];
 
-  home.sessionVariables = {
-    #PATH = "$HOME/.bin:$PATH";
-    EDITOR = "nvim";
-    TERMINAL_EMULATOR = "ghostty";
-    JAVA_OPTS = "-Dawt.useSystemAAFontSettings=on -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-  };
-
   home.packages = with pkgs; [
-    home-manager
-
     when
     (imagemagick.override {
       libX11Support = false;
@@ -45,17 +32,10 @@ in {
 
     signal-desktop
     steam
-    spotify
 
-    jujutsu
-    just
     python312Packages.bugwarrior
     timewarrior
   ];
-
-  fonts.fontconfig.enable = true;
-
-  programs.home-manager.enable = true;
 
   programs.password-store = {
     enable = true;
@@ -64,51 +44,13 @@ in {
     package = pkgs.pass.withExtensions (p: [ p.pass-otp p.pass-genphrase p.pass-audit ]);
   };
 
-  services.gpg-agent = {
-    enable = true;
-    enableSshSupport = true;
-    enableZshIntegration = true;
-    pinentry.package = pkgs.pinentry-gnome3;
-  };
-
   #services.yubikey-agent.enable = true;
 
-  programs.ssh = {
-    enable = true;
-    controlMaster = "auto";
-    addKeysToAgent = "ask";
-  };
-
   programs.git = {
-    enable = true;
     userName = "Matthias Richter";
     userEmail = "vrld@vrld.org";
-    extraConfig = {
-      color.branch = "auto";
-      color.ui = "auto";
-      diff.renamelimit = 0;
-      push.default = "matching";
-      init.defaultBranch = "main";
-    };
-    aliases = {
-      diffc = "diff --cached";
-      co = "checkout";
-      ci = "commit";
-      st = "status -sb";
-      br = "branch -a";
-      hist = "log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short";
-    };
-    ignores = [ "*.swo" "*.swp" ];
   };
 
-  services.udiskie = {
-    enable = true;
-    automount = false;
-    notify = true;
-    settings.program_options.terminal = "\${TERMINAL_EMULATOR} --working-directory";
-  };
-
-  services.playerctld.enable = true;
   services.nextcloud-client.enable = true;
   services.syncthing.enable = true;
 
@@ -151,11 +93,14 @@ in {
   #  frequency = "hourly";
   #};
 
-  home.file.".bin" = {
-    source = ./res/bin;
-    recursive = true;
+  home.file.".bin/open-html-sanitized" = {
+    source = ./bin/open-html-sanitized;
     executable = true;
-    force = true;
+  };
+
+  home.file.".bin/screencast" = {
+    source = ./bin/screencast;
+    executable = true;
   };
 
   home.file.".when/preferences".text = ''
@@ -183,11 +128,32 @@ in {
     };
   };
 
-  programs.zathura.enable = true;
+  services.kanshi.settings = [
+    {
+      profile.name = "undocked";
+      profile.outputs = [
+        {
+          criteria = "AU Optronics 0x226D Unknown";
+          mode = "1920x1080";
+          position = "3440,360";
+        }
+      ];
+    }
 
-  programs.spotify-player.enable = true;
-
-  # Nicely reload system units when changing configs
-  systemd.user.startServices = "sd-switch";
-  home.stateVersion = "24.11";
+    {
+      profile.name = "docked";
+      profile.outputs = [
+        {
+          criteria = "LG Electronics LG ULTRAWIDE 0x00055D56";
+          mode = "3440x1440";
+          position = "0,0";
+        }
+        {
+          criteria = "AU Optronics 0x226D Unknown";
+          mode = "1920x1080";
+          position = "3440,360";
+        }
+      ];
+    }
+  ];
 }

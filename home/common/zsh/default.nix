@@ -6,6 +6,8 @@
   programs.bat = {
     enable = true;
     config = {
+      theme-dark = "gruvbox-dark";
+      theme-light = "gruvbox-light";
     };
   };
 
@@ -28,9 +30,8 @@
       about = "man -k";
       fd = "fd -I";
       diff = "diff --color=auto";
-      bat = "\bat --theme=gruvbox-$(is-in-light-mode && echo light || echo dark)";
-      less = "\bat --theme=gruvbox-$(is-in-light-mode && echo light || echo dark) -p";
-      cat = "\bat --theme=gruvbox-$(is-in-light-mode && echo light || echo dark) -pp";
+      less = "bat -p";
+      cat = "bat -pp";
     };
 
     enableCompletion = true;
@@ -223,9 +224,8 @@
     '';
   };
 
-  home.file.".zkbd/linux".source = ./res/zsh/zkbd-linux;
-  home.file.".zkbd/xterm-256color".source = ./res/zsh/zkbd-xterm-256color;
-  home.file.".zkbd/xterm-ghostty".source = ./res/zsh/zkbd-ghostty;
+  home.file.".zkbd/linux".source = ./zkbd/linux;
+  home.file.".zkbd/xterm-ghostty".source = ./zkbd/xterm-ghostty;
 
   programs.fzf = {
     enable = true;

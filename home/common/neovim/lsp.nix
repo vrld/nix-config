@@ -20,7 +20,7 @@
     nvim-lspconfig
 
     {
-      plugin = lspsaga-nvim;  # TODO: check navigator
+      plugin = lspsaga-nvim;
       type = "lua";
       config = /*lua*/ ''
         do
@@ -110,7 +110,6 @@
     }
 
   ];
-
 
   programs.neovim.extraLuaConfig = /*lua*/''
     do

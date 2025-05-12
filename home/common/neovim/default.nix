@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   ...
@@ -118,7 +117,6 @@ in {
       (fromGitHub "7b8ffc05e2b1fd56571f7ac77bc36e7901c9326b" "master" "bounceme/remote-viewer")
 
       # random stuff
-      kdl-vim
       {
         plugin = markdown-preview-nvim;
         config = /*vim*/''
@@ -126,46 +124,7 @@ in {
           let g:mkdp_filetypes = ['markdown']
         '';
       }
-    ] ++ lib.optionals config.programs.notmuch.enable [
 
-      # neovimRequireCheck fails while loading `libnotmuch.so`; `ffi.load('notmuch')`
-      # fails with: "... libnotmuch.so: cannot open shared object file: No such file or directory"
-      # => disable the test for the failing module for now
-      {
-        plugin = pkgs.vimUtils.buildVimPlugin (let
-            ref = "main";
-            repo = "yousefakbar/notmuch.nvim";
-          in {
-            pname = "${lib.strings.sanitizeDerivationName repo}";
-            version = ref;
-            src = builtins.fetchGit {
-              inherit ref;
-              rev = "e4b0a6cbbe5e5281f7a6a8fa43c3e776d3eaec64";
-              url = "https://github.com/${repo}.git";
-            };
-            nvimSkipModules = [ "notmuch.cnotmuch" ];
-          });
-        type = "lua";
-        config = /*lua*/''
-          require 'notmuch'.setup()
-          vim.api.nvim_create_autocmd('BufEnter', {
-            desc = 'Map keys: D = delete, R = mark read, U = mark unread',
-            callback = function()
-              if vim.bo.filetype == "notmuch-threads" then
-                vim.keymap.set('n', 'D', ':TagRm unread inbox<CR>:TagAdd deleted<CR><down>', {buffer = true})
-                vim.keymap.set('n', 'R', ':TagRm unread<CR><down>', {buffer = true})
-                vim.keymap.set('n', 'U', ':TagAdd unread<CR><down>', {buffer = true})
-              end
-            end
-          })
-        '';
-      }
-
-    ];
-
-    extraWrapperArgs = lib.optionals config.programs.notmuch.enable [
-      # TODO: investigate why LD_LIBRARY_PATH is not used in neovim-require-check-hook.sh
-      "--suffix" "LD_LIBRARY_PATH" ":" "${lib.makeLibraryPath [ pkgs.notmuch ]}"
     ];
 
     extraConfig = /*vim*/''
@@ -174,7 +133,6 @@ in {
       set secure               " ... but only after they are whitelisted
       set grepprg=rg\ --vimgrep\ $*
 
-      "set bg=dark
       set termguicolors
       set visualbell
       set laststatus=2
@@ -282,8 +240,9 @@ in {
       end
       set_background_from_dconf()
 
-      vim.api.nvim_create_autocmd({'FocusGained', 'FocusLost'}, {
+      vim.api.nvim_create_autocmd('Signal', {
         desc = 'Set light or dark background according to the current system theme',
+        pattern = 'SIGUSR1',
         callback = set_background_from_dconf,
       })
     '';

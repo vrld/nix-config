@@ -8,10 +8,15 @@ if test $# -lt 1; then
   fi
 fi
 
-target=$1
-target_cap=$(echo "${target}" | sed 's:^\(.\):\u\1:g')
+target=$1  # light or dark
+target_cap=$(echo "${target}" | sed 's:^\(.\):\u\1:g')  # Light or Dark
 
+# set GTK theme
 dconf write /org/gnome/desktop/interface/color-scheme "'prefer-${target}'"
 dconf write /org/gnome/desktop/interface/gtk-theme "'Qogir-${target_cap}'"
 dconf write /org/gnome/desktop/interface/icon-theme "'Qogir-${target_cap}'"
-# TODO: qt?
+
+# TODO: how to set qt theme? this seems to be the env var $QT_STYLE_OVERRIDE
+
+# neovim is configured to change background on SIGUSR1, see neovim/default.nix
+pkill -SIGUSR1 nvim

@@ -9,6 +9,7 @@
   swaylock-bin = lib.getExe' config.programs.swaylock.package "swaylock";
   playerctl-bin = lib.getExe' config.services.playerctld.package "playerctl";
 in {
+
   home.packages = with pkgs; [
     libnotify
     pavucontrol
@@ -65,39 +66,7 @@ in {
     };
   };
 
-  services.kanshi = {
-    enable = true;
-    settings = [
-
-      {
-        profile.name = "undocked";
-        profile.outputs = [
-          {
-            criteria = "AU Optronics 0x226D Unknown";
-            mode = "1920x1080";
-            position = "3440,360";
-          }
-        ];
-      }
-
-      {
-        profile.name = "docked";
-        profile.outputs = [
-          {
-            criteria = "LG Electronics LG ULTRAWIDE 0x00055D56";
-            mode = "3440x1440";
-            position = "0,0";
-          }
-          {
-            criteria = "AU Optronics 0x226D Unknown";
-            mode = "1920x1080";
-            position = "3440,360";
-          }
-        ];
-      }
-
-    ];
-  };
+  services.kanshi.enable = true;
 
   services.swayidle = {
     enable = true;
@@ -136,7 +105,6 @@ in {
 
   home.pointerCursor = {
     package = pkgs.quintom-cursor-theme;
-    # name = "Quintom_Ink";
     name = "Quintom_Snow";
   };
 

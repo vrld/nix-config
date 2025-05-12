@@ -24,13 +24,11 @@
       generateKey = true;
     };
 
-    secrets = {
-      "idaho/matthias/password".neededForUsers = true;
-    };
+    secrets."passwords/matthias".neededForUsers = true;
   };
 
   users = {
-    users.matthias.hashedPasswordFile = config.sops.secrets."idaho/matthias/password".path;
+    users.matthias.hashedPasswordFile = config.sops.secrets."passwords/matthias".path;
     users.matthias.initialPassword = pkgs.lib.mkForce null;
     mutableUsers = pkgs.lib.mkForce false;
   };

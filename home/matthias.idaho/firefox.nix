@@ -15,7 +15,6 @@
         sponsorblock
         multi-account-containers
         user-agent-string-switcher
-        # darkreader
         stylus
         untrap-for-youtube
         old-reddit-redirect

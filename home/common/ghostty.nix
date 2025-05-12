@@ -24,7 +24,6 @@
     clipboard-paste-protection = true;
     keybind = [
       "ctrl+shift+a=select_all"
-      "performable:ctrl+c=copy_to_clipboard"
       "performable:ctrl+shift+c=copy_to_clipboard"
       "performable:ctrl+shift+v=paste_from_clipboard"
       "ctrl+shift+i=inspector:toggle"
