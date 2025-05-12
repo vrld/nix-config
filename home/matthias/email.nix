@@ -72,20 +72,21 @@ in {
 
     imap.host = "imap.gmail.com";
 
-    # TODO: lieer?
-    mbsync = {
-      enable = true;
-      create = "maildir";
-      expunge = "both";
-      # TODO: figure this out
-      groups.gmail.channels = {
-        gmail-sent = {
-          farPattern = "[Mail]/Sent Mail";
-          nearPattern = "Sent";
-        };
-        gmail-tags = {
-          patterns = [ "*" "![Gmail]*" ];
-        };
+    # NOTE: lieer needs additional setup:
+    #
+    # 1. create expected mail directories under this account:
+    #
+    #    $ mkdir ~/Mail/gmail.com/mail/{cur,tmp,new}
+    #
+    # 2. complete authentication flow:
+    #
+    #    $ cd ~/Mail/gmail.com && gmi auth
+    lieer = {
+      enable = true;  # generates config file, but does *not* enable synchronization, obviously
+      sync.enable = true;  # ... this does
+      settings = {
+        drop_non_existing_label = true;
+        local_trash_tag = "deleted";
       };
     };
 
@@ -103,6 +104,7 @@ in {
     postExec = "${notmuch} new";
     verbose = false;
   };
+  services.lieer.enable = true;
 
   # TODO: fix "Can't retrieve password from command: exit status 127"
   services.imapnotify.enable = false;
@@ -115,14 +117,21 @@ in {
       preNew = "${notmuch} search --output=files --format=text0 tag:deleted | ${xargs} -r0 ${rm}";
       postNew = ''
         COUNT_NEW=$(${notmuch} count tag:new)
-        test "''${COUNT_NEW}" -eq 0 && exit 0
+        test "$COUNT_NEW" -eq 0 && exit 0
+        test ${baseNameO} 
 
+        # auto archive old messages
+        notmuch tag +archive -inbox "tag:inbox and not (tag:unread or tag:TODO or tag:flagged) and date:..4w"
+
+        # don't put these into the inbox
         notmuch tag +spam -new -- tag:new and folder:/Spam/
-        notmuch tag +sent -- tag:new and folder:/Sent/
+        notmuch tag +sent -new -- tag:new and folder:/Sent/
 
-        notmuch tag +abuse -- "tag:new and (to:abuse@vrld.org or to:abuse@tutnix.dev or to:abuse@richter.band)"
-        notmuch tag +postmaster -- "tag:new and (to:postmaster@vrld.org or to:postmaster@tutnix.dev or to:postmaster@richter.band)"
+        # flag mail admin related addresses
+        notmuch tag +abuse +flagged -- "tag:new and (to:abuse@vrld.org or to:abuse@tutnix.dev or to:abuse@richter.band)"
+        notmuch tag +postmaster +flagged -- "tag:new and (to:postmaster@vrld.org or to:postmaster@tutnix.dev or to:postmaster@richter.band)"
 
+        # finish processing
         notmuch tag +inbox +unread -new -- tag:new
 
         COUNT_UNREAD=$(notmuch count tag:unread)

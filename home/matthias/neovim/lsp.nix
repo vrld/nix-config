@@ -140,8 +140,7 @@
                   [vim.diagnostic.severity.INFO] = signs.Info,
                 },
               },
-              virtual_lines = true,
-              virtual_text = false,
+              virtual_text = true,
               severity_sort = true,
             }
           else

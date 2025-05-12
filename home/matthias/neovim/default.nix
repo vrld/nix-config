@@ -146,7 +146,19 @@ in {
             nvimSkipModules = [ "notmuch.cnotmuch" ];
           });
         type = "lua";
-        config = /*lua*/"require 'notmuch'.setup()";
+        config = /*lua*/''
+          require 'notmuch'.setup()
+          vim.api.nvim_create_autocmd('BufEnter', {
+            desc = 'Map keys: D = delete, R = mark read, U = mark unread',
+            callback = function()
+              if vim.bo.filetype == "notmuch-threads" then
+                vim.keymap.set('n', 'D', ':TagRm unread inbox<CR>:TagAdd deleted<CR><down>', {buffer = true})
+                vim.keymap.set('n', 'R', ':TagRm unread<CR><down>', {buffer = true})
+                vim.keymap.set('n', 'U', ':TagAdd unread<CR><down>', {buffer = true})
+              end
+            end
+          })
+        '';
       }
 
     ];
