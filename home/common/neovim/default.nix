@@ -47,7 +47,7 @@ in {
       {
         plugin = vim-fugitive;
         config = /*vim*/''
-          nnoremap <silent> <leader>gs <CMD>vertical G<CR>
+          nnoremap <silent> <leader>gs <CMD>G<CR>
           nnoremap <silent> <leader>gg <CMD>G commit<CR>
           nnoremap <silent> <leader>gp <CMD>G push<CR>
           nnoremap <silent> <leader>gp <CMD>G blame<CR>
@@ -138,7 +138,7 @@ in {
       set laststatus=2
       set conceallevel=3
       set colorcolumn=85
-      set number relativenumber
+      set number
       set wrap list listchars=tab:∙\ ,trail:░,extends:>,precedes:< showbreak=↪
       set title titlestring=\ %f:%l%m
       set scrolloff=8
@@ -231,19 +231,25 @@ in {
         command ='silent! update',
       })
 
-      local function set_background_from_dconf()
-        local out = vim.system(
-          {'dconf', 'read', '/org/gnome/desktop/interface/color-scheme'},
-          {stderr = false, text = true}
-        ):wait()
-        vim.o.bg = (out.code == 0 and out.stdout:match('light') == 'light') and 'light' or 'dark'
+      local function set_background_from_system_theme()
+        -- use uv.spawn to swallow ugly error messages with vim.system
+        -- undocumented, but vim.uv.spawn returns nil, "{error name}: {status}", "{error name}"
+        -- see https://github.com/luvit/luv/blob/4c9fbc6cf6f3338bb0e0426710cf885ee557b540/src/process.c#L290
+        -- and https://github.com/luvit/luv/blob/4c9fbc6cf6f3338bb0e0426710cf885ee557b540/src/util.c#L42 
+        local handle, errstring, errname = vim.uv.spawn('is-in-light-mode', {}, vim.schedule_wrap(function(code)
+          vim.o.bg = (code == 0) and 'light' or 'dark'
+        end))
+        if handle == nil then
+          local reason = errstring:sub(errname:len()+1) -- leaves ': {status}'
+          vim.notify_once("Cannot determine system theme"..reason)
+        end
       end
-      set_background_from_dconf()
+      set_background_from_system_theme()
 
       vim.api.nvim_create_autocmd('Signal', {
         desc = 'Set light or dark background according to the current system theme',
         pattern = 'SIGUSR1',
-        callback = set_background_from_dconf,
+        callback = set_background_from_system_theme,
       })
     '';
   };

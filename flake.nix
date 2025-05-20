@@ -7,9 +7,24 @@
 
     hardware.url = "github:nixos/nixos-hardware";
 
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
     };
 
     nur = {
@@ -28,22 +43,55 @@
     self,
     nixpkgs,
     nixpkgs-stable,
+    nix-darwin,
     home-manager,
     hardware,
     ...
   }@inputs: let
     inherit (self) outputs;
+
+    nixpkgs-defaults = {
+      nixpkgs.config.allowUnfree = true;
+      nixpkgs.overlays = [ inputs.nur.overlays.default ];
+    };
+
+    nix-flake-registry-helper = let
+      lib = nixpkgs.lib;
+      flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+    in {
+    # register each input flake so we can use `nix shell nixpkgs#hello` instead `nix shell git://...#hello`
+      nix.registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
+    };
+
     color-scheme = import ./colors/gruvbox.nix;
+    specialArgs = { inherit inputs outputs color-scheme; };
   in {
     nixosConfigurations = {
       idaho = nixpkgs.lib.nixosSystem {
+        inherit specialArgs;
         system = "x86_64-linux";
-        specialArgs = {
-          inherit inputs outputs color-scheme;
-        };
-        modules = [ ./hosts/idaho ];
+        modules = [
+          ./hosts/idaho
+          nixpkgs-defaults
+          nix-flake-registry-helper
+        ];
       };
-
     };
+
+    darwinConfigurations = let
+      system = "aarch64-darwin";
+    in {
+      siona = nix-darwin.lib.darwinSystem {
+        inherit specialArgs system;
+        modules = [
+          ./hosts/siona
+          nixpkgs-defaults
+          { nixpkgs.hostPlatform = system; }
+          nix-flake-registry-helper
+        ];
+      };
+    };
+
+
   };
 }

@@ -25,7 +25,9 @@
         require 'mini.surround'.setup()
         require 'mini.bracketed'.setup()
 
-        require 'mini.snippets'.setup()  -- TODO: configure
+        require 'mini.snippets'.setup()  -- binds in insert mode: <C-j> expand snippet, <C-l>/<C-h> next/prev tabstop, <C-c> cancel
+        -- TODO: add custom snippets, :help MiniSnippets.config
+
         require 'mini.completion'.setup{
           lsp_completion = {
             source_func = 'omnifunc',
@@ -39,11 +41,12 @@
             animation = function() return 0 end,
           },
           --symbol = '┆',
-          --symbol = '▎',
-          symbol = '▏',
+          symbol = '▎',
+          --symbol = '▏',
           --symbol = '▕'
         }
         require 'mini.notify'.setup()
+        vim.notify = require 'mini.notify'.make_notify()
 
         require 'mini.statusline'.setup()
 

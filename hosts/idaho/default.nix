@@ -2,26 +2,22 @@
   inputs,
   lib,
   pkgs,
-  outputs,
-  color-scheme,
   ...
-}: let
-  pkgs-stable = import inputs.nixpkgs-stable {
-    inherit (pkgs.stdenv.hostPlatform) system;
-  };
-in {
+}: {
   imports = [
+    ../common/nix.nix
+    ../common/fonts.nix
     ./hardware-configuration.nix
-    ./nix.nix
     ./sops.nix
     ./networking.nix
     ./locale.nix
-    ./style.nix
+    ./console-colors.nix
     ./niri.nix
     inputs.hardware.nixosModules.lenovo-thinkpad-x280
     inputs.hardware.nixosModules.common-gpu-amd
     inputs.hardware.nixosModules.common-pc
-    inputs.home-manager.nixosModules.home-manager
+
+    ./home
   ];
 
   swapDevices = [
@@ -106,13 +102,6 @@ in {
     groups.libvirtd.members = ["matthias"];
 
     defaultUserShell = pkgs.zsh;
-  };
-
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    users.matthias = import ../../home/matthias.idaho;
-    extraSpecialArgs = { inherit inputs outputs color-scheme pkgs-stable; };
   };
 
   environment.systemPackages = with pkgs; [
