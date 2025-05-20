@@ -8,7 +8,6 @@
     hardware.url = "github:nixos/nixos-hardware";
 
     home-manager = {
-      #url = "github:nix-community/home-manager/release-24.11";
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -34,28 +33,17 @@
     ...
   }@inputs: let
     inherit (self) outputs;
-    system = "x86_64-linux";
     color-scheme = import ./colors/gruvbox.nix;
   in {
     nixosConfigurations = {
       idaho = nixpkgs.lib.nixosSystem {
-        inherit system;
+        system = "x86_64-linux";
         specialArgs = {
           inherit inputs outputs color-scheme;
         };
         modules = [ ./hosts/idaho ];
       };
-    };
 
-    homeConfigurations = {
-      "matthias" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${system};
-        modules = [ ./home/matthias ];
-        extraSpecialArgs = {
-          inherit inputs outputs color-scheme;
-          pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-        };
-      };
     };
   };
 }

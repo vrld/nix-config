@@ -10,18 +10,21 @@
     ./neovim
   ];
 
-  home.preferXdgDirectories = true;
+  home = {
+    preferXdgDirectories = true;
 
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    TERMINAL_EMULATOR = "ghostty";
-    JAVA_OPTS = "-Dawt.useSystemAAFontSettings=on -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+    sessionVariables = {
+      EDITOR = "nvim";
+      TERMINAL_EMULATOR = "ghostty";
+      JAVA_OPTS = "-Dawt.useSystemAAFontSettings=on -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+    };
+
+    sessionPath = ["$HOME/.bin"];
   };
 
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    home-manager
     spotify
     jujutsu
     just
@@ -45,11 +48,6 @@
     controlMaster = "auto";
     addKeysToAgent = "ask";
   };
-
-  home.file.".ssh/authorized_keys".source = builtins.concatStringsSep "\n" [
-    (builtins.readFile ../matthias.idaho/keys/id_ed25519.pub)
-    (builtins.readFile ../matthias.siona/keys/id_ed25519.pub)
-  ];
 
   programs.git = {
     enable = true;

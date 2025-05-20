@@ -17,8 +17,14 @@ in {
     validateSopsFiles = false;
 
     secrets = {
-      "ssh-keys/ed25519".path = "${homeDirectory}/.ssh/id_ed25519";
-      "ssh-keys/ecdsa".path = "${homeDirectory}/.ssh/id_ecdsa";
+      "ssh-keys/ed25519" = {
+        path = "${homeDirectory}/.ssh/id_ed25519";
+        mode = "0400";
+      };
+      "ssh-keys/ecdsa" = {
+        path = "${homeDirectory}/.ssh/id_ecdsa";
+        mode = "0400";
+      };
       "when-calendar".path = "${homeDirectory}/.when/calendar";
       "api-keys" = {};
     };

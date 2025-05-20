@@ -3,17 +3,8 @@
 set -ex
 
 cachedir=${XDG_CACHE_HOME:-"$HOME/.cache"}
-if [[ -d "$cachedir" ]]; then
-  mkdir -p $cachedir/fzf-menu
-  cache=$cachedir/fzf-menu/run_cache
-  historyfile=$cachedir/fzf-menu/history
-else
-  mkdir -p $HOME/.fzf-menu
-  cache=$HOME/.fzf-menu/run_cache
-  historyfile=$HOME/.fzf-menu/history
-fi
-
-[[ -f "$historyfile" ]] || touch $historyfile
+db="$cachedir/fzf-menu.db"
+[[ -d "$cachedir" ]] || db="$HOME/.fzf-menu.db"
 
 # test if we need to update the cache
 paths=(${(@s/:/)PATH})
@@ -37,47 +28,16 @@ if [[ $update_cache == true || ! -f ${cache} ]]; then
   for dir in ${paths}; do
     [[ -d ${dir} && -r ${dir} ]] && fd_args+=(--search-path ${dir})
   done
-  fd ${fd_args} 2>/dev/null | sort -u > ${cache}
+  fd ${fd_args} 2>/dev/null | sort -u | TERM_USAGE_DB="$db" term-cache init
 fi
-unset IFS
 
-command=$(awk -v histfile=$historyfile '
-  BEGIN {
-    while ((getline < histfile) > 0) {
-      sub("^[0-9]+\t", "")
-      print
-      x[$0]=1
-    }
-  } !x[$0]++ ' "$cache" | fzf --height=100% +s --reverse --pointer='➤' --prompt='➤ ')
+command=$(TERM_USAGE_DB="$db" term-cache frequent | fzf --height=100% +s --reverse --pointer='➤' --prompt='➤ ')
 
-[ ${?} -eq 0 ] || exit
-echo ${command} | awk -v histfile=$historyfile '
-  BEGIN {
-    FS=OFS="\t"
-    while ((getline < histfile) > 0) {
-      count=$1
-      sub("^[0-9]+\t", "")
-      fname=$0
-      history[fname]=count
-    }
-    close(histfile)
-  }
-
-  {
-    history[$0]++
-    print
-  }
-
-  END {
-    if (!NR) exit
-    for (f in history)
-      print history[f],f | "sort -t '\t' -k1rn >" histfile
-  }
-'
+[[ ${?} -eq 0 ]] || exit
+TERM_USAGE_DB="$db" term-cache use ${command}
 
 case $XDG_CURRENT_DESKTOP in
   sway) swaymsg exec ${command} ;;
   niri) niri msg action spawn -- ${command} ;;
   *) notify-send -u critical "Cannot spawn process" "Not a known session type: $XDG_CURRENT_DESKTOP"
 esac
-

@@ -138,8 +138,8 @@
         _widget 7 $(date +%R:%S)
 
         # number of background jobs (optional)
-        local num_jobs=$(jobs -p | wc -l)
-        test ''${num_jobs} -gt 0 && _widget 13 $(_supscript-numbers ''${num_jobs})
+        local num_jobs=$(jobs -p | rg '^\[' -c)
+        test "$num_jobs" -gt 0 && _widget 13 $(_supscript-numbers ''${num_jobs})
 
         # directory
         _widget 12  $(pwd | sed "s#^''${HOME}#~#")

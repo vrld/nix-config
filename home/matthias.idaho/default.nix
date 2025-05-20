@@ -21,9 +21,9 @@ in {
     username = "matthias";
   };
 
-  home.sessionPath = ["$HOME/.bin"];
-
-  home.packages = with pkgs; [
+  home.packages = let
+    term-cache = import ../../packages/term-cache {inherit pkgs;};
+  in with pkgs; [
     when
     (imagemagick.override {
       libX11Support = false;
@@ -35,6 +35,8 @@ in {
 
     python312Packages.bugwarrior
     timewarrior
+
+    term-cache
   ];
 
   programs.password-store = {
@@ -156,4 +158,11 @@ in {
       ];
     }
   ];
+
+  dconf.settings = {
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = ["qemu:///system"];
+      uris = ["qemu:///system"];
+    };
+  };
 }

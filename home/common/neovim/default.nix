@@ -47,7 +47,7 @@ in {
       {
         plugin = vim-fugitive;
         config = /*vim*/''
-          nnoremap <silent> <leader>gs <CMD>G<CR>
+          nnoremap <silent> <leader>gs <CMD>vertical G<CR>
           nnoremap <silent> <leader>gg <CMD>G commit<CR>
           nnoremap <silent> <leader>gp <CMD>G push<CR>
           nnoremap <silent> <leader>gp <CMD>G blame<CR>

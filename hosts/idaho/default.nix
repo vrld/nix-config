@@ -1,5 +1,6 @@
 {
   inputs,
+  lib,
   pkgs,
   outputs,
   color-scheme,
@@ -47,6 +48,12 @@ in {
     kernelParams = [ ];
   };
 
+  hardware.cpu.intel.updateMicrocode = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
   services.hardware.bolt.enable = true;
 
   services.udev.packages = with pkgs; [
@@ -56,6 +63,7 @@ in {
   services.udisks2.enable = true;
 
   networking = { hostName = "idaho"; domain = "localdomain"; };
+  networking.firewall.enable = lib.mkForce false;
   networking.firewall.allowedTCPPorts = [ 631 3000 8000 8080 8888 ];
 
   hardware.bluetooth = {
@@ -91,9 +99,12 @@ in {
       isNormalUser = true;
       description = "Matthias";
       initialPassword = "dreamsmakegoodstories";
-      extraGroups = [ "wheel" "docker" "networkmanager" "tty" "dialout" ];
+      extraGroups = [ "wheel" "docker" "networkmanager" "tty" "dialout" "libvirtd" ];
       openssh.authorizedKeys.keys = [ ];
     };
+
+    groups.libvirtd.members = ["matthias"];
+
     defaultUserShell = pkgs.zsh;
   };
 
@@ -158,6 +169,16 @@ in {
       syntaxHighlighting.enable = true;
       zsh-autoenv.enable = true;
     };
+
+    virt-manager.enable = true;
+  };
+
+  virtualisation = {
+    libvirtd = {
+      enable = true;
+      qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
+    };
+    spiceUSBRedirection.enable = true;
   };
 
   system.stateVersion = "24.11";
