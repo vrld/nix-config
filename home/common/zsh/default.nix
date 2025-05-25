@@ -162,7 +162,8 @@
           local change_flags=$(git diff --cached --quiet || echo "\x1b[38;5;10m")$(git diff --quiet || echo "\x1b[38;5;11m")$(git ls-files --unmerged | grep -q . && echo "\x1b[38;5;9m")
           test -n "''${change_flags}" && _widget 0 ''${change_flags}
           # branch
-          _widget 10  $(git symbolic-ref --short HEAD)
+          local branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+          _widget 10  ''${branch:-🥋}
           # action
           local action=$(_git-action)
           test -n "''${action}" && _widget 14 ''${action}
