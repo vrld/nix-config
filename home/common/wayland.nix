@@ -58,7 +58,7 @@ in {
       progress-color = "over #C87F79FF";
     };
 
-    criteria."urgency=critical" = {
+    settings."urgency=critical" = {
       border-color = "#CC241DFF";
       background-color = "#EBDBB2";
       text-color = "#202020";
