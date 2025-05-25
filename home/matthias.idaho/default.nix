@@ -30,6 +30,7 @@ in {
       libXtSupport = false;
     })
 
+    artisan
     signal-desktop
     steam
 
