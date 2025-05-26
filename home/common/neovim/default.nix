@@ -17,6 +17,7 @@ in {
   imports = [
     ./treesitter.nix
     ./lsp.nix
+    ./llm.nix
     ./mini.nix
   ];
 
