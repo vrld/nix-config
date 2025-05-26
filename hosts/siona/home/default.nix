@@ -14,6 +14,7 @@ in {
   imports = [
     inputs.home-manager.darwinModules.home-manager
     inputs.nix-homebrew.darwinModules.nix-homebrew
+    ./aerospace.nix
   ];
 
   system.primaryUser = user;
@@ -39,6 +40,7 @@ in {
     taps = {
       "homebrew/homebrew-core" = inputs.homebrew-core;
       "homebrew/homebrew-cask" = inputs.homebrew-cask;
+      "dimentium/homebrew-autoraise" = inputs.homebrew-autoraise;
     };
 
     mutableTaps = false;
@@ -52,21 +54,25 @@ in {
       "hammerspoon"
       "bitwarden"
       "tunnelblick"
+      "dimentium/autoraise/autoraiseapp"
 
       "ghostty"
       "firefox"
       "homebrew/cask/docker"
       "google-drive"
       "obsidian"
+      "postman"
 
       "signal"
       "slack"
       "microsoft-teams"
       "zoom"
+      "linear-linear"
 
       "ollama"
       "lm-studio"
       "comfyui"
+
       "spotify"
     ];
 

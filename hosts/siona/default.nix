@@ -4,7 +4,6 @@
 }: {
   imports = [
     ../common/fonts.nix
-    #./sops.nix
     ./home
   ];
 
@@ -24,7 +23,9 @@
 
       dock = {
         enable-spring-load-actions-on-all-items = true;
-        tilesize = 48;
+        tilesize = 32;
+        autohide = false;
+        appswitcher-all-displays = true;
       };
 
       finder = {
@@ -34,6 +35,9 @@
       };
 
       loginwindow.GuestEnabled = false;
+      loginwindow.autoLoginUser = "matthias";
+
+      spaces.spans-displays = false;
 
       trackpad.Clicking = true;
     };
