@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   user,
   ...
@@ -24,11 +25,6 @@ in {
     jujutsu
     just
   ];
-
-  home.file.".sqliterc".text = ''
-    .headers ON
-    .mode box
-  '';
 
   programs.home-manager.enable = true;
 
@@ -61,11 +57,30 @@ in {
     ignores = [ "*.swo" "*.swp" ];
   };
 
-  programs.password-store = {
-    enable = true;
-    settings.PASSWORD_STORE_DIR = "${homeDirectory}/.password-store";
-    settings.PASSWORD_STORE_ENABLE_EXTENSIONS = "true";
-    package = pkgs.pass.withExtensions (p: [ p.pass-genphrase p.pass-audit ]);
-  };
+  home.file.".sqliterc".text = ''
+    .headers ON
+    .mode box
+  '';
+
+  home.file.".hammerspoon/init.lua".text = /*lua*/''
+    hs.hotkey.bind({"alt"}, "Return", function()
+      hs.osascript.applescript[[
+        tell application "System Events"
+          if (exists process "Ghostty") then
+            tell process "Ghostty" to click menu item "New Window" of menu of menu bar item "File" of menu bar 1
+          else
+            tell application "Ghostty" to activate
+          end if
+        end tell
+      ]]
+    end)
+
+    hs.hotkey.bind({"cmd"}, "b", function()
+      hs.application.open("Firefox")
+    end)
+
+    -- hack to enable experimentation without rebuilding the thing
+    pcall(dofile, '/Users/matthias/.hammerspoon/extra.lua')
+  '';
 
 }
