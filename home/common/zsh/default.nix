@@ -58,9 +58,9 @@
       zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 
       autoload zkbd
-      if test -f ~/.zkbd/$TERM; then
+      if [[ -f ~/.zkbd/$TERM ]]; then
         source ~/.zkbd/$TERM
-      elif test -f ~/.zkbd/$TERM:0; then
+      elif [[ -f ~/.zkbd/$TERM:0 ]]; then
         source ~/.zkbd/$TERM:0
       else
         echo "\x1b[1;38;5;15;48;5;1m No mappings for '$TERM'. Run 'zkbd'. \x1b[0m"
@@ -127,8 +127,15 @@
         # decide main bar color wrt the system theme
         local _default_bg="5;237"
         is-in-light-mode && _default_bg="5;250"
-        _set-bgcolor ''${_default_bg}
-        echo -n "\x1b[38;5;0m▕"
+        # in nix shell?
+        if [[ -n "$IN_NIX_SHELL" ]]; then
+          _set-bgcolor "5;4"
+          echo -n "\x1b[38;5;15m \x1b[38;5;0m▕"
+          _set-bgcolor ''${_default_bg}
+        else
+          _set-bgcolor ''${_default_bg}
+          echo -n "\x1b[38;5;0m▕"
+        fi
 
         # glider
         _GLIDER_PHASE=$(((_GLIDER_PHASE + 1) % 4))
@@ -139,7 +146,7 @@
 
         # number of background jobs (optional)
         local num_jobs=$(jobs -p | rg '^\[' -c)
-        test "$num_jobs" -gt 0 && _widget 13 $(_supscript-numbers ''${num_jobs})
+        [[ "$num_jobs" -gt 0 ]] && _widget 13 $(_supscript-numbers ''${num_jobs})
 
         # directory
         _widget 12  $(pwd | sed "s#^''${HOME}#~#")
@@ -160,13 +167,13 @@
 
           # state flags:       staged files?                                        unstaged changes?                           conflicts?
           local change_flags=$(git diff --cached --quiet || echo "\x1b[38;5;10m")$(git diff --quiet || echo "\x1b[38;5;11m")$(git ls-files --unmerged | grep -q . && echo "\x1b[38;5;9m")
-          test -n "''${change_flags}" && _widget 0 ''${change_flags}
+          [[ -n "''${change_flags}" ]] && _widget 0 ''${change_flags}
           # branch
           local branch=$(git symbolic-ref --short HEAD 2>/dev/null)
           _widget 10  ''${branch:-🥋}
           # action
           local action=$(_git-action)
-          test -n "''${action}" && _widget 14 ''${action}
+          [[ -n "''${action}" ]] && _widget 14 ''${action}
         fi
 
         # overwrite last separator, finish background and reset formatting
@@ -211,13 +218,13 @@
       _has-git() { git rev-parse --is-inside-work-tree >/dev/null 2>&1 }
 
       _git-action() {
-        if test -f .git/MERGE_HEAD; then
+        if [[ -f .git/MERGE_HEAD ]]; then
           echo "merge"
-        elif test -d .git/rebase-apply -o -d .git/rebase-merge; then
+        elif [[ -d .git/rebase-apply || -d .git/rebase-merge ]]; then
           echo "rebase"
-        elif test -f .git/CHERRY_PICK_HEAD; then
+        elif [[ -f .git/CHERRY_PICK_HEAD ]]; then
           echo "cherry-pick"
-        elif test -f .git/BISECT_START; then
+        elif [[ -f .git/BISECT_START ]]; then
           echo "bisect"
         fi
       }
