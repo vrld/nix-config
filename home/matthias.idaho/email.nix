@@ -13,12 +13,6 @@
     realName = "Matthias Richter";
 
     notmuch.enable = true;
-
-    imapnotify = {
-      enable = true;
-      boxes = [ "INBOX" ];
-      onNotifyPost = "${notmuch} new";
-    };
   };
 
   make-tutnix-account = {
@@ -39,7 +33,6 @@
     mbsync = { enable = true; create = "maildir"; expunge = "both"; };
     smtp = { host = "tutnix.dev"; port = 465; };
     msmtp.enable = true;
-    imapnotify.onNotify = "${mbsync} ${hostname}:%s";
   };
 
 in {
@@ -92,51 +85,67 @@ in {
 
     smtp.host = "smtp.gmail.com";
     msmtp.enable = true;
-
-    imapnotify.onNotify = "${mbsync} gmail.com:%s";
   };
 
   programs.mbsync.enable = true;
   programs.msmtp.enable = true;
 
-  services.mbsync = {
-    enable = true;
-    postExec = "${notmuch} new";
-    verbose = false;
-  };
   services.lieer.enable = true;
-
-  # TODO: fix "Can't retrieve password from command: exit status 127"
-  services.imapnotify.enable = false;
 
   programs.notmuch = {
     enable = true;
     search.excludeTags = [ "deleted" ];
     new.tags = [ "new" ];
+    maildir.synchronizeFlags = true;
+    extraConfig.query = {
+      "INBOX" = "tag:unread or tag:inbox";
+      "Recent" = "date:2w..";
+      "Quarter" = "date:3mo..";
+      "Year" = "date:1y..";
+    };
     hooks = {
-      preNew = "${notmuch} search --output=files --format=text0 tag:deleted | ${xargs} -r0 ${rm}";
+      preNew = ''
+        ${notmuch} search --output=files --format=text0 tag:deleted | ${xargs} -r0 ${rm}
+        mbsync -a
+      '';
       postNew = ''
         COUNT_NEW=$(${notmuch} count tag:new)
         test "$COUNT_NEW" -eq 0 && exit 0
 
         # auto archive old messages
-        notmuch tag +archive -inbox "tag:inbox and not (tag:unread or tag:TODO or tag:flagged) and date:..4w"
+        ${notmuch} tag +archive -inbox "tag:inbox and not (tag:unread or tag:TODO or tag:flagged) and date:..4w"
 
         # don't put these into the inbox
-        notmuch tag +spam -new -- tag:new and folder:/Spam/
-        notmuch tag +sent -new -- tag:new and folder:/Sent/
+        ${notmuch} tag +spam -new -- tag:new and folder:/Spam/
+        ${notmuch} tag +sent -new -- tag:new and folder:/Sent/
 
         # flag mail admin related addresses
-        notmuch tag +abuse +flagged -- "tag:new and (to:abuse@vrld.org or to:abuse@tutnix.dev or to:abuse@richter.band)"
-        notmuch tag +postmaster +flagged -- "tag:new and (to:postmaster@vrld.org or to:postmaster@tutnix.dev or to:postmaster@richter.band)"
+        ${notmuch} tag +abuse +flagged -- "tag:new and (to:abuse@vrld.org or to:abuse@tutnix.dev or to:abuse@richter.band)"
+        ${notmuch} tag +postmaster +flagged -- "tag:new and (to:postmaster@vrld.org or to:postmaster@tutnix.dev or to:postmaster@richter.band)"
 
         # finish processing
-        notmuch tag +inbox +unread -new -- tag:new
+        ${notmuch} tag +inbox +unread -new -- tag:new
 
-        COUNT_UNREAD=$(notmuch count tag:unread)
+        COUNT_UNREAD=$(${notmuch} count tag:unread)
         ${notify-send} -u normal -a notmuch "Post ist da!" "$COUNT_NEW neu\n$COUNT_UNREAD ungelesen"
       '';
     };
+  };
+
+  systemd.user.services.notmuch-new = {
+    Install = { WantedBy = [ "default.target" ]; };
+
+    Unit.Description = "Look for new mail";
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${notmuch} new";
+    };
+  };
+
+  systemd.user.timers.notmuch-new = {
+    Unit.Description = "Periodically look for new mail";
+    Timer = { OnStartupSec = "23"; OnUnitInactiveSec = "15min"; };
+    Install.WantedBy = [ "timers.target" ];
   };
 
 }
