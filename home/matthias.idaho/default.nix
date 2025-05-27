@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }: let
@@ -165,5 +166,12 @@ in {
       autoconnect = ["qemu:///system"];
       uris = ["qemu:///system"];
     };
+  };
+
+  xdg.configFile."jj/config.toml".source = (pkgs.formats.toml {}).generate "jj/config.toml" {
+    user.name = config.programs.git.userName;
+    user.email = config.programs.git.userEmail;
+    ui.default-command = "log";
+    ui.paginate = "never";
   };
 }
