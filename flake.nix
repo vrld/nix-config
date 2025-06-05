@@ -18,12 +18,19 @@
     };
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
     };
+
     homebrew-cask = {
       url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+
+    homebrew-autoraise = {
+      url = "github:Dimentium/homebrew-autoraise";
       flake = false;
     };
 
@@ -42,9 +49,7 @@
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-stable,
     nix-darwin,
-    home-manager,
     hardware,
     ...
   }@inputs: let
@@ -74,6 +79,9 @@
           ./hosts/idaho
           nixpkgs-defaults
           nix-flake-registry-helper
+          hardware.nixosModules.lenovo-thinkpad-x280
+          hardware.nixosModules.common-gpu-amd
+          hardware.nixosModules.common-pc
         ];
       };
     };

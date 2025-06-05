@@ -1,9 +1,0 @@
-#!/usr/bin/env zsh
-
-case ${TERMINAL_EMULATOR} in
-  alacritty|ghostty)
-    uuid=$(uuidgen)
-    ${TERMINAL_EMULATOR} --class="fzfmenu-${uuid}" --title="fzfmenu" --font-size=18 -e "$1" ;;
-  *)
-    exit -1;
-esac

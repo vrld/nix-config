@@ -3,8 +3,8 @@
   ...
 }: {
   imports = [
-    ../common/fonts.nix
-    #./sops.nix
+    ../../components/fonts.nix
+    ../../components/zsh.nix
     ./home
   ];
 
@@ -24,7 +24,9 @@
 
       dock = {
         enable-spring-load-actions-on-all-items = true;
-        tilesize = 48;
+        tilesize = 32;
+        autohide = false;
+        appswitcher-all-displays = true;
       };
 
       finder = {
@@ -34,6 +36,9 @@
       };
 
       loginwindow.GuestEnabled = false;
+      loginwindow.autoLoginUser = "matthias";
+
+      spaces.spans-displays = false;
 
       trackpad.Clicking = true;
     };
@@ -75,13 +80,7 @@
 
   programs = {
     nix-index.enable = true;
-
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      enableFastSyntaxHighlighting = true;
-    };
-
+    zsh.enableFastSyntaxHighlighting = true;
   };
 
   security.pam.services.sudo_local.touchIdAuth = true;

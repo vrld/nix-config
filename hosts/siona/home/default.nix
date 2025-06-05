@@ -13,7 +13,8 @@ in {
 
   imports = [
     inputs.home-manager.darwinModules.home-manager
-    inputs.nix-homebrew.darwinModules.nix-homebrew
+    ./aerospace.nix
+    ./homebrew.nix
   ];
 
   system.primaryUser = user;
@@ -32,44 +33,6 @@ in {
     extraSpecialArgs = { inherit inputs outputs color-scheme pkgs-stable user; };
   };
 
-  nix-homebrew = {
-    inherit user;
-    enable = true;  # installs homebrew
-    # enableRosetta = true;  # enables installing x86_64 packages using Rosetta 2
-    taps = {
-      "homebrew/homebrew-core" = inputs.homebrew-core;
-      "homebrew/homebrew-cask" = inputs.homebrew-cask;
-    };
-
-    mutableTaps = false;
-  };
-
-  homebrew = {
-    enable = true;
-
-    casks = [
-      "karabiner-elements"
-      "hammerspoon"
-      "bitwarden"
-      "tunnelblick"
-
-      "ghostty"
-      "firefox"
-      "homebrew/cask/docker"
-      "google-drive"
-      "obsidian"
-
-      "signal"
-      "slack"
-      "microsoft-teams"
-      "zoom"
-
-      "ollama"
-      "lm-studio"
-      "comfyui"
-      "spotify"
-    ];
-
-  };
+  nix-homebrew = { inherit user; };
 
 }

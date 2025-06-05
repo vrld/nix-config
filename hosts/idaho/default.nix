@@ -1,24 +1,37 @@
 {
-  inputs,
-  lib,
   pkgs,
   ...
 }: {
   imports = [
-    ../common/nix.nix
-    ../common/fonts.nix
     ./hardware-configuration.nix
-    ./sops.nix
     ./networking.nix
-    ./locale.nix
-    ./console-colors.nix
-    ./niri.nix
-    inputs.hardware.nixosModules.lenovo-thinkpad-x280
-    inputs.hardware.nixosModules.common-gpu-amd
-    inputs.hardware.nixosModules.common-pc
+    ./sops.nix
+
+    ../../components/console-colors.nix
+    ../../components/firewall.nix
+    ../../components/fonts.nix
+    ../../components/locale.nix
+    ../../components/niri.nix
+    ../../components/zsh.nix
 
     ./home
   ];
+
+  nix = {
+    enable = true;
+
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true;
+    };
+
+    gc = {
+      automatic = true;
+      persistent = true;
+      dates = "weekly";
+      options = "--delete-older-than +3";
+    };
+  };
 
   swapDevices = [
     { device = "/dev/nixos-vg/swap"; }
@@ -29,9 +42,14 @@
   boot = {
     tmp.cleanOnBoot = true;
 
+    initrd.systemd = {
+      enable = true;
+    };
+
     initrd.luks.devices = {
       cryptroot = {
         device = "/dev/disk/by-uuid/a8a339c2-a012-4743-91c7-e6cd44fe2c5f";
+        allowDiscards = true;  # enables TRIM (see below) and accepts security implications
         preLVM = true;
       };
     };
@@ -56,11 +74,19 @@
     platformio-core.udev
   ];
 
+  services.fstrim.enable = true;
+
   services.udisks2.enable = true;
 
-  networking = { hostName = "idaho"; domain = "localdomain"; };
-  networking.firewall.enable = lib.mkForce false;
-  networking.firewall.allowedTCPPorts = [ 631 3000 8000 8080 8888 ];
+  services.dbus.implementation = "broker";  # probaly faster than vanilla
+
+  services.irqbalance.enable = true;  # maybe helps with random freezes und er load
+
+  networking = {
+    hostName = "idaho";
+    domain = "localdomain";
+    firewall.allowedTCPPorts = [ 631 3000 8000 8080 8888 ];
+  };
 
   hardware.bluetooth = {
     enable = true;
@@ -89,20 +115,6 @@
   #};
 
   virtualisation.docker.enable = true;
-
-  users = {
-    users.matthias = {
-      isNormalUser = true;
-      description = "Matthias";
-      initialPassword = "dreamsmakegoodstories";
-      extraGroups = [ "wheel" "docker" "networkmanager" "tty" "dialout" "libvirtd" ];
-      openssh.authorizedKeys.keys = [ ];
-    };
-
-    groups.libvirtd.members = ["matthias"];
-
-    defaultUserShell = pkgs.zsh;
-  };
 
   environment.systemPackages = with pkgs; [
     mosh
@@ -151,12 +163,6 @@
     neovim = {
       enable = true;
       vimAlias = true;
-    };
-
-    zsh = {
-      enable = true;
-      syntaxHighlighting.enable = true;
-      zsh-autoenv.enable = true;
     };
 
     virt-manager.enable = true;
