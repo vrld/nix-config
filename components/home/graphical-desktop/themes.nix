@@ -17,6 +17,8 @@
     target=$1  # light or dark
     target_cap=$(echo "$target" | sed 's:^\(.\):\u\1:g')  # Light or Dark
 
+    niri=$(command -v niri) && $niri msg action do-screen-transition
+
     # set GTK theme
     dconf write /org/gnome/desktop/interface/color-scheme "'prefer-$target'"
     dconf write /org/gnome/desktop/interface/gtk-theme "'Qogir-$target_cap'"

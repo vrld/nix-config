@@ -77,15 +77,12 @@
     palette = 241=#${dark3}
     palette = 243=#${dark4}
   '';
+
 in {
 
   home.sessionVariables.TERMINAL_EMULATOR = "ghostty";
 
-  programs.ghostty = {
-    enable = pkgs.stdenv.isLinux;
-    enableZshIntegration = true;
-    clearDefaultKeybinds = true;
-  };
+  home.packages = with pkgs; if stdenv.isLinux then [ ghostty ] else [];
 
   xdg.configFile."ghostty/config" = lib.mkForce {
     text = ''
@@ -117,4 +114,9 @@ in {
   xdg.configFile."ghostty/themes/gruvbox-light".text = generate-scheme color-scheme.light;
   xdg.configFile."ghostty/themes/gruvbox-dark".text = generate-scheme color-scheme.dark;
 
+  programs.zsh.initContent = ''
+    if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
+      source "$GHOSTTY_RESOURCES_DIR"/shell-integration/zsh/ghostty-integration
+    fi
+  '';
 }
