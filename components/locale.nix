@@ -1,4 +1,4 @@
-{ ... }: {
+{
 
   location.provider = "geoclue2";
   time.timeZone = "Europe/Berlin";
