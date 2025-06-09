@@ -4,7 +4,6 @@
   inputs = {
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
     hardware.url = "github:nixos/nixos-hardware";
 
     nix-darwin = {
@@ -15,6 +14,11 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    simple-nixos-mailserver = {
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-25.05";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
@@ -49,7 +53,9 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-stable,
     nix-darwin,
+    simple-nixos-mailserver,
     hardware,
     ...
   }@inputs: let
@@ -72,6 +78,7 @@
     specialArgs = { inherit inputs outputs color-scheme; };
   in {
     nixosConfigurations = {
+
       idaho = nixpkgs.lib.nixosSystem {
         inherit specialArgs;
         system = "x86_64-linux";
@@ -82,6 +89,17 @@
           hardware.nixosModules.lenovo-thinkpad-x280
           hardware.nixosModules.common-gpu-amd
           hardware.nixosModules.common-pc
+        ];
+      };
+
+      # NOTE: we use nixpkgs-stable here
+      stilgar = nixpkgs-stable.lib.nixosSystem {
+        inherit specialArgs;
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/stilgar
+          nixpkgs-defaults
+          simple-nixos-mailserver.nixosModule
         ];
       };
     };

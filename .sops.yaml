@@ -3,7 +3,7 @@ keys:
     - &matthias age1jxg5c820ed2xfg96q328z624ufr6ar3hmhpyy63lmvm52yy6zc7sd0c2gm
   - &hosts:
     - &idaho age1k6lfgsaacw3cqsh86ckmwzvu8ydz29y37u5c8dqk0ath8vwfdpfsa3aclh
-    - &stilgar ageTODO
+    - &stilgar age18c47kv6aqcafx0c2nvcf5u8gc4fkexd2n9ffserscnfq4jcqp5usfcd57l
 
 creation_rules:
   - path_regex: hosts/secrets.yaml$
@@ -11,10 +11,6 @@ creation_rules:
       - age:
         - *matthias
         - *idaho
-  - path_regex: hosts/stilgar/secrets.yaml$
-    key_groups:
-      - age:
-        - *matthias
         - *stilgar
   - path_regex: home/matthias.idaho/.*secrets.yaml$
     key_groups:
