@@ -6,7 +6,6 @@
 }: let
   notmuch = lib.getExe' pkgs.notmuch "notmuch";
   notify-send = lib.getExe' pkgs.libnotify "notify-send";
-  pass-get = "${config.home.homeDirectory}/.bin/pass-get";
   xargs = lib.getExe' pkgs.findutils "xargs";
   rm = lib.getExe' pkgs.coreutils "rm";
 
@@ -31,7 +30,7 @@
     address = address;
     aliases = aliases;
     userName = address;
-    passwordCommand = "${pass-get} Mail/${hostname}";
+    passwordCommand = "pass-get Mail/${hostname}";
 
     imap = { host = "tutnix.dev"; port = 993; };
     mbsync = { enable = true; create = "maildir"; expunge = "both"; };
@@ -65,7 +64,7 @@ in {
     flavor = "gmail.com";
     address = address;
     userName = address;
-    passwordCommand = "${pass-get} Mail/gmail.com";
+    passwordCommand = "pass-get Mail/gmail.com";
 
     imap.host = "imap.gmail.com";
 

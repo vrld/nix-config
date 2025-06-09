@@ -61,6 +61,10 @@ in {
       padding: 8px 2px;
     }
 
+    window#waybar.empty box.modules-center {
+      background: rgba(0, 0, 0, 0);
+    }
+
     #workspaces button {
       background: transparent;
       border: none;

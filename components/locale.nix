@@ -29,6 +29,7 @@
     xkb.variant = "neo";
   };
   console.useXkbConfig = true;
+
   console.earlySetup = true;
 
 }

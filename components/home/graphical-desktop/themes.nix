@@ -7,7 +7,7 @@
   '';
   change-colors = pkgs.writeShellScriptBin "change-colors" ''
     if [[ $# -lt 1 ]]; then
-      if ${is-in-light-mode.outPath}; then
+      if is-in-light-mode; then
         exec $0 dark
       else
         exec $0 light

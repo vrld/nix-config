@@ -1,6 +1,7 @@
 {
   color-scheme,
   pkgs,
+  lib,
   ...
 }: let
   generate-scheme = colors: with colors; ''
@@ -86,33 +87,34 @@ in {
     clearDefaultKeybinds = true;
   };
 
-  xdg.configFile."ghostty/config".text = ''
-    theme = dark:gruvbox-dark,light:gruvbox-light
-    font-family = Hack Nerd Font Mono
-    font-size = 14
-    minimum-contrast = 1.250000
-    selection-invert-fg-bg = true
-    mouse-hide-while-typing = true
-    window-padding-balance = true
-    window-padding-color = extend
-    window-padding-x = 2
-    window-padding-y = 2
-    clipboard-paste-protection = true
-    keybind = clear
-    keybind = ctrl+shift+a=select_all
-    keybind = performable:ctrl+shift+c=copy_to_clipboard
-    keybind = performable:ctrl+shift+v=paste_from_clipboard
-    keybind = ctrl+shift+i=inspector:toggle
-    keybind = ctrl+shift+j=write_screen_file:paste
-    keybind = ctrl+zero=reset_font_size
-    keybind = ctrl+comma=increase_font_size:1
-    keybind = ctrl+period=decrease_font_size:1
-    keybind = ctrl+plus=increase_font_size:1
-    keybind = ctrl+minus=decrease_font_size:1
-  '';
-
+  xdg.configFile."ghostty/config" = lib.mkForce {
+    text = ''
+      theme = dark:gruvbox-dark,light:gruvbox-light
+      font-family = Hack Nerd Font Mono
+      font-size = 14
+      minimum-contrast = 1.250000
+      selection-invert-fg-bg = true
+      mouse-hide-while-typing = true
+      window-padding-balance = true
+      window-padding-color = extend
+      window-padding-x = 2
+      window-padding-y = 2
+      clipboard-paste-protection = true
+      keybind = clear
+      keybind = ctrl+shift+a=select_all
+      keybind = performable:ctrl+shift+c=copy_to_clipboard
+      keybind = performable:ctrl+shift+v=paste_from_clipboard
+      keybind = ctrl+shift+i=inspector:toggle
+      keybind = ctrl+shift+j=write_screen_file:paste
+      keybind = ctrl+zero=reset_font_size
+      keybind = ctrl+comma=increase_font_size:1
+      keybind = ctrl+period=decrease_font_size:1
+      keybind = ctrl+plus=increase_font_size:1
+      keybind = ctrl+minus=decrease_font_size:1
+    '';
+  };
 
   xdg.configFile."ghostty/themes/gruvbox-light".text = generate-scheme color-scheme.light;
-  xdg.configFile."ghostty/themes/gruvbox-dark".text = generate-scheme color-scheme.light;
+  xdg.configFile."ghostty/themes/gruvbox-dark".text = generate-scheme color-scheme.dark;
 
 }

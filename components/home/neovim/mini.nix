@@ -37,8 +37,8 @@
           draw = {
             animation = function() return 0 end,
           },
-          --symbol = '┆',
-          symbol = '▎',
+          symbol = '┆',
+          --symbol = '▎',
           --symbol = '▏',
           --symbol = '▕'
         }

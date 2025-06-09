@@ -128,12 +128,12 @@
           echo -n "\x1b[38;5;0m▕"
         fi
 
-        # glider
-        _GLIDER_PHASE=$(((_GLIDER_PHASE + 1) % 4))
-        _widget $((_GLIDER_PHASE + 3)) $(_glider ''${_GLIDER_PHASE})
-
         # date
         _widget 7 $(date +%R:%S)
+
+        # advance glider
+        _GLIDER_PHASE=$(((_GLIDER_PHASE + 1) % 4))
+        _widget $((_GLIDER_PHASE + 3)) $(_glider ''${_GLIDER_PHASE})
 
         # number of background jobs (optional)
         local num_jobs=$(jobs -p | rg '^\[' -c)
@@ -161,10 +161,16 @@
           [[ -n "''${change_flags}" ]] && _widget 0 ''${change_flags}
           # branch
           local branch=$(git symbolic-ref --short HEAD 2>/dev/null)
-          _widget 10  ''${branch:-🥋}
+          [[ -n "''${branch}" ]] && _widget 10  ''${branch}
           # action
           local action=$(_git-action)
           [[ -n "''${action}" ]] && _widget 14 ''${action}
+        fi
+
+        # jj info: changeid commitid (bookmark |) description
+        if _has-jj; then
+          working_copy=$(jj st --ignore-working-copy --color always | awk -F ' : ' '/\(@\)/{print $2}')
+          _widget 8 "''${working_copy%????}" # TODO: figure something more robust when this breaks
         fi
 
         # overwrite last separator, finish background and reset formatting
@@ -172,8 +178,8 @@
         return $last_status
       }
 
-      PROMPT='%B%(?.%F{4}.%F{1}) %b%f' # blue arrow if last command succeeded, red arrow else
-      PROMPT2='%B%(?.%F{4}.%F{1}) %f%b'  # waiting for more input
+      PROMPT='%B%(?.%F{4}.%F{1})⏵ %b%f' # blue if last command succeeded, red else
+      PROMPT2='%B%(?.%F{4}.%F{1})▵ %f%b'  # waiting for more input
       SPROMPT='%B%F{5}%R%b%F{8} ⇝ %B%F{4}%r%b%F{8} [nyae] %f'
 
       _widget() {
@@ -207,6 +213,7 @@
       }
 
       _has-git() { git rev-parse --is-inside-work-tree >/dev/null 2>&1 }
+      _has-jj() { jj status --ignore-working-copy >/dev/null 2>&1 }
 
       _git-action() {
         if [[ -f .git/MERGE_HEAD ]]; then
@@ -219,8 +226,6 @@
           echo "bisect"
         fi
       }
-
-      # TODO: jj widget: <bookmark/change id> <number of files>
 
     '';
   };

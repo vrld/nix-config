@@ -24,8 +24,8 @@
 
     tooltip=$(${khal} list | ${awk} '
     BEGIN { OFS="\n" }
-    /^[A-Za-z]+, [0-9]{4}-[0-9]{2}-[0-9]{2}$/ {  # dates: add blank line, add <b> tags
-        if (date != "") { print "" }             # skip blank line on first date
+    /^[A-Za-z]+, [0-9.-]{10}$/ {  # dates: add blank line, add <b> tags
+        if (date != "") { print "" }    # skip blank line on first date
         date = $0
         print "<b>" date "</b>"
         next

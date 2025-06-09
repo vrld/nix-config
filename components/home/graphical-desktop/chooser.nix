@@ -185,7 +185,7 @@
             break
             ;;
           *)
-            pass-get "$" "$subitem" | wl-copy -n
+            pass-get "$item" "$subitem" | wl-copy -n
             ;;
         esac
       done

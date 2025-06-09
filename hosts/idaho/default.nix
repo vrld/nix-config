@@ -12,31 +12,16 @@
     ../../components/fonts.nix
     ../../components/locale.nix
     ../../components/niri.nix
+    ../../components/nix.nix
+    ../../components/packages.nix
     ../../components/zsh.nix
 
     ./home
   ];
 
-  nix = {
-    enable = true;
-
-    settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      auto-optimise-store = true;
-    };
-
-    gc = {
-      automatic = true;
-      persistent = true;
-      dates = "weekly";
-      options = "--delete-older-than +3";
-    };
-  };
-
   swapDevices = [
     { device = "/dev/nixos-vg/swap"; }
   ];
-
   zramSwap.enable = true;
 
   boot = {
@@ -74,13 +59,12 @@
     platformio-core.udev
   ];
 
-  services.fstrim.enable = true;
-
-  services.udisks2.enable = true;
-
-  services.dbus.implementation = "broker";  # probaly faster than vanilla
-
-  services.irqbalance.enable = true;  # maybe helps with random freezes und er load
+  services = {
+    fstrim.enable = true;  # SSD garbage collection; supposedly increases lifetime
+    dbus.implementation = "broker";  # probaly faster than vanilla
+    irqbalance.enable = true;  # maybe helps with random freezes und er load
+    udisks2.enable = true;
+  };
 
   networking = {
     hostName = "idaho";
@@ -117,55 +101,16 @@
   virtualisation.docker.enable = true;
 
   environment.systemPackages = with pkgs; [
-    mosh
-    screen
-
-    btop
-    dnsutils
-    ethtool
-    file
-    gawk
-    gnumake
-    gnupg
-    gnused
-    iftop
-    iotop
-    lm_sensors
-    lsof
-    ltrace
     pciutils
-    strace
-    sysstat
-    tree
+    lm_sensors
     usbutils
-    which
-
-    gnutar
-    p7zip
-    unzip
-    xz
-    zip
-    zstd
-
-    eza
-    fd
-    fzf
-    jq
-    ripgrep
-    wget
   ];
 
   programs = {
-    nh.enable = true;
-
-    mosh.enable = true;
-
     neovim = {
       enable = true;
       vimAlias = true;
     };
-
-    zsh.zsh-autoenv.enable = true;
 
     virt-manager.enable = true;
   };
