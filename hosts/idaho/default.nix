@@ -165,6 +165,8 @@
       vimAlias = true;
     };
 
+    zsh.zsh-autoenv.enable = true;
+
     virt-manager.enable = true;
   };
 

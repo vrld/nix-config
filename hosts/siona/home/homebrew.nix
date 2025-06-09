@@ -1,6 +1,6 @@
 { inputs, ...}: {
 
-  import = [
+  imports = [
     inputs.nix-homebrew.darwinModules.nix-homebrew
   ];
 

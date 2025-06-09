@@ -18,7 +18,7 @@
     ../../../components/home/neovim/treesitter.nix
     ../../../components/home/neovim/vcs.nix
 
-    ./ghostty.nix
+    ../../../components/home/ghostty.nix
   ];
 
   home = {

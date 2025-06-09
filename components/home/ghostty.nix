@@ -1,124 +1,118 @@
 {
   color-scheme,
+  pkgs,
   ...
-}: {
+}: let
+  generate-scheme = colors: with colors; ''
+    foreground = #${fg}
+    background = #${bg}
+    cursor-color = #${fg_2}
+    cursor-text = #${bg0}
+    selection-background = #${fg_2}
+    selection-foreground = #${bg0}
+    palette = 0=#${bg}
+    palette = 1=#${red}
+    palette = 2=#${green}
+    palette = 3=#${yellow}
+    palette = 4=#${blue}
+    palette = 5=#${purple}
+    palette = 6=#${aqua}
+    palette = 7=#${gray}
+    palette = 8=#${emph-gray}
+    palette = 9=#${emph-red}
+    palette = 10=#${emph-green}
+    palette = 11=#${emph-yellow}
+    palette = 12=#${emph-blue}
+    palette = 13=#${emph-purple}
+    palette = 14=#${emph-aqua}
+    palette = 15=#${fg}
+    ${common-palette}
+  '';
 
-  # TODO: integrate that with nix-darwin somehow
+  common-palette = with color-scheme.palette; ''
+    palette = 88=#${faded_red}
+    palette = 124=#${neutral_red}
+    palette = 167=#${bright_red}
+
+    palette = 100=#${faded_green}
+    palette = 106=#${neutral_green}
+    palette = 142=#${bright_green}
+
+    palette = 136=#${faded_yellow}
+    palette = 172=#${neutral_yellow}
+    palette = 214=#${bright_yellow}
+
+    palette = 24=#${faded_blue}
+    palette = 67=#${neutral_blue}
+    palette = 109=#${bright_blue}
+
+    palette = 96=#${faded_purple}
+    palette = 132=#${neutral_purple}
+    palette = 175=#${bright_purple}
+
+    palette = 66=#${faded_aqua}
+    palette = 72=#${neutral_aqua}
+    palette = 108=#${bright_aqua}
+
+    palette = 138=#${faded_orange}
+    palette = 166=#${neutral_orange}
+    palette = 208=#${bright_orange}
+
+    palette = 228=#${light0_soft}
+    palette = 229=#${light0}
+    palette = 230=#${light0_hard}
+    palette = 223=#${light1}
+    palette = 250=#${light2}
+    palette = 248=#${light3}
+    palette = 246=#${light4}
+
+    palette = 244=#${gray}
+
+    palette = 234=#${dark0_hard}
+    palette = 235=#${dark0}
+    palette = 236=#${dark0_soft}
+    palette = 237=#${dark1}
+    palette = 239=#${dark2}
+    palette = 241=#${dark3}
+    palette = 243=#${dark4}
+  '';
+in {
 
   home.sessionVariables.TERMINAL_EMULATOR = "ghostty";
 
   programs.ghostty = {
-    enable = true;
+    enable = pkgs.stdenv.isLinux;
     enableZshIntegration = true;
     clearDefaultKeybinds = true;
   };
 
-  programs.ghostty.settings = {
-    theme = "dark:gruvbox-dark,light:gruvbox-light";
-    font-family = "Hack Nerd Font Mono";
-    font-size = 14;
-    selection-invert-fg-bg = true;
-    minimum-contrast = 1.25;
-    mouse-hide-while-typing = true;
-    window-padding-x = 2;
-    window-padding-y = 2;
-    window-padding-balance = true;
-    window-padding-color = "extend";
-    window-decoration = "none";
-    clipboard-paste-protection = true;
-    keybind = [
-      "ctrl+shift+a=select_all"
-      "performable:ctrl+shift+c=copy_to_clipboard"
-      "performable:ctrl+shift+v=paste_from_clipboard"
-      "ctrl+shift+i=inspector:toggle"
-      "ctrl+shift+j=write_screen_file:paste"
-      "ctrl+zero=reset_font_size"
-      "ctrl+comma=increase_font_size:1"
-      "ctrl+period=decrease_font_size:1"
-      "ctrl+plus=increase_font_size:1"
-      "ctrl+minus=decrease_font_size:1"
-    ];
-  };
+  xdg.configFile."ghostty/config".text = ''
+    theme = dark:gruvbox-dark,light:gruvbox-light
+    font-family = Hack Nerd Font Mono
+    font-size = 14
+    minimum-contrast = 1.250000
+    selection-invert-fg-bg = true
+    mouse-hide-while-typing = true
+    window-padding-balance = true
+    window-padding-color = extend
+    window-padding-x = 2
+    window-padding-y = 2
+    clipboard-paste-protection = true
+    keybind = clear
+    keybind = ctrl+shift+a=select_all
+    keybind = performable:ctrl+shift+c=copy_to_clipboard
+    keybind = performable:ctrl+shift+v=paste_from_clipboard
+    keybind = ctrl+shift+i=inspector:toggle
+    keybind = ctrl+shift+j=write_screen_file:paste
+    keybind = ctrl+zero=reset_font_size
+    keybind = ctrl+comma=increase_font_size:1
+    keybind = ctrl+period=decrease_font_size:1
+    keybind = ctrl+plus=increase_font_size:1
+    keybind = ctrl+minus=decrease_font_size:1
+  '';
 
-  programs.ghostty.themes = let
 
-    generate-scheme = colors: with colors; {
-      palette = [
-        "0=#${bg}"
-        "1=#${red}"
-        "2=#${green}"
-        "3=#${yellow}"
-        "4=#${blue}"
-        "5=#${purple}"
-        "6=#${aqua}"
-        "7=#${gray}"
-        "8=#${emph-gray}"
-        "9=#${emph-red}"
-        "10=#${emph-green}"
-        "11=#${emph-yellow}"
-        "12=#${emph-blue}"
-        "13=#${emph-purple}"
-        "14=#${emph-aqua}"
-        "15=#${fg}"
-      ] ++ common-palette;
-      background = "#${bg}";
-      foreground = "#${fg}";
-      cursor-color = "#${fg_2}";
-      cursor-text = "#${bg0}";
-      selection-background = "#${fg_2}";
-      selection-foreground = "#${bg0}";
-    };
+  xdg.configFile."ghostty/themes/gruvbox-light".text = generate-scheme color-scheme.light;
+  xdg.configFile."ghostty/themes/gruvbox-dark".text = generate-scheme color-scheme.light;
 
-    common-palette = with color-scheme.palette; [
-        "88=#${faded_red}"
-        "124=#${neutral_red}"
-        "167=#${bright_red}"
-
-        "100=#${faded_green}"
-        "106=#${neutral_green}"
-        "142=#${bright_green}"
-
-        "136=#${faded_yellow}"
-        "172=#${neutral_yellow}"
-        "214=#${bright_yellow}"
-
-        "24=#${faded_blue}"
-        "67=#${neutral_blue}"
-        "109=#${bright_blue}"
-
-        "96=#${faded_purple}"
-        "132=#${neutral_purple}"
-        "175=#${bright_purple}"
-
-        "66=#${faded_aqua}"
-        "72=#${neutral_aqua}"
-        "108=#${bright_aqua}"
-
-        "138=#${faded_orange}"
-        "166=#${neutral_orange}"
-        "208=#${bright_orange}"
-
-        "228=#${light0_soft}"
-        "229=#${light0}"
-        "230=#${light0_hard}"
-        "223=#${light1}"
-        "250=#${light2}"
-        "248=#${light3}"
-        "246=#${light4}"
-
-        "244=#${gray}"
-
-        "234=#${dark0_hard}"
-        "235=#${dark0}"
-        "236=#${dark0_soft}"
-        "237=#${dark1}"
-        "239=#${dark2}"
-        "241=#${dark3}"
-        "243=#${dark4}"
-    ];
-
-  in {
-    gruvbox-dark = generate-scheme color-scheme.dark;
-    gruvbox-light = generate-scheme color-scheme.light;
-  };
 }
