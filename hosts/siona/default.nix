@@ -4,6 +4,7 @@
 }: {
   imports = [
     ../../components/fonts.nix
+    ../../components/packages.nix
     ../../components/zsh.nix
     ./home
   ];
@@ -55,28 +56,6 @@
   };
 
   environment.shells = [ pkgs.zsh ];
-
-  environment.systemPackages = with pkgs; [
-    mosh
-    screen
-    file
-    gawk
-    gnumake
-    gnupg
-    gnused
-    gnutar
-    p7zip
-    unzip
-    xz
-    zip
-    zstd
-    eza
-    fd
-    fzf
-    jq
-    ripgrep
-    wget
-  ];
 
   programs = {
     nix-index.enable = true;

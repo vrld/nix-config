@@ -1,15 +1,15 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
 
   environment.systemPackages = with pkgs; [
     btop   # processes
     iftop  # network
-    iotop  # disk
 
     dnsutils
     file
     gnupg
     lsof
     screen
+    zellij
     wget
     which
 
@@ -17,8 +17,6 @@
     gawk
     gnumake
     gnused
-    ltrace
-    strace
 
     gnutar
     p7zip
@@ -32,9 +30,13 @@
     fzf
     jq
     ripgrep
+  ] ++ lib.optionals pkgs.stdenv.isLinux [
+    iotop  # disk
+    ltrace  # trace library calls
+    strace  # trace syscalls
   ];
 
-  programs = {
+  programs = lib.optionalAttrs pkgs.stdenv.isLinux {
     mosh.enable = true;
   };
 
