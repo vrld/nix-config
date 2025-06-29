@@ -32,6 +32,10 @@
   home.packages = with pkgs; [
     just
     (import ../../../packages/print256colors.nix {inherit pkgs;})
+    go-task
+    python311
+    poetry
+    ruff
   ];
 
   programs.home-manager.enable = true;

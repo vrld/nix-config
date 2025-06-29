@@ -6,7 +6,8 @@
     htmx-lsp
     lua-language-server
     nil
-    pylyzer
+    #pylyzer
+    pyright
     ruff
     typescript-language-server
     vscode-langservers-extracted
@@ -47,7 +48,7 @@
               vim.keymap.set('n',        '<leader>nn',      '<CMD>Lspsaga rename<CR>', opts)
               vim.keymap.set('n',        '<leader>lf',      function() vim.lsp.buf.format { async = true } end, opts)
               vim.keymap.set('n',        '<leader>chi',     '<CMD>Lspsaga incoming_call<CR>', opts)
-              vim.keymap.set('n',        '<leader>cha',     '<CMD>Lspsaga outgoing_call<CR>', opts)
+              vim.keymap.set('n',        '<leader>cho',     '<CMD>Lspsaga outgoing_call<CR>', opts)
               vim.keymap.set({'n', 'v'}, '<leader><space>', '<CMD>Lspsaga code_action<CR>', opts)
             end
           })
@@ -79,14 +80,51 @@
             jsonls = {},   -- json (vscode-langservers-extracted)
             lua_ls = {},   -- lua
             nil_ls = {},   -- nix
-            pylyzer = {    -- python
-              settings = {
-                python = {
-                 checkOnType = true,
-                },
+            pyright = {    -- python
+              settings = make_client_capabilities {
+                pyright = { disableOrganizeImports = true, },
               },
+              on_new_config = function(config, root_dir)
+                -- use the python version and venv managed by poetry
+                local Path = require 'plenary.path'
+                local pyright_config = Path:new(root_dir, "pyrightconfig.json")
+
+                local settings = {}
+                if pyright_config:is_file() then
+                  settings = vim.json.decode(pyright_config:read())
+                end
+
+                -- already sufficiently configured
+                if settings.pythonPath ~= nil or settings.venv ~= nil or settings.venvPath ~= nil then
+                  return
+                end
+
+                -- find python path
+                settings.pythonPath = vim.trim(vim.fn.system('which python'))
+
+                -- find venv dir:
+                -- 1. check poetry env info
+                -- 2. otherwise default to .venv
+                local venv_path = vim.trim(vim.fn.system('cd "'..root_dir..'"; poetry env info -p 2>/dev/null'))
+                if venv_path:len() == 0 then
+                  venv_path = root_dir .. '/.venv'
+                end
+
+                -- check if the venv actually exists
+                if vim.fn.isdirectory(venv_path) then
+                  settings.venvPath, settings.venv = venv_path:match('^(.*/)([^/]+)$')
+                  config.settings.python = vim.tbl_extend('force', config.settings.python, settings)
+                end
+
+                -- write settings
+                pyright_config:write(vim.json.encode(settings), 'w')
+              end,
             },
-            ruff = {},     -- also python
+            ruff = {       -- also python
+              on_attach = function(client)
+                client.server_capabilities.hoverProvieder = false
+              end,
+            },
             ts_ls = {},    -- typescript
           }
 

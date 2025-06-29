@@ -19,6 +19,15 @@
   homebrew = {
     enable = true;
 
+    onActivation.cleanup = "zap";
+
+    brews = [
+      "bitwarden-cli"
+      "k3d"
+      "helm"
+      "kubectl"
+    ];
+
     casks = [
       "karabiner-elements"
       "hammerspoon"
