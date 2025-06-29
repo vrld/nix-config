@@ -1,4 +1,4 @@
-{ inputs, ...}: {
+{ inputs, config, ...}: {
 
   imports = [
     inputs.nix-homebrew.darwinModules.nix-homebrew
@@ -20,6 +20,8 @@
     enable = true;
 
     onActivation.cleanup = "zap";
+
+    taps = builtins.attrNames config.nix-homebrew.taps;  # make nix-darwin recognize nix-homebrew
 
     brews = [
       "bitwarden-cli"
@@ -48,7 +50,7 @@
       "zoom"
       "linear-linear"
 
-      "ollama"
+      "ollama-app"
       "lm-studio"
       "comfyui"
 
