@@ -45,6 +45,25 @@
     userEmail = "matthias.richter@inovex.de";
   };
 
+  programs.mods = {
+    enable = true;
+    settings = {
+      default-model = "qwen3:14b";
+      apis.ollama.models."qwen3:14b" = {
+        aliases = [ "qwen3" ];
+        max-input-chars = 650000;  # TODO?
+      };
+      apis.ollama.models."gemma3:12b" = {
+        aliases = [ "gemma3" ];
+        max-input-chars = 650000;  # TODO?
+      };
+      apis.ollama.models."codegemma:7b-code" = {
+        aliases = [ "codegemma" ];
+        max-input-chars = 650000;  # TODO?
+      };
+    };
+  };
+
   home.file.".hammerspoon/init.lua".text = /*lua*/''
     hs.hotkey.bind({"alt"}, "Return", function()
       hs.osascript.applescript[[
