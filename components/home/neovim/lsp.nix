@@ -6,7 +6,6 @@
     htmx-lsp
     lua-language-server
     nil
-    #pylyzer
     pyright
     ruff
     typescript-language-server
@@ -129,13 +128,23 @@
           }
 
           if vim.fn.has('nvim-0.11') == 1 then
+            vim.lsp.config["*"] = { root_markers = { ".git", ".jj" } }
             for server, config in pairs(langserver_configs) do
               if type(config) == "table" and next(config) then
+
+                -- emulate on_new_config callback
+                if config.on_new_config then
+                  config.before_init = function(params, config)
+                    config.on_new_config(config, config.root_dir)
+                  end
+                end
+
                 vim.lsp.config[server] = vim.tbl_deep_extend("force", vim.lsp.config[server], config)
               end
             end
             vim.lsp.enable(vim.tbl_keys(langserver_configs))
           else
+            -- legacy setup with lspconfig
             for server, config in pairs(langserver_configs) do
               (require 'lspconfig')[server].setup(config)
             end
