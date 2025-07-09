@@ -13,7 +13,6 @@ in {
 
   imports = [
     inputs.home-manager.darwinModules.home-manager
-    ./aerospace.nix
     ./homebrew.nix
   ];
 
