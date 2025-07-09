@@ -36,8 +36,4 @@
     strace  # trace syscalls
   ];
 
-  programs = lib.optionalAttrs pkgs.stdenv.isLinux {
-    mosh.enable = true;
-  };
-
 }
