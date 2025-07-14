@@ -5,6 +5,7 @@
   imports = [
     ./hardware-configuration.nix
     ./networking.nix
+    ./printers.nix
     ./sops.nix
 
     ../../components/console-colors.nix

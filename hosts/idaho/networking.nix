@@ -9,7 +9,11 @@
     wait-online.enable = false;
   };
 
-  services.avahi.nssmdns4 = true;
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
 
   services.openssh = {
     enable = true;
