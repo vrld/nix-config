@@ -1,4 +1,5 @@
-{ pkgs, config, ...}: {
+{ pkgs, config, ... }:
+{
 
   programs.git = {
     enable = true;
@@ -29,13 +30,29 @@
     ignores = [ "*.swo" "*.swp" ];
   };
 
-  xdg.configFile."jj/config.toml".source = (pkgs.formats.toml {}).generate "jj/config.toml" {
+  xdg.configFile."jj/config.toml".source = (pkgs.formats.toml { }).generate "jj/config.toml" {
     user.name = config.programs.git.userName;
     user.email = config.programs.git.userEmail;
+    signing = {
+      behavior = "own";  # "drop" (remove signature after edit), "keep" (resign after edit), "own" (sign my commits), "force" (sign all)
+      backend = "ssh";
+      key = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
+    };
     ui.default-command = "log";
-    ui.paginate = "never";
+    ui.paginate = "auto";
+    ui.conflict-marker-style = "snapshot";
+    ui.diff-formatter = ":git"; # or :color-words (default), :summary, :stat, :types, :name-only
+    ui.diff-editor = "meld-3";
+    merge-tools.meld-3.merge-args = [ "$left" "$base" "$right" "-o" "$output" "--auto-merge" ];
+    merge-tools.vimdiff = {
+      diff-invocation-mode = "file-by-file";
+      merge-tool-edits-conflict-markers = true;
+    };
   };
 
-  home.packages = [ pkgs.jujutsu ];
+  home.packages = [
+    pkgs.jujutsu
+    pkgs.meld
+  ];
 
 }

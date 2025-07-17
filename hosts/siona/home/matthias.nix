@@ -6,6 +6,7 @@
 
   imports = [
     ../../../components/home/bat.nix
+    ../../../components/home/packages.nix
     ../../../components/home/sqlite.nix
     ../../../components/home/vcs.nix
     ../../../components/home/zsh
@@ -30,8 +31,6 @@
   };
 
   home.packages = with pkgs; [
-    just
-    (import ../../../packages/print256colors.nix {inherit pkgs;})
     go-task
     python311
     poetry

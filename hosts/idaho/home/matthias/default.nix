@@ -9,6 +9,7 @@ in {
     ../../../../components/home/bat.nix
     ../../../../components/home/ghostty.nix
     ../../../../components/home/gpg.nix
+    ../../../../components/home/packages.nix
     ../../../../components/home/password-store.nix
     ../../../../components/home/sqlite.nix
     ../../../../components/home/ssh.nix
@@ -48,10 +49,7 @@ in {
 
   home.packages = with pkgs; [
     hledger
-    timewarrior
     when
-    just
-    obsidian
 
     (imagemagick.override {
       libX11Support = false;
@@ -59,12 +57,10 @@ in {
     })
 
     artisan
+    obsidian
+    orca-slicer
     signal-desktop
     spotify
-    orca-slicer
-    gfn-electron
-
-    (import ../../../../packages/print256colors.nix {inherit pkgs;})
   ];
 
   #services.yubikey-agent.enable = true;
@@ -117,6 +113,9 @@ in {
     language = de
     ampm = 0
   '';
+
+  home.file.".ssh/id_ecdsa.pub".source = ./keys/id_ecdsa.pub;
+  home.file.".ssh/id_ed25519.pub".source = ./keys/id_ed25519.pub;
 
   services.kanshi.settings = [
     {

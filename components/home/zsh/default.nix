@@ -105,6 +105,12 @@
         [ -n "$page" ] && man $(echo $page | awk '{gsub(/[\(\)]/, "", $2); print $2, $1}')
       }
 
+      n() {
+        local command=$1
+        shift
+        nix run nixpkgs#$command -- "$@"
+      }
+
       # over-engineered prompt: | glider | date | jobs | return code | dir | git state | git branch | git action |
       local _bgcolor="5;0"
       _set-bgcolor() {
