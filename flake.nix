@@ -16,6 +16,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    chaotic = {
+      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     simple-nixos-mailserver = {
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-25.05";
       inputs.nixpkgs.follows = "nixpkgs-stable";
@@ -55,6 +61,7 @@
     nixpkgs,
     nixpkgs-stable,
     nix-darwin,
+    chaotic,
     simple-nixos-mailserver,
     hardware,
     ...
@@ -89,6 +96,7 @@
           hardware.nixosModules.lenovo-thinkpad-x280
           hardware.nixosModules.common-gpu-amd
           hardware.nixosModules.common-pc
+          chaotic.nixosModules.default
         ];
       };
 

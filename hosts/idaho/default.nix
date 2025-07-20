@@ -45,8 +45,12 @@
       efi.canTouchEfiVariables = true;
     };
 
+    kernelPackages = pkgs.linuxPackages_cachyos-lto; # from chaotix nyx; kernel with scheduler that priorizes responsiveness
     kernelParams = [ ];
   };
+
+  # userspace scheduler; defaults to scx_rustland (supposed to priorize responsiveness even more)
+  services.scx.enable = true;
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.graphics = {

@@ -61,6 +61,9 @@ in {
     orca-slicer
     signal-desktop
     spotify
+
+    # chaotic nyx
+    discord-krisp
   ];
 
   #services.yubikey-agent.enable = true;
