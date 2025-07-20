@@ -35,19 +35,19 @@
               vim.bo[event.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
 
               local opts = { buffer = event.buf, silent = true }
-              -- NOTE: this overwrites the `l` movement key
+              vim.keymap.set('n',        '<leader>D',       vim.diagnostic.setqflist, opts)
               vim.keymap.set({'n', 'v'}, '<leader>nd',      '<CMD>Lspsaga diagnostic_jump_next<CR>', opts)
-              vim.keymap.set('n',        '<leader>D',       vim.diagnostic.setloclist, opts)
               vim.keymap.set('n',        '<leader>gt',      '<CMD>Lspsaga goto_type_definition<CR>', opts)
               vim.keymap.set('n',        '<leader>kt',      '<CMD>Lspsaga peek_type_definition<CR>', opts)
               vim.keymap.set('n',        '<leader>gd',      '<CMD>Lspsaga goto_definition<CR>', opts)
               vim.keymap.set('n',        '<leader>kd',      '<CMD>Lspsaga peek_definition<CR>', opts)
               vim.keymap.set({'n', 'v'}, 'K',               '<CMD>Lspsaga hover_doc<CR>', opts)
               vim.keymap.set('n',        '<leader>F',       '<CMD>Lspsaga finder<CR>', opts)
+              vim.keymap.set('n',        '<leader>O',       '<CMD>Lspsaga outline<CR>', opts)
               vim.keymap.set('n',        '<leader>nn',      '<CMD>Lspsaga rename<CR>', opts)
               vim.keymap.set('n',        '<leader>lf',      function() vim.lsp.buf.format { async = true } end, opts)
-              vim.keymap.set('n',        '<leader>chi',     '<CMD>Lspsaga incoming_call<CR>', opts)
-              vim.keymap.set('n',        '<leader>cho',     '<CMD>Lspsaga outgoing_call<CR>', opts)
+              vim.keymap.set('n',        '<leader>chi',     '<CMD>Lspsaga incoming_calls<CR>', opts)
+              vim.keymap.set('n',        '<leader>cho',     '<CMD>Lspsaga outgoing_calls<CR>', opts)
               vim.keymap.set({'n', 'v'}, '<leader><space>', '<CMD>Lspsaga code_action<CR>', opts)
             end
           })
