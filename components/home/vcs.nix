@@ -34,7 +34,7 @@
     user.name = config.programs.git.userName;
     user.email = config.programs.git.userEmail;
     signing = {
-      behavior = "own";  # "drop" (remove signature after edit), "keep" (resign after edit), "own" (sign my commits), "force" (sign all)
+      behavior = "own"; # "drop" (remove signature after edit), "keep" (resign after edit), "own" (sign my commits), "force" (sign all)
       backend = "ssh";
       key = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
     };
@@ -47,6 +47,19 @@
     merge-tools.vimdiff = {
       diff-invocation-mode = "file-by-file";
       merge-tool-edits-conflict-markers = true;
+    };
+
+    aliases = {
+      l = [ "log" "--no-pager" ];
+      s = [ "st" "--no-pager" ];
+      mb = [
+        "util" "exec" "--"
+        "bash" "-c" /*bash*/''
+        bookmark=$(jj b list -a --sort committer-date | awk -F':' '/^[^ ]/{print $1}' | fzf)
+        [[ -z $bookmark ]] && exit 1
+        jj b m "$bookmark" --to @
+      ''
+      ];
     };
   };
 
