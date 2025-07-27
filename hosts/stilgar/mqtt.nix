@@ -9,22 +9,22 @@
 
           monitor = {
             acl = [ "read #" ];
-            hashedPasswordFile = config.sops.templates."mqtt-monitor".file;
+            hashedPasswordFile = config.sops.secrets."stilgar/mqtt-monitor".path;
           };
 
           maischemeter = {
             acl = [ "readwrite maischemeter/#" ];
-            hashedPasswordFile = config.sops.templates."mqtt-maischemeter".file;
+            hashedPasswordFile = config.sops.secrets."stilgar/mqtt-maischemeter".path;
           };
 
           hochleuchte = {
             acl = [ "readwrite hochleuchte/#" ];
-            hashedPasswordFile = config.sops.templates."mqtt-hochleuchte".file;
+            hashedPasswordFile = config.sops.secrets."stilgar/mqtt-hochleuchte".path;
           };
 
           valetudo = {
             acl = [ "readwrite valetudo/#" ];
-            hashedPasswordFile = config.sops.templates."mqtt-valetudo".file;
+            hashedPasswordFile = config.sops.secrets."stilgar/mqtt-valetudo".path;
           };
 
         };
@@ -34,7 +34,7 @@
         port = 9001;
         users.monitor = {
           acl = [ "read #" ];
-          hashedPasswordFile = config.sops.templates."mqtt-monitor".file;
+          hashedPasswordFile = config.sops.secrets."stilgar/mqtt-monitor".path;
         };
       }
     ];

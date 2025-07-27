@@ -44,13 +44,13 @@ in {
   accounts.calendar.basePath = ".calendar";
 
   accounts.calendar.accounts."personal" = make-calendar-account{
-    pass-file = "Cloud/richter.band";
+    pass-file = "Cloud/tutnix.dev";
     calendar = "personal";
     primary = true;
   };
 
   accounts.calendar.accounts."familienkalender" = make-calendar-account{
-    pass-file = "Cloud/richter.band";
+    pass-file = "Cloud/tutnix.dev";
     calendar = "familienkalender";
   };
 }

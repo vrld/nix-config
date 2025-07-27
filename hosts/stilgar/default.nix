@@ -1,9 +1,13 @@
 {
-  pkgs,
+  inputs,
+  outputs,
+  color-scheme,
   ...
 }:
 {
   imports = [
+    inputs.home-manager-stable.nixosModules.home-manager
+
     ./hardware-configuration.nix
 
     ./acme.nix
@@ -19,7 +23,6 @@
     ../../components/locale.nix
     ../../components/nix.nix
     ../../components/packages.nix
-    ../../components/zsh.nix
   ];
 
   boot.tmp.cleanOnBoot = true;
@@ -32,8 +35,6 @@
     };
   };
 
-  users.defaultUserShell = pkgs.zsh;
-
   users.users.matthias = {
     isNormalUser = true;
     description = "Matthias";
@@ -43,6 +44,13 @@
       (builtins.readFile ../idaho/home/matthias/keys/id_ed25519.pub)
       ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINom6Md4tBKNJ3xxg1fI4jg65ryjpNSkJF06/EPbl3bx'' # mobile
     ];
+  };
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.matthias = import ./matthias.nix;
+    extraSpecialArgs = { inherit inputs outputs color-scheme; };
   };
 
   system.stateVersion = "25.05";

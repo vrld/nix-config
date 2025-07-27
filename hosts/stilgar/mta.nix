@@ -17,8 +17,8 @@
     enableManageSieve = true;
 
     loginAccounts = {
-      "matthias@tutnix.dev".hashedPasswordFile = config.sops.templates."postfix-matthias@tutnix.dev".file;
-      "matthias@vrld.org".hashedPasswordFile = config.sops.templates."postfix-matthias@vrld.org".file;
+      "matthias@tutnix.dev".hashedPasswordFile = config.sops.secrets."stilgar/postfix-matthias@tutnix.dev".path;
+      "matthias@vrld.org".hashedPasswordFile = config.sops.secrets."stilgar/postfix-matthias@vrld.org".path;
     };
 
     rejectSender = [
@@ -38,7 +38,7 @@
 
   services.postfix = {
     lookupMX = true;
-    mapFiles.virtual = lib.mkForce config.sops.templates.postfix-virtual.file;
+    mapFiles.virtual = lib.mkForce config.sops.secrets."stilgar/postfix-virtual".path;
   };
 
 }

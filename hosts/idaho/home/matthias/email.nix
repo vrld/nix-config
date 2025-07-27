@@ -31,9 +31,9 @@
     userName = address;
     passwordCommand = "pass-get Mail/${hostname}";
 
-    imap = { host = "tutnix.dev"; port = 993; };
+    imap = { host = "mx.tutnix.dev"; port = 993; };
     mbsync = { enable = true; create = "maildir"; expunge = "both"; };
-    smtp = { host = "tutnix.dev"; port = 465; };
+    smtp = { host = "mx.tutnix.dev"; port = 465; };
     msmtp.enable = true;
   };
 
@@ -50,11 +50,6 @@ in {
   accounts.email.accounts."tutnix.dev" = make-tutnix-account {
     address = "matthias@tutnix.dev";
     aliases = [  "postmaster@tutnix.dev" "abuse@tutnix.dev" ];
-  };
-
-  accounts.email.accounts."richter.band" = make-tutnix-account {
-    address = "matthias@richter.band";
-    aliases = [  "postmaster@richter.band" "abuse@richter.band" ];
   };
 
   accounts.email.accounts."gmail.com" = let
@@ -122,8 +117,8 @@ in {
         ${notmuch} tag +sent -new -- tag:new and folder:/Sent/
 
         # flag mail admin related addresses
-        ${notmuch} tag +abuse +flagged -- "tag:new and (to:abuse@vrld.org or to:abuse@tutnix.dev or to:abuse@richter.band)"
-        ${notmuch} tag +postmaster +flagged -- "tag:new and (to:postmaster@vrld.org or to:postmaster@tutnix.dev or to:postmaster@richter.band)"
+        ${notmuch} tag +abuse +flagged -- "tag:new and (to:abuse@vrld.org or to:abuse@tutnix.dev)"
+        ${notmuch} tag +postmaster +flagged -- "tag:new and (to:postmaster@vrld.org or to:postmaster@tutnix.dev)"
 
         # finish processing
         ${notmuch} tag +inbox +unread -new -- tag:new

@@ -10,6 +10,7 @@
         extraDomainNames = [
           "www.tutnix.dev"
           "mx.tutnix.dev"
+          "nc.tutnix.dev"
         ];
         group = "nginx";
       };

@@ -6,14 +6,14 @@
 
   accounts.contact.basePath = ".contacts";
 
-  accounts.contact.accounts."richter_band" = {
+  accounts.contact.accounts."stilgar" = {
     local.type = "filesystem";
     local.fileExt = ".vcf";
 
     remote.type = "carddav";
-    vdirsyncer.urlCommand = [ "pass-get" "Cloud/richter.band" "url-dav" ];
-    vdirsyncer.userNameCommand = [ "pass-get" "Cloud/richter.band" "user" ];
-    remote.passwordCommand = [ "pass-get" "Cloud/richter.band" ];
+    vdirsyncer.urlCommand = [ "pass-get" "Cloud/tutnix.dev" "url-dav" ];
+    vdirsyncer.userNameCommand = [ "pass-get" "Cloud/tutnix.dev" "user" ];
+    remote.passwordCommand = [ "pass-get" "Cloud/tutnix.dev" ];
 
     khard = {
       enable = true;
