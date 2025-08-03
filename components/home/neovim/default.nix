@@ -58,15 +58,12 @@ in {
       set conceallevel=3
       set colorcolumn=85
       set number
+      set winborder=rounded
       set wrap list listchars=tab:∙\ ,trail:░,extends:>,precedes:< showbreak=↪
       set title titlestring=\ %f:%l%m
       set scrolloff=8
 
-      if has('nvim-0.11')
-        set completeopt=fuzzy,menu,menuone,preview,noselect
-      else
-        set completeopt=menu,menuone,preview,noselect
-      endif
+      set completeopt=fuzzy,menu,menuone,noselect
       set ignorecase smartcase  " Mixed Case => case sensitive search
       set hlsearch              " highlight matches
       set gdefault              " assume /g in regular expressions
@@ -89,7 +86,6 @@ in {
     '';
 
     extraLuaConfig = /*lua*/''
-
       vim.loader.enable()  -- cache lua modules for faster loading
 
       vim.api.nvim_create_autocmd('FocusLost', {

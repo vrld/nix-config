@@ -22,17 +22,8 @@
         require 'mini.surround'.setup()
         require 'mini.bracketed'.setup()
 
-        require 'mini.snippets'.setup()  -- binds in insert mode: <C-j> expand snippet, <C-l>/<C-h> next/prev tabstop, <C-c> cancel
-        -- TODO: add custom snippets, :help MiniSnippets.config
+        -- require 'mini.cursorword'.setup() -- lsp autocommands
 
-        require 'mini.completion'.setup{
-          lsp_completion = {
-            source_func = 'omnifunc',
-            auto_setup = false,  -- NOTE: will be setup on attach event of LSP, see ./lsp.nix
-          },
-        }
-
-        require 'mini.cursorword'.setup()
         require 'mini.indentscope'.setup{
           draw = {
             animation = function() return 0 end,

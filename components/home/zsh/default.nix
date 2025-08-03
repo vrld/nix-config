@@ -74,7 +74,7 @@
       bindkey '^o' z-menu
 
       cd-menu() {
-        local d=$(fd -t d | sed -e "s#^''${HOME}#~#" | fzf +s --height=80% --preview="show-tree {}" --reverse | sed -s 's# #\\ #g')
+        local d=$(fd -t d | sed -e "s#^''${HOME}#~#" | fzf +s --height=80% --preview="ls {}" --reverse | sed -s 's# #\\ #g')
         [ -n "$d" ] && LBUFFER="''${LBUFFER:-cd }$d"
         unset d
         zle reset-prompt
@@ -83,7 +83,7 @@
       bindkey '^g' cd-menu
 
       fd-menu() {
-        r=$(fd | fzf +s --height=60% --reverse --preview="preview-content {}" | sed -s 's# #\\ #g')
+        r=$(fd | fzf +s --height=60% --reverse --preview="file -k {}" | sed -s 's# #\\ #g')
         [ -n "$r" ] && LBUFFER="''${LBUFFER:-vim }$r"
         unset r
         zle reset-prompt
