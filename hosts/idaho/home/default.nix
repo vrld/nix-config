@@ -33,4 +33,8 @@ in {
     extraSpecialArgs = { inherit inputs outputs color-scheme pkgs-stable; };
   };
 
+  # run unpatched dynamic libraries
+  # required for platformmio
+  programs.nix-ld.enable = true;
+
 }

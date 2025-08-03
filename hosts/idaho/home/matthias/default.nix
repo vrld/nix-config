@@ -56,11 +56,16 @@ in {
       libXtSupport = false;
     })
 
+    platformio-core
+    esptool
+
     artisan
     obsidian
-    orca-slicer
     signal-desktop
     spotify
+
+    # orca-slicer  <-- needs fixing; see: https://github.com/NixOS/nixpkgs/pull/430171
+    # There's a flake here: https://github.com/ovlach/nix-orca-slicer
 
     # chaotic nyx
     discord-krisp
