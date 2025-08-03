@@ -31,7 +31,6 @@
     secrets."stilgar/postfix-matthias@vrld.org".restartUnits = ["postfix.service"];
 
     secrets."stilgar/mqtt-monitor".restartUnits = ["mosquitto.service"];
-    secrets."stilgar/mqtt-maischemeter".restartUnits = ["mosquitto.service"];
     secrets."stilgar/mqtt-hochleuchte".restartUnits = ["mosquitto.service"];
     secrets."stilgar/mqtt-valetudo".restartUnits = ["mosquitto.service"];
 

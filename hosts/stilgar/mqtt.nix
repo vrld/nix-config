@@ -12,11 +12,6 @@
             hashedPasswordFile = config.sops.secrets."stilgar/mqtt-monitor".path;
           };
 
-          maischemeter = {
-            acl = [ "readwrite maischemeter/#" ];
-            hashedPasswordFile = config.sops.secrets."stilgar/mqtt-maischemeter".path;
-          };
-
           hochleuchte = {
             acl = [ "readwrite hochleuchte/#" ];
             hashedPasswordFile = config.sops.secrets."stilgar/mqtt-hochleuchte".path;
