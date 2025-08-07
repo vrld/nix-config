@@ -44,10 +44,6 @@
     ui.diff-formatter = ":git"; # or :color-words (default), :summary, :stat, :types, :name-only
     ui.diff-editor = "meld-3";
     merge-tools.meld-3.merge-args = [ "$left" "$base" "$right" "-o" "$output" "--auto-merge" ];
-    merge-tools.vimdiff = {
-      diff-invocation-mode = "file-by-file";
-      merge-tool-edits-conflict-markers = true;
-    };
 
     aliases = {
       l = [ "log" "--no-pager" ];
@@ -55,7 +51,7 @@
       mb = [
         "util" "exec" "--"
         "bash" "-c" /*bash*/''
-        bookmark=$(jj b list -a --sort committer-date | awk -F':' '/^[^ ]/{print $1}' | fzf)
+        bookmark=$(jj b list -a --sort committer-date- | awk -F':' '/^[^ ]/{print $1}' | fzf)
         [[ -z $bookmark ]] && exit 1
         jj b m "$bookmark" --to @
       ''

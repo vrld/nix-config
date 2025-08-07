@@ -78,6 +78,36 @@
     palette = 243=#${dark4}
   '';
 
+  keybinds.common = ''
+    keybind = clear
+    keybind = ctrl+shift+a=select_all
+    keybind = performable:ctrl+shift+c=copy_to_clipboard
+    keybind = performable:ctrl+shift+v=paste_from_clipboard
+    keybind = ctrl+shift+i=inspector:toggle
+    keybind = ctrl+shift+j=write_screen_file:paste
+    keybind = ctrl+zero=reset_font_size
+    keybind = ctrl+comma=increase_font_size:1
+    keybind = ctrl+period=decrease_font_size:1
+    keybind = ctrl+plus=increase_font_size:1
+    keybind = ctrl+minus=decrease_font_size:1
+  '';
+
+  keybinds.system = if pkgs.stdenv.isDarwin then ''
+    keybind = cmd+shift+g=goto_split:up
+    keybind = cmd+shift+t=goto_split:right
+    keybind = cmd+shift+r=goto_split:down
+    keybind = cmd+shift+n=goto_split:left
+    keybind = cmd+shift+space=new_split:right
+    keybind = alt+shift+space=new_split:down
+    keybind = cmd+shift+f=toggle_split_zoom
+    keybind = cmd+shift+h=equalize_splits
+
+    keybind = alt+shift+g=toggle_tab_overview
+    keybind = alt+shift+r=new_tab
+    keybind = alt+shift+n=previous_tab
+    keybind = alt+shift+t=next_tab
+  '' else "";
+
 in {
 
   home.sessionVariables.TERMINAL_EMULATOR = "ghostty";
@@ -97,17 +127,8 @@ in {
       window-padding-x = 2
       window-padding-y = 2
       clipboard-paste-protection = true
-      keybind = clear
-      keybind = ctrl+shift+a=select_all
-      keybind = performable:ctrl+shift+c=copy_to_clipboard
-      keybind = performable:ctrl+shift+v=paste_from_clipboard
-      keybind = ctrl+shift+i=inspector:toggle
-      keybind = ctrl+shift+j=write_screen_file:paste
-      keybind = ctrl+zero=reset_font_size
-      keybind = ctrl+comma=increase_font_size:1
-      keybind = ctrl+period=decrease_font_size:1
-      keybind = ctrl+plus=increase_font_size:1
-      keybind = ctrl+minus=decrease_font_size:1
+      ${keybinds.common}
+      ${keybinds.system}
     '';
   };
 

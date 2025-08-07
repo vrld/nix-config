@@ -157,22 +157,50 @@
 
   programs.neovim.extraLuaConfig = /*lua*/''
     do
-      local signs = {Error = " ", Warn  = " ", Hint  = " ", Info  = " "}
+      local glyphs = {Error = " ", Warn  = " ", Hint  = " ", Info  = " "}
+      local signs = {
+        text = {
+          [vim.diagnostic.severity.ERROR] = glyphs.Error,
+          [vim.diagnostic.severity.WARN] = glyphs.Warn,
+          [vim.diagnostic.severity.HINT] = glyphs.Hint,
+          [vim.diagnostic.severity.INFO] = glyphs.Info,
+        },
+      }
+
+      local noise_levels = {
+        off     = { signs = false, underline = false, virtual_text = false },
+        minimal = { signs = signs, underline = false, virtual_text = false },
+        reduced = { signs = signs, underline = true, virtual_text = false },
+        normal  = { signs = signs, underline = true, severity_sort=true, virtual_text = { current_line = true }, virtual_lines = false },
+        fancy   = { signs = signs, underline = true, severity_sort=true, virtual_text = false, virtual_lines = { current_line = true } },
+        loud    = { signs = signs, underline = true, severity_sort=true, virtual_text = true, virtual_lines = true, underline = true  },
+        louder  = { signs = signs, underline = true, severity_sort=true, virtual_text = true, virtual_lines = { current_line = true } },
+        loudest = { signs = signs, underline = true, severity_sort=true, virtual_text = true, virtual_lines = true },
+      }
       if vim.fn.has('nvim-0.11') then
-        vim.diagnostic.config{
-          signs = {
-            text = {
-              [vim.diagnostic.severity.ERROR] = signs.Error,
-              [vim.diagnostic.severity.WARN] = signs.Warn,
-              [vim.diagnostic.severity.HINT] = signs.Hint,
-              [vim.diagnostic.severity.INFO] = signs.Info,
-            },
-          },
-          virtual_text = true,
-          severity_sort = true,
-        }
+        vim.diagnostic.config(noise_levels.normal)
+        vim.api.nvim_create_user_command("Noise", function(opts)
+          local level = noise_levels[opts.fargs[1] or "normal"]
+          if level ~= nil then
+            vim.diagnostic.config(level)
+          else
+            nvim.api.nvim_err_writeln("Invalid level")
+          end
+        end, {
+          nargs = "?",
+          desc = "Noise level",
+          complete = function(lead)
+            local res = {}
+            for name in pairs(noise_levels) do
+              if name:sub(1, #lead) == lead then
+                res[#res + 1] = name
+              end
+            end
+            return res
+          end
+        })
       else
-        for type, icon in pairs(signs) do
+        for type, icon in pairs(glyphs) do
           local hl = "DiagnosticSign" .. type
           vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
         end
