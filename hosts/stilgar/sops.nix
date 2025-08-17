@@ -27,6 +27,7 @@
     secrets."passwords/matthias".neededForUsers = true;
 
     secrets."stilgar/postfix-virtual".restartUnits = ["postfix.service"];
+    secrets."stilgar/postfix-valias".restartUnits = ["postfix.service"];
     secrets."stilgar/postfix-matthias@tutnix.dev".restartUnits = ["postfix.service"];
     secrets."stilgar/postfix-matthias@vrld.org".restartUnits = ["postfix.service"];
 

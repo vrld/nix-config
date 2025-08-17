@@ -21,11 +21,6 @@
       "matthias@vrld.org".hashedPasswordFile = config.sops.secrets."stilgar/postfix-matthias@vrld.org".path;
     };
 
-    rejectSender = [
-      "ds-group.co.uk"
-      "info@debriditalia.com"
-    ];
-
     # see ./acme.nix
     certificateScheme = "acme";
 
@@ -39,6 +34,8 @@
   services.postfix = {
     lookupMX = true;
     mapFiles.virtual = lib.mkForce config.sops.secrets."stilgar/postfix-virtual".path;
+    mapFiles.valias = lib.mkForce config.sops.secrets."stilgar/postfix-valias".path;
+    mapFiles.vaccounts = lib.mkForce config.sops.secrets."stilgar/postfix-valias".path;
   };
 
 }
