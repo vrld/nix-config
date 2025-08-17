@@ -64,8 +64,7 @@ in {
     signal-desktop
     spotify
 
-    # orca-slicer  <-- needs fixing; see: https://github.com/NixOS/nixpkgs/pull/430171
-    # There's a flake here: https://github.com/ovlach/nix-orca-slicer
+    orca-slicer
 
     # chaotic nyx
     discord-krisp
