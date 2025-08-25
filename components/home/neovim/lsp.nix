@@ -103,7 +103,7 @@
 
         local bufnr = vim.api.nvim_get_current_buf()
         local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-        local ts = vim.treesitter.get_node_at_cursor(bufnr, row - 1, math.max(0, col - 1))
+        local ts = vim.treesitter.get_node{ bufnr=bufnr, pos={row - 1, math.max(0, col - 1)} }
 
         if ts and vim.tbl_contains(types_to_complete, ts:type()) then
           vim.lsp.completion.get()
