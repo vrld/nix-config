@@ -1,11 +1,12 @@
-{ inputs, config, ...}: {
+{ inputs, config, ... }:
+{
 
   imports = [
     inputs.nix-homebrew.darwinModules.nix-homebrew
   ];
 
   nix-homebrew = {
-    enable = true;  # installs homebrew
+    enable = true; # installs homebrew
     # enableRosetta = true;  # enables installing x86_64 packages using Rosetta 2
     taps = {
       "homebrew/homebrew-core" = inputs.homebrew-core;
@@ -19,15 +20,20 @@
   homebrew = {
     enable = true;
 
-    onActivation.cleanup = "zap";
+    onActivation = {
+      cleanup = "zap";
+      autoUpdate = true;
+      upgrade = true;
+    };
 
-    taps = builtins.attrNames config.nix-homebrew.taps;  # make nix-darwin recognize nix-homebrew
+    taps = builtins.attrNames config.nix-homebrew.taps; # make nix-darwin recognize nix-homebrew
 
     brews = [
       "bitwarden-cli"
       "k3d"
       "helm"
       "kubectl"
+      "gemini-cli"
     ];
 
     casks = [
@@ -42,12 +48,11 @@
       "homebrew/cask/docker"
       "google-drive"
       "obsidian"
-      "postman"
+      "inkscape"
 
       "signal"
       "slack"
       "microsoft-teams"
-      "zoom"
       "linear-linear"
 
       "ollama-app"

@@ -97,15 +97,13 @@
     keybind = cmd+shift+t=goto_split:right
     keybind = cmd+shift+r=goto_split:down
     keybind = cmd+shift+n=goto_split:left
-    keybind = cmd+shift+space=new_split:right
-    keybind = alt+shift+space=new_split:down
+    keybind = alt+shift+n=new_split:right
+    keybind = alt+shift+d=new_split:down
     keybind = cmd+shift+f=toggle_split_zoom
     keybind = cmd+shift+h=equalize_splits
 
     keybind = alt+shift+g=toggle_tab_overview
-    keybind = alt+shift+r=new_tab
-    keybind = alt+shift+n=previous_tab
-    keybind = alt+shift+t=next_tab
+    keybind = cmd+shift+n=new_tab
   '' else "";
 
 in {

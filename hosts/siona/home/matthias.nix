@@ -1,8 +1,10 @@
 {
   pkgs,
+  lib,
   user,
   ...
-}: {
+}:
+{
 
   imports = [
     ../../../components/home/bat.nix
@@ -34,7 +36,28 @@
     go-task
     python311
     poetry
+    uv
     ruff
+    pyright
+    (pkgs.buildGoModule {
+      name = "mcp-language-server";
+      version = "0.1.1";
+      src = pkgs.fetchFromGitHub {
+        owner = "isaacphi";
+        repo = "mcp-language-server";
+        rev = "v0.1.1";
+        hash = "sha256-T0wuPSShJqVW+CcQHQuZnh3JOwqUxAKv1OCHwZMr7KM=";
+      };
+      preBuild = ''rm -rf integrationtests'';
+      vendorHash = "sha256-3NEG9o5AF2ZEFWkA9Gub8vn6DNptN6DwVcn/oR8ujW0=";
+      meta = {
+        description = "mcp-language-server gives MCP enabled clients access semantic tools like get definition, references, rename, and diagnostics.";
+        homepage = "https://github.com/isaacphi/mcp-language-server";
+        license = lib.licenses.bsd3;
+      };
+
+      buildInputs = [];
+    })
   ];
 
   programs.home-manager.enable = true;
@@ -50,38 +73,39 @@
       default-model = "qwen3:14b";
       apis.ollama.models."qwen3:14b" = {
         aliases = [ "qwen3" ];
-        max-input-chars = 650000;  # TODO?
+        max-input-chars = 650000; # TODO?
       };
       apis.ollama.models."gemma3:12b" = {
         aliases = [ "gemma3" ];
-        max-input-chars = 650000;  # TODO?
+        max-input-chars = 650000; # TODO?
       };
       apis.ollama.models."codegemma:7b-code" = {
         aliases = [ "codegemma" ];
-        max-input-chars = 650000;  # TODO?
+        max-input-chars = 650000; # TODO?
       };
     };
   };
 
-  home.file.".hammerspoon/init.lua".text = /*lua*/''
-    hs.hotkey.bind({"alt"}, "Return", function()
-      hs.osascript.applescript[[
-        tell application "System Events"
-          if (exists process "Ghostty") then
-            tell process "Ghostty" to click menu item "New Window" of menu of menu bar item "File" of menu bar 1
-          else
-            tell application "Ghostty" to activate
-          end if
-        end tell
-      ]]
-    end)
+  home.file.".hammerspoon/init.lua".text = # lua
+    ''
+      hs.hotkey.bind({"alt"}, "Return", function()
+        hs.osascript.applescript[[
+          tell application "System Events"
+            if (exists process "Ghostty") then
+              tell process "Ghostty" to click menu item "New Window" of menu of menu bar item "File" of menu bar 1
+            else
+              tell application "Ghostty" to activate
+            end if
+          end tell
+        ]]
+      end)
 
-    hs.hotkey.bind({"cmd"}, "b", function()
-      hs.application.open("Firefox")
-    end)
+      hs.hotkey.bind({"cmd"}, "b", function()
+        hs.application.open("Firefox")
+      end)
 
-    -- hack to enable experimentation without rebuilding the thing
-    pcall(dofile, '/Users/matthias/.hammerspoon/extra.lua')
-  '';
+      -- hack to enable experimentation without rebuilding the thing
+      pcall(dofile, '/Users/matthias/.hammerspoon/extra.lua')
+    '';
 
 }
