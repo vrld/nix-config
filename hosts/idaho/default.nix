@@ -84,11 +84,6 @@
   };
   services.blueman.enable = true;
 
-  services.printing = {
-    enable = true;
-    stateless = true;
-  };
-
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;

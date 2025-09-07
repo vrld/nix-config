@@ -9,7 +9,6 @@
     gnupg
     lsof
     screen
-    zellij
     wget
     which
 

@@ -1,4 +1,10 @@
 {
+
+  services.printing = {
+    enable = true;
+    stateless = true;
+  };
+
   hardware.printers.ensurePrinters = [
     {
       name = "Lexmark_B2338dw";
@@ -8,10 +14,11 @@
       model = "everywhere";
       ppdOptions = {
         PageSize = "A4";
-        Duplex =  "DuplexNoTumble";
+        Duplex = "DuplexNoTumble";
       };
     }
   ];
 
   hardware.printers.ensureDefaultPrinter = "Lexmark_B2338dw";
+
 }

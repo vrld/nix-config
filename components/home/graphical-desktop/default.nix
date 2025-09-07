@@ -1,36 +1,33 @@
-{
-  pkgs,
-  ...
-}: let
+{ pkgs, lib, ... }:
+let
+
+  wob = lib.getExe (
+    pkgs.writeShellScriptBin "wob" ''
+      WOBSOCK=/run/user/$(id -u)/wob.sock
+      [[ -p $WOBSOCK ]] || exit 1
+      cat > $WOBSOCK
+    ''
+  );
 
   set-brightness = pkgs.writeShellScriptBin "set-brightness" ''
-    WOBSOCK=/run/user/$(id -u)/wob.sock
-    [[ -p $WOBSOCK ]] || exit 1
-
-    brightnessctl set $1 | sed -En 's/.*\(([0-9]+)%\).*/\1/p' > $WOBSOCK
+    brightnessctl set $1 | sed -En 's/.*\(([0-9]+)%\).*/\1/p' | ${wob}
   '';
 
   set-volume = pkgs.writeShellScriptBin "set-volume" ''
-    set -ex
-
-    wobwob() {
-      WOBSOCK=/run/user/$(id -u)/wob.sock
-      test -p $WOBSOCK && echo $1 > $WOBSOCK
-    }
-
     SINK=$1
     ARG=$2
 
     if test $ARG = "toggle"; then
-      wpctl set-mute $SINK $ARG && wobwob 0
+      wpctl set-mute $SINK $ARG && echo "0" | ${wob}
       exit
     fi
 
-    wpctl set-volume $SINK $ARG \
-      && wobwob $(wpctl get-volume $SINK | cut -d' ' -f2 | tr -d '.')
+    wpctl set-volume $SINK $ARG || exit 1
+    wpctl get-volume $SINK | cut -d' ' -f2 | tr -d '.' | ${wob}
   '';
 
-in {
+in
+{
 
   imports = [
     ./chooser.nix
@@ -65,7 +62,11 @@ in {
   services = {
     gnome-keyring = {
       enable = true;
-      components = [ "secrets" "ssh" "pkcs11" ];
+      components = [
+        "secrets"
+        "ssh"
+        "pkcs11"
+      ];
     };
 
     wob = {
@@ -75,7 +76,6 @@ in {
         width = 1000;
         height = 60;
         margin = 100;
-        output_mode = "all";
       };
     };
 

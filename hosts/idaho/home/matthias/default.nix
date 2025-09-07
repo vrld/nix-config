@@ -31,7 +31,7 @@ in {
     ./firefox.nix
     ./neovim-notmuch.nix
     ./sops.nix
-    ./waybar-idaho.nix
+    ./waybar.nix
   ];
 
   home = {

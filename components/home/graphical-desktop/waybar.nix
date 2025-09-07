@@ -128,6 +128,8 @@
         backlight = {
           format = "{icon} {percent}%";
           format-icons = [ "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ];
+          on-scroll-up = "set-brightness 1%+";
+          on-scroll-down = "set-brightness 1%-";
         };
 
         "pulseaudio#input" = {
@@ -135,9 +137,9 @@
           format-source = " {volume}%";
           format-source-muted = " ";
           on-click = "pavucontrol";
-          on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
-          on-scroll-up = "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%+";
-          on-scroll-down = "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%-";
+          on-click-right = "set-volume @DEFAULT_AUDIO_SOURCE@ toggle";
+          on-scroll-up = "set-volume @DEFAULT_AUDIO_SOURCE@ 1%+";
+          on-scroll-down = "set-volume @DEFAULT_AUDIO_SOURCE@ 1%-";
         };
 
         "pulseaudio#output" = {
@@ -152,9 +154,9 @@
           };
 
           on-click = "pavucontrol";
-          on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-          on-scroll-up = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+";
-          on-scroll-down = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-";
+          on-click-right = "set-volume @DEFAULT_AUDIO_SINK@ toggle";
+          on-scroll-up = "set-volume @DEFAULT_AUDIO_SINK@ 1%+";
+          on-scroll-down = "set-volume @DEFAULT_AUDIO_SINK@ 1%-";
         };
 
         "pulseaudio/slider" = { };

@@ -1,4 +1,4 @@
-{ pkgs, lib, ...}: let
+{ pkgs, lib, config, ...}: let
 
   fd = lib.getExe' pkgs.fd "fd";
   fzf = lib.getExe' pkgs.fzf "fzf";
@@ -148,7 +148,6 @@
     esac
   '';
 
-  # XXX: tight coupling to passwort-store.nix -- hw to resolve?
   fzf-pass = pkgs.writeShellScriptBin "fzf-pass" ''
     function items() {
       ${fd} 'gpg$' ~/.password-store \
@@ -221,8 +220,9 @@ in {
   home.packages = [
     fzf-window
     fzf-menu
-    fzf-pass
     fzf-boot
     term-cache
-  ];
+  ] ++ (
+    lib.optional config.programs.password-store.enable fzf-pass
+  );
 }

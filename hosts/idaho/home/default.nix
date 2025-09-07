@@ -4,11 +4,13 @@
   outputs,
   color-scheme,
   ...
-}: let
+}:
+let
   pkgs-stable = import inputs.nixpkgs-stable {
     inherit (pkgs.stdenv.hostPlatform) system;
   };
-in {
+in
+{
 
   imports = [
     inputs.home-manager.nixosModules.home-manager
@@ -39,7 +41,14 @@ in {
     useGlobalPkgs = true;
     useUserPackages = true;
     users.matthias = import ./matthias;
-    extraSpecialArgs = { inherit inputs outputs color-scheme pkgs-stable; };
+    extraSpecialArgs = {
+      inherit
+        inputs
+        outputs
+        color-scheme
+        pkgs-stable
+        ;
+    };
   };
 
   # run unpatched dynamic libraries
