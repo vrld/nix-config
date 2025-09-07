@@ -60,18 +60,12 @@
       flake = false;
     };
 
+    # flatpaks
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    nixpkgs-stable,
-    nix-darwin,
-    chaotic,
-    simple-nixos-mailserver,
-    hardware,
-    ...
-  }@inputs: let
+  outputs = { self, ... }@inputs: let
     inherit (self) outputs;
 
     nixpkgs-defaults = {
@@ -80,7 +74,7 @@
     };
 
     nix-flake-registry-helper = let
-      lib = nixpkgs.lib;
+      lib = inputs.nixpkgs.lib;
       flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
     in {
     # register each input flake so we can use `nix shell nixpkgs#hello` instead `nix shell git://...#hello`
@@ -92,28 +86,28 @@
   in {
     nixosConfigurations = {
 
-      idaho = nixpkgs.lib.nixosSystem {
+      idaho = inputs.nixpkgs.lib.nixosSystem {
         inherit specialArgs;
         system = "x86_64-linux";
         modules = [
           ./hosts/idaho
           nixpkgs-defaults
           nix-flake-registry-helper
-          hardware.nixosModules.lenovo-thinkpad-x280
-          hardware.nixosModules.common-gpu-amd
-          hardware.nixosModules.common-pc
-          chaotic.nixosModules.default
+          inputs.hardware.nixosModules.lenovo-thinkpad-x280
+          inputs.hardware.nixosModules.common-gpu-amd
+          inputs.hardware.nixosModules.common-pc
+          inputs.chaotic.nixosModules.default
         ];
       };
 
       # NOTE: we use nixpkgs-stable here
-      stilgar = nixpkgs-stable.lib.nixosSystem {
+      stilgar = inputs.nixpkgs-stable.lib.nixosSystem {
         inherit specialArgs;
         system = "x86_64-linux";
         modules = [
           ./hosts/stilgar
           nixpkgs-defaults
-          simple-nixos-mailserver.nixosModule
+          inputs.simple-nixos-mailserver.nixosModule
         ];
       };
     };
@@ -121,7 +115,7 @@
     darwinConfigurations = let
       system = "aarch64-darwin";
     in {
-      siona = nix-darwin.lib.darwinSystem {
+      siona = inputs.nix-darwin.lib.darwinSystem {
         inherit specialArgs system;
         modules = [
           ./hosts/siona

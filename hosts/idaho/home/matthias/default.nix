@@ -1,10 +1,9 @@
-{
-  pkgs,
-  ...
-}: let
+{ pkgs, ... }:
+let
   username = "matthias";
   homeDirectory = "/home/${username}";
-in {
+in
+{
   imports = [
     ../../../../components/home/bat.nix
     ../../../../components/home/ghostty.nix
@@ -32,6 +31,8 @@ in {
     ./neovim-notmuch.nix
     ./sops.nix
     ./waybar.nix
+
+    ./flatpak.nix
   ];
 
   home = {
@@ -155,8 +156,8 @@ in {
 
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {
-      autoconnect = ["qemu:///system"];
-      uris = ["qemu:///system"];
+      autoconnect = [ "qemu:///system" ];
+      uris = [ "qemu:///system" ];
     };
   };
 

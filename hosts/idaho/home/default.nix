@@ -37,6 +37,8 @@ in
     defaultUserShell = pkgs.zsh;
   };
 
+  services.flatpak.enable = true;
+
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;

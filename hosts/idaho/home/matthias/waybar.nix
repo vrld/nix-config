@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
 
   notmuch = lib.getExe' pkgs.notmuch "notmuch";
   jq = lib.getExe' pkgs.jq "jq";
@@ -58,11 +59,17 @@
       }'
   '';
 
-in {
+in
+{
   programs.waybar = {
     settings = {
       main-bar = {
-        modules-left = lib.mkForce [ "clock" "custom/calendar" "custom/mails" "custom/tasks" ];
+        modules-left = lib.mkForce [
+          "clock"
+          "custom/calendar"
+          "custom/mails"
+          "custom/tasks"
+        ];
 
         "custom/mails" = {
           format = "{}";
