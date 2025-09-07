@@ -19,7 +19,16 @@ in {
       isNormalUser = true;
       description = "Matthias";
       initialPassword = "dreamsmakegoodstories";
-      extraGroups = [ "wheel" "docker" "networkmanager" "tty" "dialout" "libvirtd" ];
+      extraGroups = [
+        "wheel"
+        "networkmanager"
+        # virtualization
+        "libvirtd"
+        "podman"
+        # serial devices
+        "tty"
+        "dialout"
+      ];
       openssh.authorizedKeys.keys = [ ];
     };
 

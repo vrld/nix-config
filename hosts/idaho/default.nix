@@ -15,6 +15,7 @@
     ../../components/niri.nix
     ../../components/nix.nix
     ../../components/packages.nix
+    ../../components/virtualization.nix
     ../../components/zsh.nix
 
     ./home
@@ -102,8 +103,6 @@
   #  mode = "challenge-response";
   #  enable = true;
   #};
-
-  virtualisation.docker.enable = true;
 
   environment.systemPackages = with pkgs; [
     pciutils
