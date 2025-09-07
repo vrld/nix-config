@@ -1,10 +1,10 @@
-{
+{ color-scheme, ... }: {
 
   programs.bat = {
     enable = true;
     config = {
-      theme-dark = "gruvbox-dark";
-      theme-light = "gruvbox-light";
+      theme-dark = color-scheme.dark.name;
+      theme-light = color-scheme.light.name;
     };
   };
 

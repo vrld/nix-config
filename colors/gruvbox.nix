@@ -46,6 +46,7 @@ in {
   inherit palette;
 
   dark = {
+    name = "gruvbox-dark";
     bg = palette.dark0;
     fg = palette.light1;
 
@@ -82,6 +83,7 @@ in {
   };
 
   light = {
+    name = "gruvbox-light";
     bg = palette.light0;
     fg = palette.dark1;
 

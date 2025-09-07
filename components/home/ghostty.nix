@@ -116,7 +116,7 @@ in {
 
   xdg.configFile."ghostty/config" = lib.mkForce {
     text = ''
-      theme = dark:gruvbox-dark,light:gruvbox-light
+      theme = dark:theme-dark,light:theme-light
       font-family = Hack Nerd Font Mono
       font-size = 14
       minimum-contrast = 1.250000
@@ -132,8 +132,8 @@ in {
     '';
   };
 
-  xdg.configFile."ghostty/themes/gruvbox-light".text = generate-scheme color-scheme.light;
-  xdg.configFile."ghostty/themes/gruvbox-dark".text = generate-scheme color-scheme.dark;
+  xdg.configFile."ghostty/themes/theme-light".text = generate-scheme color-scheme.light;
+  xdg.configFile."ghostty/themes/theme-dark".text = generate-scheme color-scheme.dark;
 
   programs.zsh.initContent = ''
     if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
