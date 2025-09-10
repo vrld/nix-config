@@ -18,7 +18,7 @@
 
   users.groups.podman.name = "podman";
 
-  # Add 'newuidmap' and 'sh' to the PATH for users' Systemd units. 
+  # Add 'newuidmap' and 'sh' to the PATH for users' Systemd units.
   # Required for Rootless podman.
   systemd.user.extraConfig = ''
     DefaultEnvironment="PATH=/run/current-system/sw/bin:/run/wrappers/bin:${lib.makeBinPath [ pkgs.bash ]}"

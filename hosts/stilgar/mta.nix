@@ -30,7 +30,7 @@
       enable = true;
     };
 
-    stateVersion = 1;
+    stateVersion = 3;
   };
 
   services.postfix = {
