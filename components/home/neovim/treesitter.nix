@@ -67,9 +67,9 @@
           enable = true,
           prev_selection = ',',
           keymaps = {
-            ['<leader>ts'] = 'textsubjects-smart',
-            ['<leader>to'] = 'textsubjects-container-outer',
-            ['<leader>ti'] = 'textsubjects-container-outer',
+            [' '] = 'textsubjects-smart',
+            ['u'] = 'textsubjects-container-outer',
+            ['i'] = 'textsubjects-container-inner',
           }
         }
       '';

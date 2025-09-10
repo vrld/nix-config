@@ -17,7 +17,6 @@
             L = extra.gen_ai_spec.line,
           },
         }
-        require 'mini.jump'.setup()
         require 'mini.splitjoin'.setup()
         require 'mini.surround'.setup()
         require 'mini.bracketed'.setup()

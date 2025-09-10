@@ -14,7 +14,6 @@
     ../../../components/home/zsh
 
     ../../../components/home/neovim
-    ../../../components/home/neovim/llm.nix
     ../../../components/home/neovim/lsp.nix
     ../../../components/home/neovim/markdown.nix
     ../../../components/home/neovim/mini.nix
