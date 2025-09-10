@@ -15,7 +15,8 @@
     # checks.verifyNixPath = false;
     defaults = {
       NSGlobalDomain = {
-        AppleInterfaceStyleSwitchesAutomatically = true;
+        AppleInterfaceStyle = "Dark";
+        AppleInterfaceStyleSwitchesAutomatically = false;
         AppleShowAllExtensions = true;
         AppleShowAllFiles = true;
         "com.apple.swipescrolldirection" = false;  # nothing natural about "Natural" scrolling
@@ -25,9 +26,9 @@
 
       dock = {
         enable-spring-load-actions-on-all-items = true;
-        tilesize = 32;
-        autohide = false;
-        appswitcher-all-displays = true;
+        tilesize = 48;
+        autohide = true;
+        appswitcher-all-displays = false;
       };
 
       finder = {

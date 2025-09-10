@@ -33,6 +33,7 @@
 
   home.packages = with pkgs; [
     go-task
+    k9s
     python311
     poetry
     uv
@@ -55,7 +56,7 @@
         license = lib.licenses.bsd3;
       };
 
-      buildInputs = [];
+      buildInputs = [ ];
     })
   ];
 
@@ -66,24 +67,7 @@
     userEmail = "matthias.richter@inovex.de";
   };
 
-  programs.mods = {
-    enable = true;
-    settings = {
-      default-model = "qwen3:14b";
-      apis.ollama.models."qwen3:14b" = {
-        aliases = [ "qwen3" ];
-        max-input-chars = 650000; # TODO?
-      };
-      apis.ollama.models."gemma3:12b" = {
-        aliases = [ "gemma3" ];
-        max-input-chars = 650000; # TODO?
-      };
-      apis.ollama.models."codegemma:7b-code" = {
-        aliases = [ "codegemma" ];
-        max-input-chars = 650000; # TODO?
-      };
-    };
-  };
+  programs.mods = { enable = true; };
 
   home.file.".hammerspoon/init.lua".text = # lua
     ''

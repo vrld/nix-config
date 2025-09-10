@@ -45,7 +45,7 @@
 
       "ghostty"
       "firefox"
-      "homebrew/cask/docker"
+      "homebrew/cask/docker-desktop"
       "google-drive"
       "obsidian"
       "inkscape"
@@ -55,8 +55,6 @@
       "microsoft-teams"
       "linear-linear"
 
-      "ollama-app"
-      "lm-studio"
       "comfyui"
 
       "spotify"
