@@ -1,4 +1,16 @@
-{ inputs, config, ... }:
+{ inputs, config, pkgs, ... }:
+let
+  # add flatpaks here
+  flatpaks = {
+    simplexity = "br.com.wiselabs.simplexity";
+    televido = "de.k_bo.Televido";
+  };
+
+  # massage flatpaks into array of packages and list of urls
+  names = builtins.attrNames flatpaks;
+  urls = builtins.map (name: flatpaks."${name}") names;
+  packages = builtins.map (name: pkgs.writeShellScriptBin name ''flatpak run ${flatpaks."${name}"} "$@"'') names;
+in
 {
 
   imports = [
@@ -14,9 +26,9 @@
     enable = true;
     update.onActivation = true;
     uninstallUnmanaged = true;
-    packages = [
-      "br.com.wiselabs.simplexity"
-    ];
+    packages = urls;
   };
+
+  home.packages = packages;
 
 }
