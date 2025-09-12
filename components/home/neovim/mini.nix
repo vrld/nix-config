@@ -47,23 +47,26 @@
 
         require 'mini.pick'.setup()
         vim.keymap.set('n', '<leader>ff', '<CMD>Pick files<CR>', { silent = true })
-        vim.keymap.set('n', '<leader>fG', "<CMD>Pick git_files<CR>", { silent = true })
         vim.keymap.set('n', '<leader>fg', '<CMD>Pick grep_live<CR>', { silent = true })
         vim.keymap.set('n', '<leader>fb', '<CMD>Pick buffers<CR>', { silent = true })
-        vim.keymap.set('n', '<leader>fB', '<CMD>Pick buf_lines<CR>', { silent = true })
         vim.keymap.set('n', '<leader>fd', "<CMD>Pick diagnostic scope='current'<CR>", { silent = true })
-        vim.keymap.set('n', '<leader>f:', '<CMD>Pick history<CR>', { silent = true })
         vim.keymap.set('n', '<leader>fq', "<CMD>Pick list scope='quickfix'<CR>", { silent = true })
         vim.keymap.set('n', '<leader>fl', "<CMD>Pick list scope='location'<CR>", { silent = true })
         vim.keymap.set('n', '<leader>fr', "<CMD>Pick lsp scope='references'<CR>", { silent = true })
-        vim.keymap.set('n', '<leader>ft', '<CMD>Pick treesitter<CR>', { silent = true })
+        vim.ui.select = MiniPick.ui_select
 
-        -- TODO: custom pickers (see :help MiniPick.registry)
-        --       - git switch (pick branch)
-        --       - lsp code actions (invoke)
+        MiniPick.registry.jj = function()
+          local items = {}
+          local h = io.popen("jj status | sed -nE 's:^[MAD] (.*)$:\\1:p'")
+          for item in h:lines() do
+            items[#items + 1] = item
+          end
+          MiniPick.start{ source = { items = items, name = 'jj change' } }
+        end
+        vim.keymap.set('n', '<leader>fc', "<CMD>Pick jj<CR>", { silent = true })
 
-        require 'mini.sessions'.setup()
-        -- TODO: map MiniSessions.read()
+        require 'mini.sessions'.setup{ autoread = true }
+        vim.keymap.set('n', '<leader>fs', function() MiniSessions.select() end, { silent = true })
 
         require 'mini.starter'.setup()
       end
