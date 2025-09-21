@@ -3,17 +3,15 @@
   pkgs,
   ...
 }: let
-  make-calendar-account = { pass-file, user ? config.home.username, calendar, primary ? false }: let
-    build-url = pkgs.writeShellScript "build-url" "echo $(pass-get ${pass-file} url-dav)/calendars/${user}/${calendar}/";
-  in {
+  make-calendar-account = { pass-file, user ? config.home.username, calendar, primary ? false }: {
     inherit primary;
 
     local.type = "filesystem";
     local.fileExt = ".ics";
 
     remote.type = "caldav";
-    vdirsyncer.urlCommand = [ build-url.outPath ];
-    vdirsyncer.userNameCommand = [ "pass-get" pass-file "user" ];
+    remote.url = "https://nc.tutnix.dev/remote.php/dav/calendars/${user}/${calendar}";
+    remote.userName = user;
     remote.passwordCommand = [ "pass-get" pass-file ];
 
     vdirsyncer = {
@@ -22,13 +20,18 @@
       metadata = [ "color" "displayname" ];
     };
 
+    qcal.enable = true;
+
     khal = {
       enable = true;
       type = "calendar";
     };
   };
 in {
-  programs.qcal.enable = true;
+  programs.qcal = {
+    enable = true;
+    timezone = "Europe/Berlin";
+  };
   programs.khal = {
     enable = true;
     settings = {
