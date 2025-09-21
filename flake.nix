@@ -63,6 +63,22 @@
     # flatpaks
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
+    # übersicht mail system
+    ansicht = {
+      url = "github:vrld/ansicht";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    einsicht = {
+      url = "github:vrld/einsicht";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    absicht = {
+      url = "github:vrld/absicht";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs = { self, ... }@inputs: let

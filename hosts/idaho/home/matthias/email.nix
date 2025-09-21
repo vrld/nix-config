@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
   ...
@@ -144,5 +145,11 @@ in {
     Timer = { OnStartupSec = "23"; OnUnitInactiveSec = "15min"; };
     Install.WantedBy = [ "timers.target" ];
   };
+
+  home.packages = [
+    inputs.einsicht.packages.${pkgs.system}.einsicht
+    inputs.absicht.packages.${pkgs.system}.absicht
+    inputs.ansicht.packages.${pkgs.system}.ansicht
+  ];
 
 }

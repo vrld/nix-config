@@ -77,7 +77,7 @@ in
           exec = widgets.notmuch.outPath;
           return-type = "json";
           tooltip = true;
-          on-click = "\${TERMINAL_EMULATOR} -e nvim -c 'Notmuch'";
+          on-click = "\${TERMINAL_EMULATOR} -e ansicht";
         };
 
         "custom/calendar" = {
@@ -86,6 +86,7 @@ in
           exec = widgets.khal.outPath;
           on-click = "\${TERMINAL_EMULATOR} -e ikhal";
           return-type = "json";
+          max-length = 32;
         };
 
         "custom/tasks" = {
