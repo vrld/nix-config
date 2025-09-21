@@ -14,6 +14,10 @@
       fi
     fi
 
+    if [[ $1 != "light" ]] && [[ $1 != "dark" ]]; then
+      echo "invalid argument '$1': must be 'light' or 'dark'"
+    fi
+
     target=$1  # light or dark
     target_cap=$(echo "$target" | sed 's:^\(.\):\u\1:g')  # Light or Dark
 
@@ -28,6 +32,11 @@
 
     # neovim is configured to change background on SIGUSR1, see neovim/default.nix
     pkill -SIGUSR1 nvim
+    if [[ $target == "dark" ]]; then
+      pkill -SIGUSR2 foot
+    else
+      pkill -SIGUSR1 foot
+    fi
   '';
 in {
 

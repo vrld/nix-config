@@ -19,7 +19,7 @@ in {
 
   imports = [ ../. ];
 
-  xdg.configFile."niri/config.kdl".source = ./config.kdl;
+  xdg.configFile."niri/config.kdl".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nix-config/components/home/graphical-desktop/niri/config.kdl";
 
   programs.waybar.settings = {
     main-bar = {

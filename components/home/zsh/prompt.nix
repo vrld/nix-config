@@ -13,6 +13,10 @@
       # decide main bar color wrt the system theme
       local _default_bg="5;237"
       is-in-light-mode && _default_bg="5;250"
+
+      # OSC-133;A sequence to allow foot to focus already executed prompts
+      echo -n "\x1b]133;A\x1b\\"
+
       # in nix shell?
       if [[ -n "$IN_NIX_SHELL" ]]; then
         _set-bgcolor "5;4"

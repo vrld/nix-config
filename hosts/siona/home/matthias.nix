@@ -20,7 +20,7 @@
     ../../../components/home/neovim/treesitter.nix
     ../../../components/home/neovim/vcs.nix
 
-    ../../../components/home/ghostty.nix
+    ../../../components/home/graphical-desktop/ghostty.nix
   ];
 
   home = {

@@ -6,7 +6,8 @@ in
 {
   imports = [
     ../../../../components/home/bat.nix
-    ../../../../components/home/ghostty.nix
+    # ../../../../components/home/graphical-desktop/ghostty.nix
+    ../../../../components/home/graphical-desktop/foot.nix
     ../../../../components/home/gpg.nix
     ../../../../components/home/packages.nix
     ../../../../components/home/password-store.nix
@@ -28,7 +29,6 @@ in
     ./contacts.nix
     ./email.nix
     ./firefox.nix
-    ./neovim-notmuch.nix
     ./sops.nix
     ./waybar.nix
 

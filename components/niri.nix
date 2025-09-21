@@ -34,7 +34,7 @@
   # required for file chooser portal
   programs.nautilus-open-any-terminal = {
     enable = true;
-    terminal = "ghostty";
+    terminal = "foot";
   };
   services.gnome.sushi.enable = true;
 
