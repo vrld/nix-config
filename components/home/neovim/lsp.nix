@@ -3,6 +3,7 @@
   programs.neovim.extraPackages = with pkgs; [
     bash-language-server
     gopls
+    harper
     htmx-lsp
     lua-language-server
     nil
@@ -89,19 +90,26 @@
         bashls = {     -- shell
           filetypes = {"sh", "bash", "zsh"},
         },
-        cssls = {},    -- css (vscode-langservers-extracted)
-        eslint = {},   -- javascript (vscode-langservers-extracted)
-        gopls = {      -- go
+        cssls = {},      -- css (vscode-langservers-extracted)
+        eslint = {},     -- javascript (vscode-langservers-extracted)
+        gopls = {        -- go
           settings = {
             templateExtensions = { 'html', 'templ' },
           },
         },
-        html = {},     -- html (vscode-langservers-extracted)
-        htmx = {},     -- htmx
-        jsonls = {},   -- json (vscode-langservers-extracted)
-        lua_ls = {},   -- lua
-        nil_ls = {},   -- nix
-        pyright = {    -- python
+        harper_ls = {
+          settings = {
+            linters = {
+              LongSentences = false,
+            },
+          },
+        },  -- spelling and grammar checker
+        html = {},       -- html (vscode-langservers-extracted)
+        htmx = {},       -- htmx
+        jsonls = {},     -- json (vscode-langservers-extracted)
+        lua_ls = {},     -- lua
+        nil_ls = {},     -- nix
+        pyright = {      -- python
           settings = { pyright = { disableOrganizeImports = true, }, },
           before_init = function(_, config)
             -- generate a config file that makes pyright aware of a project's venv
