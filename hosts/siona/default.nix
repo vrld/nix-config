@@ -29,6 +29,8 @@
         tilesize = 48;
         autohide = true;
         appswitcher-all-displays = false;
+        expose-group-apps = true;
+        orientation = "left";
       };
 
       finder = {

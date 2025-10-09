@@ -5,6 +5,7 @@ update: flake-update switch
 clean-update: clean update
 
 flake-update:
+  echo "consider ulimit -S -n 2048 if this fails"
   nix flake update
 
 switch:

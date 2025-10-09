@@ -68,28 +68,4 @@
     email = "matthias.richter@inovex.de";
   };
 
-  programs.mods = { enable = true; };
-
-  home.file.".hammerspoon/init.lua".text = # lua
-    ''
-      hs.hotkey.bind({"alt"}, "Return", function()
-        hs.osascript.applescript[[
-          tell application "System Events"
-            if (exists process "Ghostty") then
-              tell process "Ghostty" to click menu item "New Window" of menu of menu bar item "File" of menu bar 1
-            else
-              tell application "Ghostty" to activate
-            end if
-          end tell
-        ]]
-      end)
-
-      hs.hotkey.bind({"cmd"}, "b", function()
-        hs.application.open("Firefox")
-      end)
-
-      -- hack to enable experimentation without rebuilding the thing
-      pcall(dofile, '/Users/matthias/.hammerspoon/extra.lua')
-    '';
-
 }

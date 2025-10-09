@@ -38,7 +38,6 @@
 
     casks = [
       "karabiner-elements"
-      "hammerspoon"
       "bitwarden"
       "tunnelblick"
       "dimentium/autoraise/autoraiseapp"
@@ -54,8 +53,6 @@
       "slack"
       "microsoft-teams"
       "linear-linear"
-
-      "comfyui"
 
       "spotify"
     ];

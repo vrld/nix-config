@@ -18,7 +18,7 @@
   programs.zsh = {
     enable = true;
     autocd = true;
-    enableVteIntegration = true;
+    enableVteIntegration = pkgs.stdenv.isLinux;
 
     shellAliases = {
       rm = "echo \"Use tp, fool\"; false";
