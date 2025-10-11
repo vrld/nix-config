@@ -217,8 +217,8 @@ binds {
   Mod+Shift+Tab { switch-focus-between-floating-and-tiling; }
 
   // Actions to switch keyboard layouts.
-  Mod+Ctrl+Tab       { switch-layout "next"; }
-  Mod+Ctrl+Shift+Tab { switch-layout "prev"; }
+  Mod+Alt+Tab       { switch-layout "next"; }
+  Mod+Alt+Shift+Tab { switch-layout "prev"; }
 
   Mod+Escape { screenshot; }
   Mod+Ctrl+Escape { screenshot-screen; }
