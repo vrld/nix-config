@@ -83,37 +83,6 @@
         end,
       })
 
-      -- map <Tab> to omnifunc when it's sensible to complete the token before the cursor
-      local types_to_complete = {
-        "identifier",
-        "field_expression",
-        "property_identifier",
-        "method_identifier",
-        "variable_declaration",
-        "parameter",
-        "type_identifier",
-        "struct_field_identifier",
-        "function_identifier"
-      }
-      local function smart_tab()
-        -- if in completion, cycle to next item
-        if vim.fn.pumvisible() ~= 0 then
-          return "<C-n>"
-        end
-
-        local bufnr = vim.api.nvim_get_current_buf()
-        local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-        local ts = vim.treesitter.get_node{ bufnr=bufnr, pos={row - 1, math.max(0, col - 1)} }
-
-        if ts and vim.tbl_contains(types_to_complete, ts:type()) then
-          vim.lsp.completion.get()
-          return ""
-        else
-          return "<Tab>"
-        end
-      end
-      vim.keymap.set('i', '<Tab>', smart_tab, {expr = true, silent=true})
-
       -- TODO: user command / menu with lsp functions?
 
       local langserver_configs = {  -- can i get this from nix somehow?
