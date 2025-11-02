@@ -63,9 +63,9 @@
 
   programs.home-manager.enable = true;
 
-  programs.git = {
-    userName = "Matthias Richter";
-    userEmail = "matthias.richter@inovex.de";
+  programs.git.settings.user = {
+    name = "Matthias Richter";
+    email = "matthias.richter@inovex.de";
   };
 
   programs.mods = { enable = true; };

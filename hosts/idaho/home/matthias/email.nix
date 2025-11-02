@@ -147,9 +147,9 @@ in {
   };
 
   home.packages = [
-    inputs.einsicht.packages.${pkgs.system}.einsicht
-    inputs.absicht.packages.${pkgs.system}.absicht
-    inputs.ansicht.packages.${pkgs.system}.ansicht
+    inputs.einsicht.packages.${pkgs.stdenv.hostPlatform.system}.einsicht
+    inputs.absicht.packages.${pkgs.stdenv.hostPlatform.system}.absicht
+    inputs.ansicht.packages.${pkgs.stdenv.hostPlatform.system}.ansicht
   ];
 
 }

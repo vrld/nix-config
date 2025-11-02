@@ -74,9 +74,9 @@ in
 
   #services.yubikey-agent.enable = true;
 
-  programs.git = {
-    userName = "Matthias Richter";
-    userEmail = "vrld@vrld.org";
+  programs.git.settings.user = {
+    name = "Matthias Richter";
+    email = "vrld@vrld.org";
   };
 
   services.nextcloud-client.enable = true;
