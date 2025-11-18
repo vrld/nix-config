@@ -14,6 +14,7 @@ in
     ../../../../components/home/sqlite.nix
     ../../../../components/home/ssh.nix
     ../../../../components/home/vcs.nix
+    ../../../../components/home/yazi.nix
     ../../../../components/home/zsh
 
     ../../../../components/home/graphical-desktop/niri
