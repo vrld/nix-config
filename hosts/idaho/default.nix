@@ -58,6 +58,8 @@
     enable = true;
     enable32Bit = true;
   };
+  hardware.amdgpu.overdrive.enable = true;
+  services.lact.enable = true;
 
   services.hardware.bolt.enable = true;
 
@@ -122,6 +124,6 @@
     spiceUSBRedirection.enable = true;
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 
 }

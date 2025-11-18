@@ -1,4 +1,5 @@
-{ pkgs, ... }: let
+{ pkgs, ... }:
+let
   username = "matthias";
   homeDirectory = "/home/${username}";
 in
@@ -16,15 +17,17 @@ in
   home = {
     inherit username homeDirectory;
     preferXdgDirectories = true;
-    stateVersion = "25.05";
+    stateVersion = "25.11";
   };
 
   programs.home-manager.enable = true;
 
   programs.git = {
     enable = true;
-    userName = "Matthias Richter";
-    userEmail = "vrld@vrld.org";
+    settings.user = {
+      name = "Matthias Richter";
+      email = "vrld@vrld.org";
+    };
   };
   home.packages = with pkgs; [ just jujutsu ];
 

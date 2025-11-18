@@ -51,7 +51,7 @@ in
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    hledger
+    hledger  # TODO: look at paisa
     when
 
     (imagemagick.override {

@@ -11,6 +11,8 @@
       "vrld.org"
       "karlsruhe.ai"
     ];
+    systemDomain = "tutnix.dev";
+    systemName = "just some guy";
 
     recipientDelimiter = "-";
     lmtpSaveToDetailMailbox = "no";  # "yes" would create mailboxes for every string after the "-", but that messes with mobile clients
@@ -26,13 +28,12 @@
 
     dmarcReporting = {
       enable = true;
-      domain = "tutnix.dev";
-      organizationName = "just some guy";
     };
+
+    stateVersion = 1;
   };
 
   services.postfix = {
-    lookupMX = true;
     mapFiles.virtual = lib.mkForce config.sops.secrets."stilgar/postfix-virtual".path;
     mapFiles.valias = lib.mkForce config.sops.secrets."stilgar/postfix-valias".path;
     mapFiles.vaccounts = lib.mkForce config.sops.secrets."stilgar/postfix-valias".path;

@@ -1,7 +1,12 @@
-{
+{ pkgs, ...}: {
 
   networking.networkmanager = {
     enable = true;
+    plugins = with pkgs; [
+      networkmanager-vpnc
+      networkmanager-openvpn
+      networkmanager-openconnect
+    ];
   };
 
   systemd.network = {
