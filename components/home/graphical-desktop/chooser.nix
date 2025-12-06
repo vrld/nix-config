@@ -96,13 +96,14 @@
     esac
   '';
 
-  fzf-window = pkgs.writeShellScriptBin "fzf-window" ''
+  fzf-window = let
+    foot_font = builtins.head (lib.strings.splitString ":" config.programs.foot.settings.main.font);
+  in pkgs.writeShellScriptBin "fzf-window" ''
     case "$TERMINAL_EMULATOR" in
-      alacritty|ghostty)
+      ghostty)
         $TERMINAL_EMULATOR --class="fzfmenu-$(uuidgen)" --title="fzfmenu" --font-size=18 -e "$1" ;;
       foot)
-        # TODO: duplicate definition of font, see components/home/graphical-desktop/foot.nix
-        $TERMINAL_EMULATOR --app-id="fzfmenu-$(uuidgen)" --title="fzfmenu" --font "Hack Nerd Font Mono:size=24" "$1" ;;
+        $TERMINAL_EMULATOR --app-id="fzfmenu-$(uuidgen)" --title="fzfmenu" --font "${foot_font}:size=24" "$1" ;;
       *)
         exit -1;
     esac

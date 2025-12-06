@@ -1,7 +1,5 @@
 {
   color-scheme,
-  pkgs,
-  lib,
   ...
 }:
 let

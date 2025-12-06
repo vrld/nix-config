@@ -50,7 +50,7 @@
 
     if [[ "$show_keys" = "yes" ]]; then
       echo "password"
-      ${pass} show "$password" | sed -n '2,''${/^[^:]\+:/{ /^otpauth:/d; s/:.*$//p; }}'
+      ${pass} show "$password" | sed -n '2,''${/^[^:]\+:/{ s/:.*$//p; }}'
       exit 0
     fi
 

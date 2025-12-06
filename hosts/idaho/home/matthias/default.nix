@@ -6,7 +6,7 @@ in
 {
   imports = [
     ../../../../components/home/bat.nix
-    # ../../../../components/home/graphical-desktop/ghostty.nix
+    ../../../../components/home/graphical-desktop/ghostty.nix
     ../../../../components/home/graphical-desktop/foot.nix
     ../../../../components/home/gpg.nix
     ../../../../components/home/packages.nix
@@ -61,6 +61,10 @@ in
 
     platformio-core
     esptool
+    python313Packages.uv
+    python313Packages.ipython
+
+    zola
 
     artisan
     obsidian
@@ -83,35 +87,6 @@ in
   services.nextcloud-client.enable = true;
   services.syncthing.enable = true;
   services.syncthing.tray.enable = true;
-
-  programs.taskwarrior = {
-    enable = true;
-    package = pkgs.taskwarrior3;
-    config = {
-      urgency.user.tag = {
-        To_Do.coefficient = 10;
-        Doing.coefficient = 20;
-      };
-      purge.on-sync = 1;
-      # TODO: sync -- needs taskchampion-sync-server on tutnix.dev
-    };
-  };
-
-  programs.mods = {
-    enable = true;
-    enableZshIntegration = true;
-    # TODO: config
-  };
-
-  #services.taskwarrior-sync = {
-  #  enable = true;
-  #  frequency = "hourly";
-  #};
-
-  home.file.".bin/screencast" = {
-    source = ./bin/screencast;
-    executable = true;
-  };
 
   home.file.".when/preferences".text = ''
     calendar = ${homeDirectory}/.when/calendar

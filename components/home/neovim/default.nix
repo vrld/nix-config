@@ -40,7 +40,6 @@ in {
       }
 
       # dirvish + split buffers is so much better than nerd tree
-      # TODO: can I use dirvish as a file manager? map `(xdg-)open <file>` or similar command? what about previews?
       vim-dirvish
       vim-dirvish-git
       (fromGitHub "7b8ffc05e2b1fd56571f7ac77bc36e7901c9326b" "master" "bounceme/remote-viewer")

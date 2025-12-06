@@ -108,7 +108,7 @@
 
 in {
 
-  home.sessionVariables.TERMINAL_EMULATOR = "ghostty";
+  home.sessionVariables.TERMINAL_EMULATOR = lib.mkDefault "ghostty";
 
   home.packages = with pkgs; if stdenv.isLinux then [ ghostty ] else [];
 
