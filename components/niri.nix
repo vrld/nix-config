@@ -42,6 +42,7 @@
   services.tumbler.enable = true; # Thumbnail support for images
 
   services.displayManager.gdm.enable = true;
+  services.displayManager.gdm.autoSuspend = true;
   security.polkit.enable = true;
   security.pam.services.swaylock = {};
 

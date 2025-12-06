@@ -1,9 +1,5 @@
+{ pkgs, ... }:
 {
-  pkgs,
-  lib,
-  config,
-  ...
-}: {
 
   programs.swaylock = {
     enable = true;
@@ -21,11 +17,5 @@
       effect-pixelate = 64;
     };
   };
-
-  services.swayidle.events = let
-    swaylock = lib.getExe' config.programs.swaylock.package "swaylock";
-  in [
-    { event = "lock"; command = "pgrep swaylock >/dev/null || ${swaylock}"; }
-  ];
 
 }
