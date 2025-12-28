@@ -20,6 +20,11 @@
         group = "nginx";
       };
 
+      "ncoder.eu" = {
+        extraDomainNames = [ "www.ncoder.eu" ];
+        group = "nginx";
+      };
+
       "karlsruhe.ai" = {
         extraDomainNames = [ "www.karlsruhe.ai" ];
         group = "nginx";

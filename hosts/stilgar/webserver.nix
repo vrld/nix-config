@@ -30,6 +30,13 @@
         locations."/".root = "/var/www/vrld.org";
       };
 
+      "ncoder.eu" = {
+        forceSSL = true;
+        useACMEHost = "ncoder.eu";
+        serverAliases = [ "www.ncoder.eu" ];
+        locations."/".root = "/var/www/ncoder.eu";
+      };
+
       "karlsruhe.ai" = {
         forceSSL = true;
         useACMEHost = "karlsruhe.ai";
