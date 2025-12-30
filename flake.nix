@@ -86,7 +86,15 @@
 
     nixpkgs-defaults = {
       nixpkgs.config.allowUnfree = true;
-      nixpkgs.overlays = [ inputs.nur.overlays.default ];
+      nixpkgs.overlays = [
+        inputs.nur.overlays.default
+        # see https://github.com/nixos/nixpkgs/issues/475879 
+        (final: _prev: {
+          ltrace = _prev.ltrace.overrideAttrs {
+            env.NIX_CFLAGS_COMPILE = "-Wno-error=incompatible-pointer-types";
+          };
+        })
+      ];
     };
 
     nix-flake-registry-helper = let

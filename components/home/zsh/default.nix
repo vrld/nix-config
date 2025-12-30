@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   ...
 }: {
 
@@ -19,6 +20,7 @@
     enable = true;
     autocd = true;
     enableVteIntegration = pkgs.stdenv.isLinux;
+    dotDir = config.home.homeDirectory;
 
     shellAliases = {
       rm = "echo \"Use tp, fool\"; false";

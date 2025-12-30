@@ -204,7 +204,6 @@
     /* submodule spacing */
     #custom-calendar,
     #custom-mails,
-    #custom-tasks,
     #memory,
     #disk {
       margin-left: 16px;
@@ -244,7 +243,6 @@
     }
 
     /* fix symbol spacing */
-    #custom-tasks,
     #idle_inhibitor,
     #backlight,
     #pulseaudio.input,

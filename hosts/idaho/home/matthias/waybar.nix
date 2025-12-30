@@ -10,7 +10,6 @@ let
   jq = lib.getExe' pkgs.jq "jq";
   khal = lib.getExe' pkgs.khal "khal";
   awk = lib.getExe' pkgs.gawk "awk";
-  task = lib.getExe' config.programs.taskwarrior.package "task";
 
   widgets.notmuch = pkgs.writeShellScript "waybar-notmuch" ''
     ${notmuch} search --format=json query:INBOX | ${jq} -Mc '{
@@ -46,19 +45,6 @@ let
     echo -n '", "tooltip": "'$tooltip'"}'
   '';
 
-  widgets.tasks = pkgs.writeShellScript "task-open" ''
-    ${task} -DELETED -COMPLETED export | ${jq} -Mc '{
-      text: . | length | tostring | (" " + .),
-      tooltip: map(
-          (.priority | if . == "H" then "󰁝 " elif . == "M" then "󰁔 " elif . == "L" then "󰁅 " else "" end) +
-          "<b>" + .description + "</b>" +
-          (if .recur then " 󰑖" else "" end) +
-          (.project | if . then " 󰀼 " + . else "" end) +
-          (.tags | if . then " <small>" + (map("󰓹 " + .) | join(" ")) + "</small>" else "" end)
-        ) | join("\n")
-      }'
-  '';
-
 in
 {
   programs.waybar = {
@@ -68,7 +54,6 @@ in
           "clock"
           "custom/calendar"
           "custom/mails"
-          "custom/tasks"
         ];
 
         "custom/mails" = {
@@ -89,13 +74,6 @@ in
           max-length = 32;
         };
 
-        "custom/tasks" = {
-          format = "{}";
-          interval = 300;
-          exec = widgets.tasks.outPath;
-          on-click = "\${TERMINAL_EMULATOR} -e vim ~/wiki/index.md";
-          return-type = "json";
-        };
       };
     };
   };

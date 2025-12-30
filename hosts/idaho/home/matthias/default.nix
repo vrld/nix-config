@@ -43,6 +43,7 @@ in
 
     sessionVariables = {
       JAVA_OPTS = "-Dawt.useSystemAAFontSettings=on -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+      LEDGER_FILE = "${homeDirectory}/Themen/Finanzen/journal/personal/all.journal";
     };
 
     stateVersion = "25.05";
@@ -51,7 +52,7 @@ in
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    hledger  # TODO: look at paisa
+    hledger
     when
 
     (imagemagick.override {

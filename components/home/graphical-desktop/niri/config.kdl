@@ -198,7 +198,7 @@ binds {
 
 
   // right hand does window management and app launching
-  Mod+Return { spawn "ghostty"; }
+  Mod+Return { spawn "foot"; }
   Mod+A { spawn "fzf-window" "fzf-menu"; }
   Mod+Shift+A { spawn "fzf-window" "fzf-pass"; }
   Mod+Shift+C { spawn "fzf-window" "fzf-boot"; }
