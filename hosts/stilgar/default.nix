@@ -38,7 +38,7 @@
   users.users.matthias = {
     isNormalUser = true;
     description = "Matthias";
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "nginx" ];
     initialPassword = "dreamsmakegoodstories";
     openssh.authorizedKeys.keys = [
       (builtins.readFile ../idaho/home/matthias/keys/id_ed25519.pub)

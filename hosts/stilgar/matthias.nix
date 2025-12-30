@@ -29,7 +29,7 @@ in
       email = "vrld@vrld.org";
     };
   };
-  home.packages = with pkgs; [ just jujutsu ];
+  home.packages = with pkgs; [ just jujutsu /* and */ zola ];
 
   systemd.user.startServices = "sd-switch";
 

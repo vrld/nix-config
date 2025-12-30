@@ -8,7 +8,7 @@
       "tutnix.dev" = {
         default = true;
         forceSSL = true;
-        useACMEHost = "tutnix.dev";
+        enableACME = true;
         serverAliases = [ "www.tutnix.dev" ];
         locations."/".root = "/var/www/tutnix.dev";
       };
@@ -25,21 +25,21 @@
 
       "vrld.org" = {
         forceSSL = true;
-        useACMEHost = "vrld.org";
+        enableACME = true;
         serverAliases = [ "www.vrld.org" ];
         locations."/".root = "/var/www/vrld.org";
       };
 
       "ncoder.eu" = {
         forceSSL = true;
-        useACMEHost = "ncoder.eu";
+        enableACME = true;
         serverAliases = [ "www.ncoder.eu" ];
         locations."/".root = "/var/www/ncoder.eu";
       };
 
       "karlsruhe.ai" = {
         forceSSL = true;
-        useACMEHost = "karlsruhe.ai";
+        enableACME = true;
         serverAliases = [ "www.karlsruhe.ai" ];
         locations."/" = { root = "/var/www/karlsruhe.ai"; };
       };
