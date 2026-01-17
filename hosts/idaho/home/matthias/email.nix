@@ -39,7 +39,6 @@
   };
 
 in {
-  # TODO: gpg - sign by default
   accounts.email.maildirBasePath = "Mail";
 
   accounts.email.accounts."vrld.org" = make-tutnix-account {

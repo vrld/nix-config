@@ -27,6 +27,7 @@ in
     ../../../../components/home/neovim/treesitter.nix
     ../../../../components/home/neovim/vcs.nix
 
+    ./backup.nix
     ./calendar.nix
     ./contacts.nix
     ./email.nix
@@ -52,9 +53,6 @@ in
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    hledger
-    when
-
     (imagemagick.override {
       libX11Support = false;
       libXtSupport = false;
@@ -65,17 +63,18 @@ in
     python313Packages.uv
     python313Packages.ipython
 
-    zola
-
     artisan
+    element-desktop
+    hledger
     obsidian
+    orca-slicer
     signal-desktop
     spotify
-
-    orca-slicer
+    when
+    zola
 
     # chaotic nyx
-    discord-krisp
+    # discord-krisp
   ];
 
   #services.yubikey-agent.enable = true;

@@ -27,6 +27,11 @@ in {
       };
       "when-calendar".path = "${homeDirectory}/.when/calendar";
       "api-keys" = {};
+
+      "backup/repository" = {};
+      "backup/env" = {};
+      "backup/password" = {};
+      "backup/paths" = {};
     };
   };
 
