@@ -38,12 +38,17 @@
       backend = "ssh";
       key = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
     };
-    ui.default-command = "log";
-    ui.paginate = "auto";
-    ui.conflict-marker-style = "snapshot";
-    ui.diff-formatter = ":git"; # or :color-words (default), :summary, :stat, :types, :name-only
-    # ui.diff-editor = "meld-3";
+    ui = {
+      default-command = "log";
+      paginate = "auto";
+      conflict-marker-style = "snapshot";
+      diff-formatter = ":git"; # or :color-words (default), :summary, :stat, :types, :name-only
+      # diff-editor = "meld-3";
+    };
     merge-tools.meld-3.merge-args = [ "$left" "$base" "$right" "-o" "$output" "--auto-merge" ];
+    remotes.origin = {
+      auto-track-bookmarks = ''"feature/*" | "fix/*" | "feat/*" | "main"'';
+    };
     aliases = {
       l = [ "log" "--no-pager" ];
       s = [ "st" "--no-pager" ];

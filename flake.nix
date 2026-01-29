@@ -110,7 +110,6 @@
           nixpkgs-defaults
           nix-flake-registry-helper
           inputs.hardware.nixosModules.lenovo-thinkpad-x280
-          inputs.hardware.nixosModules.common-gpu-amd
           inputs.hardware.nixosModules.common-pc
           inputs.chaotic.nixosModules.default
         ];
