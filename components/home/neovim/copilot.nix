@@ -5,24 +5,13 @@
 
   programs.neovim.plugins = with pkgs.vimPlugins; [
     {
-      plugin = opencode-nvim;
-      type = "lua";
-      config = /*lua*/''
-        do
-          local opencode = require 'opencode'
-          vim.keymap.set({'n', 'v'}, '<leader>o', opencode.ask)
-        end
-      '';
-    }
-
-    {
       plugin = copilot-lua;
       type = "lua";
       config = /* lua */ ''
         require('copilot').setup{
           suggestion = {
             enabled = true,
-            auto_trigger = false,
+            auto_trigger = true,
             keymap = {
               accept = "<C-Return>",
               accept_word = "<C-n>",

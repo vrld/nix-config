@@ -15,7 +15,7 @@
 
   programs.neovim.plugins = with pkgs.vimPlugins; [ nvim-lspconfig ];
 
-  programs.neovim.extraLuaConfig = /*lua*/''
+  programs.neovim.initLua = /*lua*/''
     do
 
       -- set's LSP bindings only when a server attaches to a buffer
@@ -97,13 +97,13 @@
             templateExtensions = { 'html', 'templ' },
           },
         },
-        harper_ls = {
-          settings = {
-            linters = {
-              LongSentences = false,
-            },
-          },
-        },  -- spelling and grammar checker
+        -- harper_ls = {
+        --   settings = {
+        --     linters = {
+        --       LongSentences = false,
+        --     },
+        --   },
+        -- },  -- spelling and grammar checker
         html = {},       -- html (vscode-langservers-extracted)
         htmx = {},       -- htmx
         jsonls = {},     -- json (vscode-langservers-extracted)

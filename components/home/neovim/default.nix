@@ -84,7 +84,7 @@ in {
       tnoremap <Esc> <C-\><C-n>
     '';
 
-    extraLuaConfig = /*lua*/''
+    initLua = /*lua*/''
       vim.loader.enable()  -- cache lua modules for faster loading
 
       vim.api.nvim_create_autocmd('FocusLost', {

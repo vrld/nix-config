@@ -21,9 +21,11 @@ in
 
     ../../../../components/home/neovim
     ../../../../components/home/neovim/copilot.nix
+    ../../../../components/home/neovim/dap.nix
     ../../../../components/home/neovim/lsp.nix
     ../../../../components/home/neovim/markdown.nix
     ../../../../components/home/neovim/mini.nix
+    ../../../../components/home/neovim/neotest.nix
     ../../../../components/home/neovim/treesitter.nix
     ../../../../components/home/neovim/vcs.nix
 
