@@ -6,6 +6,7 @@
     timewarrior
 
     (import ../../packages/print256colors.nix {inherit pkgs;})
+    (import ../../packages/coding-agent.nix {inherit pkgs;})
   ];
 
 }
