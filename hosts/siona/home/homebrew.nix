@@ -34,6 +34,7 @@
       "helm"
       "kubectl"
       "gemini-cli"
+      "temporal"
     ];
 
     casks = [
@@ -47,14 +48,13 @@
       "homebrew/cask/docker-desktop"
       "google-drive"
       "obsidian"
-      "inkscape"
 
       "signal"
       "slack"
       "microsoft-teams"
       "linear-linear"
 
-      "spotify"
+      "deezer"
     ];
 
   };

@@ -37,8 +37,8 @@
   home.packages = with pkgs; [
     go-task
     k9s
-    python311
-    poetry
+    python313
+    #poetry
     uv
     ruff
     pyright

@@ -20,7 +20,7 @@ let
   image = pkgs.dockerTools.streamLayeredImage {
     name = image-name;
     tag = image-tag;
-    architecture = if pkgs.stdenv.isAarch64 then "arm64" else "amd64";
+    #architecture = if pkgs.stdenv.isAarch64 then "arm64" else "amd64";
 
     contents = [
       agent-packages
