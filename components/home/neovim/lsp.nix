@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
   programs.neovim.extraPackages = with pkgs; [
     bash-language-server
@@ -8,12 +9,16 @@
     lua-language-server
     nil
     pyright
+    # basedpyright
     ruff
     typescript-language-server
     vscode-langservers-extracted
   ];
 
-  programs.neovim.plugins = with pkgs.vimPlugins; [ nvim-lspconfig ];
+  programs.neovim.plugins = with pkgs.vimPlugins; [
+    nvim-lspconfig
+    venv-selector-nvim
+  ];
 
   programs.neovim.initLua = /*lua*/''
     do
@@ -110,43 +115,27 @@
         lua_ls = {},     -- lua
         nil_ls = {},     -- nix
         pyright = {      -- python
-          settings = { pyright = { disableOrganizeImports = true, }, },
-          before_init = function(_, config)
-            -- generate a config file that makes pyright aware of a project's venv
-            local Path = require 'plenary.path'
-            local pyright_config = Path:new(config.root_dir, "pyrightconfig.json")
-
-            local settings = {}
-            if pyright_config:is_file() then
-              settings = vim.json.decode(pyright_config:read())
-            end
-
-            -- already sufficiently configured
-            if settings.pythonPath ~= nil or settings.venv ~= nil or settings.venvPath ~= nil then
-              return
-            end
-
-            -- find python path
-            settings.pythonPath = vim.trim(vim.fn.system('which python'))
-
-            -- find venv dir:
-            -- 1. check poetry env info
-            -- 2. otherwise default to .venv
-            local venv_path = vim.trim(vim.fn.system('cd "'..config.root_dir..'"; poetry env info -p 2>/dev/null'))
-            if venv_path:len() == 0 then
-              venv_path = config.root_dir .. '/.venv'
-            end
-
-            -- check if the venv actually exists
-            if vim.fn.isdirectory(venv_path) then
-              settings.venvPath, settings.venv = venv_path:match('^(.*/)([^/]+)$')
-              config.settings.python = vim.tbl_extend('force', config.settings.python, settings)
-            end
-
-            -- write settings
-            pyright_config:write(vim.json.encode(settings), 'w')
-          end,
+          settings = {
+            pyright = {
+             analysis = {
+               autoImportCompletions = true,
+               dignosticModel = "workspace",
+             },
+              disableOrganizeImports = true,
+            },
+          },
         },
+        -- basedpyright = {      -- python
+        --   settings = {
+        --     basedpyright = {
+        --       analysis = {
+        --         autoImportCompletions = true,
+        --         dignosticModel = "workspace",
+        --       },
+        --       disableOrganizeImports = true,
+        --     },
+        --   },
+        -- },
         ruff = {       -- also python
           on_attach = function(client)
             client.server_capabilities.hoverProvider = false
