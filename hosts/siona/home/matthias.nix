@@ -23,6 +23,8 @@
     ../../../components/home/neovim/treesitter.nix
     ../../../components/home/neovim/vcs.nix
 
+    ../../../components/home/opencode
+
     ../../../components/home/graphical-desktop/ghostty.nix
   ];
 
