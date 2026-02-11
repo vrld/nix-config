@@ -52,10 +52,16 @@
     aliases = {
       l = [ "log" "--no-pager" ];
       s = [ "st" "--no-pager" ];
-      bl = [ "util" "exec" "--" "bash" "-c" "jj b list -a --sort committer-date- | awk -F':' '/^[^ ]/{print $1}' | fzf" ];
-      mb = [ "util" "exec" "--" "bash" "-c"
-        /* bash */ ''
-          bookmark=$(jj bl)
+      bl_ = [ "util" "exec" "--" "bash" "-c" ''jj b l -a --sort committer-date- -T 'name ++ " " ++ remote ++ "\n"' '' ];
+      blr = [ "util" "exec" "--" "bash" "-c" ''jj bl_ | awk '$2 !~ /^(git)?$/' '' ];  # only remote branches (no local repo, no `git` remote)
+      bll = [ "util" "exec" "--" "bash" "-c" ''jj bl_ | awk '$2 == ""' '' ];  # only local branches (no remotes)
+      tb = [ "util" "exec" "--" "bash" "-c" /*bash*/''  # track branch
+        bookmark=$(jj blr | fzf)
+        [[ -z $bookmark ]] && exit 1
+        jj b track $(echo $bookmark | awk '{print $1" --remote="$2}')
+      ''];
+      mb = [ "util" "exec" "--" "bash" "-c" /* bash */ ''  # move branch
+          bookmark=$(jj bll | fzf)
           [[ -z $bookmark ]] && exit 1
           jj b m "$bookmark" --to @ --allow-backwards
         ''

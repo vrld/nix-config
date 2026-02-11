@@ -14,6 +14,7 @@
         do
           local neotest = require("neotest")
           neotest.setup{
+            discovery = { enabled = false },
             adapters = {
               require("neotest-python"){
                 args = { "-v", "--log-level", "DEBUG" },

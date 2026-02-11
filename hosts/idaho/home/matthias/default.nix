@@ -9,6 +9,7 @@ in
     ../../../../components/home/graphical-desktop/ghostty.nix
     ../../../../components/home/graphical-desktop/foot.nix
     ../../../../components/home/gpg.nix
+    ../../../../components/home/opencode
     ../../../../components/home/packages.nix
     ../../../../components/home/password-store.nix
     ../../../../components/home/sqlite.nix
@@ -65,15 +66,21 @@ in
     python313Packages.uv
     python313Packages.ipython
 
-    artisan
-    element-desktop
     hledger
     obsidian
-    orca-slicer
-    signal-desktop
-    spotify
-    when
     zola
+    when
+
+    gimp
+    inkscape
+
+    artisan
+    deezer-enhanced
+    orca-slicer
+
+    session-desktop
+    signal-desktop
+    element-desktop
 
     # chaotic nyx
     # discord-krisp

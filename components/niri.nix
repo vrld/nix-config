@@ -4,8 +4,6 @@
   # so here we go
 
   environment.systemPackages = with pkgs; [
-    # xdg-desktop-portal-gtk
-    # xdg-desktop-portal-gnome
     niri
     xwayland-satellite
     nautilus
