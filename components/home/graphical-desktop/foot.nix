@@ -99,8 +99,8 @@ in
         box-drawings-uses-font-glyphs = "yes";
         selection-target = "both";
       };
-      colors = generate-scheme color-scheme.dark;
-      colors2 = generate-scheme color-scheme.light;
+      colors-dark = generate-scheme color-scheme.dark;
+      colors-light = generate-scheme color-scheme.light;
       key-bindings = {
         font-increase = "Control+comma Control+plus";
         font-decrease = "Control+period Control+minus";

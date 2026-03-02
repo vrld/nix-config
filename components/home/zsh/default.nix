@@ -123,6 +123,12 @@
         nix run nixpkgs#$command -- "$@"
       }
 
+      n-impure() {
+        local command=$1
+        shift
+        nix run --impure nixpkgs#$command -- "$@"
+      }
+
       # `nix shell nixpkgs#...` with much less typing
       s() {
         local args=()
