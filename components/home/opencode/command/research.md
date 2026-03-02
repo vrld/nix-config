@@ -19,19 +19,19 @@ The user will provide a ticket for you to read and begin researching.
     - Break down the user's ticket into composable research areas
     - Take time to think about the underlying patterns, connections, and architectural the ticket has provided
     - Identify specific components, patterns, or concepts to investigate
-    - Lay out what the codebase-locator or thoughts-locator should look for
+    - Lay out what the codebase-locator or specs-locator should look for
     - Specify what patterns the codebase-pattern-finder should look for
     - Be clear that locators and pattern-finders collect information for analyzers
-    - Typically run a single codebase-analyzer and thoughts-analyzer (in parallel if both needed)
+    - Typically run a single codebase-analyzer and specs-analyzer (in parallel if both needed)
     - Consider which directories, files, or architectural patterns are relevant
 
 3. **Spawn tasks for comprehensive research (follow this sequence):**
    
-   **Phase 1 - Locate (Codebase & Thoughts):**
+   **Phase 1 - Locate (Codebase & Specs):**
    - Identify all topics/components/areas you need to locate
    - Group related topics into coherent batches
    - Spawn **codebase-locator** agents in parallel for each topic group to find WHERE files and components live
-   - Simultaneously spawn **thoughts-locator** agents in parallel to discover relevant documents
+   - Simultaneously spawn **specs-locator** agents in parallel to discover relevant documents
    - **WAIT** for all locator agents to complete before proceeding
 
    **Phase 2 - Find Patterns (Codebase only):**
@@ -40,11 +40,11 @@ The user will provide a ticket for you to read and begin researching.
    - Run multiple pattern-finders in parallel if searching for different unique patterns
    - **WAIT** for all pattern-finder agents to complete before proceeding
 
-   **Phase 3 - Analyze (Codebase & Thoughts):**
+   **Phase 3 - Analyze (Codebase & Specs):**
    - Using information from locators and pattern-finders, determine what needs deep analysis
    - Group analysis tasks by topic/component
    - Spawn **codebase-analyzer** agents in parallel for each topic group to understand HOW specific code works
-   - Spawn **thoughts-analyzer** agents in parallel to extract key insights from the most relevant documents found
+   - Spawn **specs-analyzer** agents in parallel to extract key insights from the most relevant documents found
    - **WAIT** for all analyzer agents to complete before synthesizing
 
    **Important sequencing notes:**
@@ -56,9 +56,9 @@ The user will provide a ticket for you to read and begin researching.
 
 4. **Wait for all sub-agents to complete and synthesize findings:**
    - IMPORTANT: Wait for ALL sub-agent tasks to complete before proceeding
-   - Compile all sub-agent results (both codebase and thoughts findings)
+   - Compile all sub-agent results (both codebase and specs findings)
    - Prioritize live codebase findings as primary source of truth
-   - Use thoughts/ findings as supplementary historical context
+   - Use specs/ findings as supplementary historical context
    - Connect findings across different components
    - Include specific file paths and line numbers for reference
    - Highlight patterns, connections, and architectural decisions
@@ -73,7 +73,7 @@ Use the following metadata for the research document frontmatter:
 !`agentic metadata`
 
 6. **Generate research document:**
-   - Filename: `thoughts/research/date_topic.md`
+   - Filename: `specs/research/date_topic.md`
    - Use the metadata gathered in step 5, mapping XML tags to frontmatter fields
    - Structure the document with YAML frontmatter followed by content:
      ```markdown
@@ -113,13 +113,13 @@ Use the following metadata for the research document frontmatter:
      ## Architecture Insights
      [Patterns, conventions, and design decisions discovered]
 
-     ## Historical Context (from thoughts/)
-     [Relevant insights from thoughts/ directory with references]
-     - `thoughts/research/something.md` - Historical decision about X
-     - `thoughts/plans/build-thing.md` - Past exploration of Y
+     ## Historical Context (from specs/)
+     [Relevant insights from specs/ directory with references]
+     - `specs/research/something.md` - Historical decision about X
+     - `specs/plans/build-thing.md` - Past exploration of Y
 
      ## Related Research
-     [Links to other research documents in thoughts/shared/research/]
+     [Links to other research documents in specs/shared/research/]
 
      ## Open Questions
      [Any areas that need further investigation]
@@ -146,7 +146,7 @@ Use the todowrite tool to create a structured task list for the 9 steps above, m
 - Follow the three-phase sequence: Locate → Find Patterns → Analyze
 - Use parallel Task agents OF THE SAME TYPE ONLY within each phase to maximize efficiency and minimize context usage
 - Always run fresh codebase research - never rely solely on existing research documents
-- The thoughts/architecture directory contains important information about the codebase details
+- The specs/architecture directory contains important information about the codebase details
 - Focus on finding concrete file paths and line numbers for developer reference
 - Research documents should be self-contained with all necessary context
 - Each sub-agent prompt should be specific and focused on read-only operations
@@ -154,7 +154,7 @@ Use the todowrite tool to create a structured task list for the 9 steps above, m
 - Include temporal context (when the research was conducted)
 - Keep the main agent focused on synthesis, not deep file reading
 - Encourage sub-agents to find examples and usage patterns, not just definitions
-- Explore all of thoughts/ directory, not just research subdirectory
+- Explore all of specs/ directory, not just research subdirectory
 - **File reading**: Always read mentioned files FULLY (no limit/offset) before spawning sub-tasks
 - **Critical ordering**: Follow the numbered steps exactly
   - ALWAYS read mentioned files first before spawning sub-tasks (step 1)

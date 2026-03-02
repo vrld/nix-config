@@ -60,7 +60,7 @@ For each phase in the plan:
 
 ### Step 3: Generate Validation Report
 
-Create comprehensive validation summary and write it to the `thoughts/reviews` directory with a filename that matches the plan being reviewed (e.g., if reviewing `plan-feature-x.md`, save as `thoughts/reviews/feature-x-review.md`).
+Create comprehensive validation summary and write it to the `specs/reviews` directory with a filename that matches the plan being reviewed (e.g., if reviewing `plan-feature-x.md`, save as `specs/reviews/feature-x-review.md`).
 
 ### Step 4: Update ticket status to 'reviewed' by editing the ticket file's frontmatter.
 

@@ -15,7 +15,7 @@ Use conventional commit prefixes to categorize changes:
 - **feat:** Features that have been added
 - **chore:** Tidying things up, not making substantial changes to how things work
 - **refactor:** Changes that don't change the behavior, but do change the internal layout
-- **docs:** Purely documentation and thoughts updates
+- **docs:** Purely documentation and specs updates
 - **ci:** Changes to how the CI system works
 
 ## Process:

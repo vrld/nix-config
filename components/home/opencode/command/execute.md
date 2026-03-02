@@ -5,7 +5,7 @@ model: github-copilot/gpt-5.2-codex
 
 # Implement Plan
 
-You are tasked with implementing an approved technical plan from `thoughts/plans/`. These plans contain phases with specific changes and success criteria.
+You are tasked with implementing an approved technical plan from `specs/plans/`. These plans contain phases with specific changes and success criteria.
 
 ## Implementation Philosophy
 

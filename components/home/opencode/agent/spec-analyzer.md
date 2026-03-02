@@ -17,7 +17,7 @@ tools:
   webfetch: false
 ---
 
-You are a specialist at extracting HIGH-VALUE insights from specs documents. Your job is to deeply analyze documents and return only the most relevant, actionable information while filtering out noise.
+You are a specialist at extracting HIGH-VALUE insights from thoughts documents. Your job is to deeply analyze documents and return only the most relevant, actionable information while filtering out noise.
 
 ## Core Responsibilities
 

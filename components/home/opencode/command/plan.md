@@ -12,7 +12,7 @@ You are tasked with creating detailed implementation plans through an interactiv
 ### Step 1: Context Gathering & Initial Analysis
 
 1. **Read all mentioned files immediately and FULLY**:
-   - Ticket files (e.g., `thoughts/tickets/eng_1234.md`)
+   - Ticket files (e.g., `specs/tickets/eng_1234.md`)
    - Research documents
    - Related implementation plans
    - Any JSON/data files mentioned
@@ -24,7 +24,7 @@ You are tasked with creating detailed implementation plans through an interactiv
 
    - Use the **codebase-locator** task to find all files related to the files given by the user
    - Use the **codebase-analyzer** task to understand how the current implementation works
-   - If relevant, use the **thoughts-locator** task to find any existing thoughts documents about this feature
+   - If relevant, use the **specs-locator** task to find any existing specs documents about this feature
 
    These agents will:
    - Find relevant source files, configs, and tests
@@ -82,8 +82,8 @@ After getting initial clarifications:
    - **codebase-pattern-finder** - To find similar features we can model after
 
    **For historical context:**
-   - **thoughts-locator** - To find any research, plans, or decisions about this area
-   - **thoughts-analyzer** - To extract key insights from the most relevant documents
+   - **specs-locator** - To find any research, plans, or decisions about this area
+   - **specs-analyzer** - To extract key insights from the most relevant documents
 
    Each agent knows how to:
    - Find the right files and code patterns
@@ -138,7 +138,7 @@ Once aligned on approach:
 
 After structure approval:
 
-1. **Write the plan** to `thoughts/plans/{descriptive_name}.md`
+1. **Write the plan** to `specs/plans/{descriptive_name}.md`
 2. **Use this template structure**:
 
 ```markdown
@@ -230,8 +230,8 @@ After structure approval:
 
 ## References
 
-- Original ticket: `thoughts/tickets/eng_XXXX.md`
-- Related research: `thoughts/research/[relevant].md`
+- Original ticket: `specs/tickets/eng_XXXX.md`
+- Related research: `specs/research/[relevant].md`
 - Similar implementation: `[file:line]`
 ```
 
@@ -240,7 +240,7 @@ After structure approval:
 2. **Present the draft plan location**:
     ```
     I've created the initial implementation plan at:
-    `thoughts/plans/[filename].md`
+    `specs/plans/[filename].md`
 
     Please review it and let me know:
     - Are the phases properly scoped?
