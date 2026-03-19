@@ -1,4 +1,12 @@
+{ pkgs, ... }:
+let
+  context-hub = import ../../../packages/context-hub.nix {inherit pkgs;};
+in
 {
+
+  home.packages = [
+    context-hub
+  ];
 
   xdg.configFile."opencode/opencode.json".text = builtins.toJSON {
     "$schema" = "https://opencode.ai/config.json";
@@ -20,6 +28,11 @@
 
   home.file.".config/opencode/command" = {
     source = ./command;
+    recursive = true;
+  };
+
+  home.file.".config/opencode/skills" = {
+    source = ./skills;
     recursive = true;
   };
 
